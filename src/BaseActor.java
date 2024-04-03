@@ -25,6 +25,8 @@ public class BaseActor extends Actor {
         long lastAct = this.curAct;
         this.curAct = System.currentTimeMillis();
         this.deltaTime = (int) (this.curAct - lastAct);
+        // edge case: initial start
+        if (this.deltaTime < 0) updateDeltaTime();
     }
 
     /**
@@ -42,4 +44,25 @@ public class BaseActor extends Actor {
     public void move(int dx, int dy) {
         this.setLocation(this.getX() + dx, this.getY() + dy);
     }
+
+
+    // .*Tick()-methods to replace .act()
+
+    /**
+     * Ensured to be called every tick.
+     * Also called in the first loop.
+     */
+    protected void priorityTick(Game.State state) {}
+
+    /**
+     * Used for blocks to tick.
+     * May not be called every tick (e.g. every second tick), but if ticked everything is ticked in the same tick.
+     */
+    protected void blockTick(Game.State state) {}
+
+    /**
+     * Used for entities to tick.
+     * May not be called every tick (e.g. every second tick), but if ticked everything is ticked in the same tick.
+     */
+    protected void entityTick(Game.State state) {}
 }
