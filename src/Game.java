@@ -58,6 +58,9 @@ public class Game extends World {
         // ticks since the method was last invoked (e.g. 1 if was called the previous tick)
         public int sinceLastTick;
 
+        // delta time since last game-tick (NOTE: only usable if method gets ticked every tick as deltaTime doesn't respect any tick spans)
+        public int deltaTime;  // not recommended to use, use State.tick or State.sinceLastTick instead for consistency
+
         // a reference to the master itself
         public Game game;
     }
