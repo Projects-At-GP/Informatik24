@@ -1,3 +1,4 @@
+import greenfoot.Greenfoot;
 import greenfoot.World;
 
 import java.util.Locale;
@@ -19,9 +20,10 @@ public class Game extends World {
     private long tick = 0;
 
     public Game(int tps) {
-        super(1, 1, 1, false);  // TODO
+        super(800, 600, 1, false);  // TODO
         this.tps = tps;
-        this.addObject(new BaseActor(), 100, 100);
+        this.addObject(new Player(), 100, 100);
+        Greenfoot.start();
     }
 
     public Game() {
@@ -41,11 +43,12 @@ public class Game extends World {
         }
 
         State state1 = new State(this.tick, 1, this.deltaTime, this);
+        State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
 
         this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state1));
         if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
-        if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state3));
+        if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state2));
 
         this.tick++;
     }
@@ -54,6 +57,7 @@ public class Game extends World {
         long lastAct = this.curAct;
         this.curAct = System.currentTimeMillis();
         this.deltaTime = (int) (this.curAct - lastAct);
+        System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
     }
