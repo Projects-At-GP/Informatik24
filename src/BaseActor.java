@@ -36,7 +36,9 @@ public class BaseActor extends Actor {
      * Ensured to be called every tick.
      * Also called in the first loop.
      */
-    protected void priorityTick(Game.State state) {}
+    protected void priorityTick(Game.State state) {
+        System.out.printf("Deltatime: %d\n", state.deltaTime);
+    }
 
     /**
      * Used for blocks to tick.

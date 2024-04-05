@@ -16,10 +16,12 @@ public class Game extends World {
     private final int tps;
     protected int deltaTime = 0;  // in milliseconds
     private long curAct = 0;
+    private long tick = 0;
 
     public Game(int tps) {
         super(1, 1, 1, false);  // TODO
         this.tps = tps;
+        //this.addObject(new BaseActor(), 100, 100);
     }
 
     public Game() {
@@ -38,6 +40,9 @@ public class Game extends World {
             throw new RuntimeException(e);
         }
         // TODO: tick-logic for actors
+        State state = new State(this.tick, 1, this.deltaTime, this);
+        //this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state));
+        this.tick++;
     }
 
     private void updateDeltaTime() {
@@ -52,6 +57,14 @@ public class Game extends World {
      * Datatype to hold information to be passed into tick-methods
      */
     public static final class State {
+        public State(long tick, int sinceLastTick, int deltaTime, Game game){
+            this.tick = tick;
+            this.sinceLastTick = sinceLastTick;
+            this.deltaTime = deltaTime;
+            this.game = game;
+        }
+
+
         // the tick during which the method is invoked
         public long tick;
 
