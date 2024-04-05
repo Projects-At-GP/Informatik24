@@ -2,6 +2,12 @@
 Softwareprojekt
 
 
+## IntelliJ
+
+### Setup
+https://github.com/Rc-Cookie/greenfoot-sources-combined/blob/main/Greenfoot%20in%20IntelliJ.pdf
+
+
 ### Run Configuration For IntelliJ
 *filename in project root: `.idea/runConfigurations/Run_Scenario.xml`*
 ```xml
