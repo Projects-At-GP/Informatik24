@@ -21,11 +21,11 @@ public class Game extends World {
     public Game(int tps) {
         super(1, 1, 1, false);  // TODO
         this.tps = tps;
-        //this.addObject(new BaseActor(), 100, 100);
+        this.addObject(new BaseActor(), 100, 100);
     }
 
     public Game() {
-        this(20);
+        this(30);
     }
 
     @Override
@@ -39,9 +39,14 @@ public class Game extends World {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        // TODO: tick-logic for actors
-        State state = new State(this.tick, 1, this.deltaTime, this);
-        //this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state));
+
+        State state1 = new State(this.tick, 1, this.deltaTime, this);
+        State state3 = new State(this.tick, 3, this.deltaTime, this);
+
+        this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state1));
+        if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
+        if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state3));
+
         this.tick++;
     }
 
