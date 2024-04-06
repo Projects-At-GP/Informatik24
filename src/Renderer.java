@@ -1,55 +1,68 @@
+import java.io.*;
+import java.util.*;
+
 public class Renderer {
     Game game;
     Player player;
-    final int cellSize = 32;
+    final int cellSize = 64;
     final int mapSize = 16;
 
-    private float playerX;
-    private float playerY;
+    private int chunkX;
+    private int chunkY;
 
-    private Chunk[][] chunkMap = new Chunk[5][5];
+    private Chunk[][] chunkMap = new Chunk[3][3];
 
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
 
-        for(int i = 0; i < 5; i++){
-            for(int c = 0; c < 5; c++){
-                chunkMap[c][i] = new Chunk();
+        for(int i = 0; i < 3; i++){
+            for(int c = 0; c < 3; c++){
+                chunkMap[c][i] = new Chunk(c, i);
             }
         }
         prepare();
     }
-
+    /**
+     * Method to prepare the environment. Creates new tiles for every position in a grid of 3x3 chunks
+     */
     void prepare(){
         game.removeObjects(game.getObjects(Tile.class));
-        for(int i = 0; i < 5; i++){
-            for(int c = 0; c < 5; c++){
+        for(int i = 0; i < 3; i++){ // loop through x in chunk map
+            for(int c = 0; c < 3; c++){ // loop through y in chunk map
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
-                        int ScreenX = (int) ((i*cellSize*16) + ((x*cellSize+cellSize/2)- player.x*cellSize));
-                        int ScreenY = (int) ((c*cellSize*16) + ((y*cellSize+cellSize/2)- player.y*cellSize));
-                        game.addObject(chunkMap[c][i].map[y][x], ScreenX, ScreenY);
+                        game.addObject(chunkMap[c][i].map[y][x], 0, 0);
                     }
                 }
             }
         }
     }
 
+
+    /**
+     * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
+     */
     void render(){
-        if(playerX == player.x && playerY == player.y) return;
-        playerX = player.x;
-        playerY = player.y;
-        for(int i = 0; i < 5; i++){
-            for(int c = 0; c < 5; c++){
+        int dx = player.chunkX - chunkX;
+        int dy = player.chunkY - chunkY;
+        if(dx != 0 || dy != 0){
+            System.out.printf("Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
+            Chunk[][] tmpChunkMap = new Chunk[3][3];
+        }
+        chunkX = player.chunkX;
+        chunkY = player.chunkY;
+        for(int i = 0; i < 3; i++){
+            for(int c = 0; c < 3; c++){
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
-                        int ScreenX = (int) ((i*cellSize*16) + ((x*cellSize+cellSize/2)- player.x*cellSize));
-                        int ScreenY = (int) ((c*cellSize*16) + ((y*cellSize+cellSize/2)- player.y*cellSize));
+                        int ScreenX = (i * cellSize * 16) + (x * cellSize + cellSize / 2) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
+                        int ScreenY = (c * cellSize * 16) + (y * cellSize + cellSize / 2) - (7 * cellSize) - (int) ((player.yInChunk) * cellSize);
                         chunkMap[c][i].map[y][x].setLocation(ScreenX, ScreenY);
                     }
                 }
             }
         }
     }
+
 }

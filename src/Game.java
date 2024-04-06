@@ -15,7 +15,7 @@ public class Game extends World {
     }
 
     private final int tps;
-    protected int deltaTime = 0;  // in milliseconds
+    protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;
     private Renderer render;
@@ -23,7 +23,7 @@ public class Game extends World {
     public Game(int tps) {
         super(1600, 1200, 1, false);  // TODO
         this.tps = tps;
-        Player player = new Player(3, 3);
+        Player player = new Player(20, 24);
         this.addObject(player, 800, 600);
         this.render = new Renderer(this, player);
         Greenfoot.start();
@@ -60,7 +60,7 @@ public class Game extends World {
     private void updateDeltaTime() {
         long lastAct = this.curAct;
         this.curAct = System.currentTimeMillis();
-        this.deltaTime = (int) (this.curAct - lastAct);
+        this.deltaTime = (float) (this.curAct - lastAct) / 1000;
         //System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
@@ -70,7 +70,7 @@ public class Game extends World {
      * Datatype to hold information to be passed into tick-methods
      */
     public static final class State {
-        public State(long tick, int sinceLastTick, int deltaTime, Game game){
+        public State(long tick, int sinceLastTick, float deltaTime, Game game){
             this.tick = tick;
             this.sinceLastTick = sinceLastTick;
             this.deltaTime = deltaTime;
@@ -85,7 +85,7 @@ public class Game extends World {
         public int sinceLastTick;
 
         // delta time since last game-tick (NOTE: only usable if method gets ticked every tick as deltaTime doesn't respect any tick spans)
-        public int deltaTime;  // not recommended to use, use State.tick or State.sinceLastTick instead for consistency
+        public float deltaTime;  // not recommended to use, use State.tick or State.sinceLastTick instead for consistency
 
         // a reference to the master itself
         public Game game;
