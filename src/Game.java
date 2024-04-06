@@ -18,11 +18,14 @@ public class Game extends World {
     protected int deltaTime = 0;  // in milliseconds
     private long curAct = 0;
     private long tick = 0;
+    private Renderer render;
 
     public Game(int tps) {
-        super(800, 600, 1, false);  // TODO
+        super(1600, 1200, 1, false);  // TODO
         this.tps = tps;
-        this.addObject(new Player(), 100, 100);
+        Player player = new Player(3, 3);
+        this.addObject(player, 800, 600);
+        this.render = new Renderer(this, player);
         Greenfoot.start();
     }
 
@@ -37,11 +40,12 @@ public class Game extends World {
         try {
             Thread.sleep((long) (secondsUntilNextTick * 1000));
         } catch (IllegalArgumentException e) {
-            logger.warning(String.format("Lagging behind! Should already have ticked %s seconds ago!", secondsUntilNextTick));
+            logger.warning(String.format("Lagging behind! Should already have ticked %s ms ago!", (int) Math.abs(secondsUntilNextTick*1000)));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
+        render.render();
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
@@ -57,7 +61,7 @@ public class Game extends World {
         long lastAct = this.curAct;
         this.curAct = System.currentTimeMillis();
         this.deltaTime = (int) (this.curAct - lastAct);
-        System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
+        //System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
     }
