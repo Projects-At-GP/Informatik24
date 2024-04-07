@@ -37,6 +37,8 @@ public class Renderer {
                 }
             }
         }
+        chunkX = player.chunkX;
+        chunkY = player.chunkY;
     }
 
 
@@ -49,6 +51,38 @@ public class Renderer {
         if(dx != 0 || dy != 0){
             System.out.printf("Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
             Chunk[][] tmpChunkMap = new Chunk[3][3];
+            switch (dx){
+                case 1:
+                {
+                    tmpChunkMap[0][0] = chunkMap[0][2];
+                    tmpChunkMap[1][0] = chunkMap[1][2];
+                    tmpChunkMap[2][0] = chunkMap[2][2];
+
+                    tmpChunkMap[0][1] = chunkMap[0][1];
+                    tmpChunkMap[1][1] = chunkMap[1][1];
+                    tmpChunkMap[2][1] = chunkMap[2][1];
+
+                    tmpChunkMap[0][2] = new Chunk(0, 0);
+                    tmpChunkMap[1][2] = new Chunk(0, 0);
+                    tmpChunkMap[2][2] = new Chunk(0, 0);
+
+                }
+                case -1:
+                {
+                    tmpChunkMap[0][2] = chunkMap[0][1];
+                    tmpChunkMap[1][2] = chunkMap[1][1];
+                    tmpChunkMap[2][2] = chunkMap[2][1];
+
+                    tmpChunkMap[0][1] = chunkMap[0][0];
+                    tmpChunkMap[1][1] = chunkMap[1][0];
+                    tmpChunkMap[2][1] = chunkMap[2][0];
+
+                    tmpChunkMap[0][0] = new Chunk(0, 0);
+                    tmpChunkMap[1][0] = new Chunk(0, 0);
+                    tmpChunkMap[2][0] = new Chunk(0, 0);
+
+                }
+            }
         }
         chunkX = player.chunkX;
         chunkY = player.chunkY;

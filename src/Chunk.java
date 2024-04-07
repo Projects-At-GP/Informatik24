@@ -17,7 +17,6 @@ public class Chunk {
      * @param chunkID accepts String in format "x-y"
      */
     private Chunk readChunk(String chunkID){
-        int[][] chunkIDMap = new int[16][];
         try (Scanner reader = new Scanner(new File("./src/mapdata/overworld/chunk-" + chunkID + ".dat"));) {
             int counter = 0;
             while (reader.hasNextLine()) {

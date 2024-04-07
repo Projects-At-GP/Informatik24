@@ -21,9 +21,9 @@ public class Game extends World {
     private Renderer render;
 
     public Game(int tps) {
-        super(1600, 1200, 1, false);  // TODO
+        super(1600, 900, 1, false);  // TODO
         this.tps = tps;
-        Player player = new Player(20, 24);
+        Player player = new Player(0, 0);
         this.addObject(player, 800, 600);
         this.render = new Renderer(this, player);
         Greenfoot.start();
@@ -45,7 +45,7 @@ public class Game extends World {
             throw new RuntimeException(e);
         }
 
-        render.render();
+
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
@@ -53,6 +53,8 @@ public class Game extends World {
         this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state1));
         if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
         if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state2));
+
+        render.render();
 
         this.tick++;
     }
