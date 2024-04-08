@@ -1,4 +1,5 @@
 import greenfoot.Greenfoot;
+import greenfoot.World;
 
 import java.io.File;
 import java.util.Scanner;
@@ -17,13 +18,19 @@ public class Chunk {
      * @param chunkID accepts String in format "x-y"
      */
     private Chunk readChunk(String chunkID){
-        try (Scanner reader = new Scanner(new File("./src/mapdata/overworld/chunk-" + chunkID + ".dat"));) {
+        try {
+            File file = new File("./src/mapdata/overworld/chunk-" + chunkID + ".dat");
+            if (!file.exists()){
+                file = new File("./src/mapdata/overworld/chunk-4-4.dat");
+            }
+            Scanner reader = new Scanner(file);
             int counter = 0;
             while (reader.hasNextLine()) {
                 String data = reader.nextLine();
                 String[] string = data.replaceAll(" ", "").split(",");
                 for (int i = 0; i < string.length; i++){
                     int id = Integer.parseInt(string[i]);
+                    //System.out.println(id);
                     map[counter][i] = new Tile(id);
                 }
                 counter++;
@@ -34,6 +41,14 @@ public class Chunk {
 
 
         return null;
+    }
+
+    public void unload(World world){
+        for (Tile[] tiles : map){
+            for (Tile tile : tiles){
+                world.removeObject(tile);
+            }
+        }
     }
 
 }

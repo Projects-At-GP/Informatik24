@@ -17,6 +17,7 @@ public class Player extends BaseActor{
         GreenfootImage img = new GreenfootImage("./images/player.png");
         img.scale(64,64);
         this.setImage(img);
+
         this.x = x;
         this.y = y;
     }
@@ -29,7 +30,7 @@ public class Player extends BaseActor{
         if(sqrt != 0) {
             x += dx * speed * state.deltaTime / (float) sqrt;
             y += dy * speed * state.deltaTime / (float) sqrt;
-            System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
+            //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
         }
         if(x < 0) x = 0;
         if(y < 0) y = 0;
@@ -39,7 +40,6 @@ public class Player extends BaseActor{
 
         xInChunk = x % 16;
         yInChunk = y % 16;
-
 
     }
 }

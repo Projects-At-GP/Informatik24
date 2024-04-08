@@ -4,6 +4,7 @@ import java.util.*;
 public class Renderer {
     Game game;
     Player player;
+    private boolean instantiated = false;
     final int cellSize = 64;
     final int mapSize = 16;
 
@@ -48,42 +49,72 @@ public class Renderer {
     void render(){
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
-        if(dx != 0 || dy != 0){
+        if((dx != 0 || dy != 0) && instantiated){
             System.out.printf("Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
             Chunk[][] tmpChunkMap = new Chunk[3][3];
-            switch (dx){
-                case 1:
-                {
-                    tmpChunkMap[0][0] = chunkMap[0][2];
-                    tmpChunkMap[1][0] = chunkMap[1][2];
-                    tmpChunkMap[2][0] = chunkMap[2][2];
+            System.out.printf("Richtung x:%d\n", dx);
+            if(dx == 1){
+                System.out.println("nach rechts gegangen");
 
-                    tmpChunkMap[0][1] = chunkMap[0][1];
-                    tmpChunkMap[1][1] = chunkMap[1][1];
-                    tmpChunkMap[2][1] = chunkMap[2][1];
+                tmpChunkMap[0][2] = new Chunk(0,player.chunkX+1);
+                tmpChunkMap[1][2] = new Chunk(1,player.chunkX+1);
+                tmpChunkMap[2][2] = new Chunk(2,player.chunkX+1);
 
-                    tmpChunkMap[0][2] = new Chunk(0, 0);
-                    tmpChunkMap[1][2] = new Chunk(0, 0);
-                    tmpChunkMap[2][2] = new Chunk(0, 0);
+                tmpChunkMap[0][1] = chunkMap[0][2];
+                tmpChunkMap[1][1] = chunkMap[1][2];
+                tmpChunkMap[2][1] = chunkMap[2][2];
 
-                }
-                case -1:
-                {
-                    tmpChunkMap[0][2] = chunkMap[0][1];
-                    tmpChunkMap[1][2] = chunkMap[1][1];
-                    tmpChunkMap[2][2] = chunkMap[2][1];
+                tmpChunkMap[0][0] = chunkMap[0][1];
+                tmpChunkMap[1][0] = chunkMap[1][1];
+                tmpChunkMap[2][0] = chunkMap[2][1];
+            } else if (dx == -1) {
+                System.out.println("nach links gegangen");
 
-                    tmpChunkMap[0][1] = chunkMap[0][0];
-                    tmpChunkMap[1][1] = chunkMap[1][0];
-                    tmpChunkMap[2][1] = chunkMap[2][0];
+                tmpChunkMap[0][0] = new Chunk(0,player.chunkX-1);
+                tmpChunkMap[1][0] = new Chunk(1,player.chunkX-1);
+                tmpChunkMap[2][0] = new Chunk(2,player.chunkX-1);
 
-                    tmpChunkMap[0][0] = new Chunk(0, 0);
-                    tmpChunkMap[1][0] = new Chunk(0, 0);
-                    tmpChunkMap[2][0] = new Chunk(0, 0);
+                tmpChunkMap[0][1] = chunkMap[0][0];
+                tmpChunkMap[1][1] = chunkMap[1][0];
+                tmpChunkMap[2][1] = chunkMap[2][0];
 
-                }
+                tmpChunkMap[0][2] = chunkMap[0][1];
+                tmpChunkMap[1][2] = chunkMap[1][1];
+                tmpChunkMap[2][2] = chunkMap[2][1];
+            } else if (dy == 1) {
+                System.out.println("nach unten gegangen");
+
+                tmpChunkMap[2][0] = new Chunk(player.chunkY+1,0);
+                tmpChunkMap[2][1] = new Chunk(player.chunkY+1,1);
+                tmpChunkMap[2][2] = new Chunk(player.chunkY+1,2);
+
+                tmpChunkMap[1][0] = chunkMap[2][0];
+                tmpChunkMap[1][1] = chunkMap[2][1];
+                tmpChunkMap[1][2] = chunkMap[2][2];
+
+                tmpChunkMap[0][0] = chunkMap[1][0];
+                tmpChunkMap[0][1] = chunkMap[1][1];
+                tmpChunkMap[0][2] = chunkMap[1][2];
+            } else if (dy == -1) {
+                System.out.println("nach oben gegangen");
+
+                tmpChunkMap[0][0] = new Chunk(player.chunkY-1,0);
+                tmpChunkMap[0][1] = new Chunk(player.chunkY-1,1);
+                tmpChunkMap[0][2] = new Chunk(player.chunkY-1,2);
+
+                tmpChunkMap[1][0] = chunkMap[0][0];
+                tmpChunkMap[1][1] = chunkMap[0][1];
+                tmpChunkMap[1][2] = chunkMap[0][2];
+
+                tmpChunkMap[2][0] = chunkMap[1][0];
+                tmpChunkMap[2][1] = chunkMap[1][1];
+                tmpChunkMap[2][2] = chunkMap[1][2];
             }
+
+            chunkMap = tmpChunkMap;
+            prepare();
         }
+        instantiated = true;
         chunkX = player.chunkX;
         chunkY = player.chunkY;
         for(int i = 0; i < 3; i++){
@@ -91,7 +122,7 @@ public class Renderer {
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
                         int ScreenX = (i * cellSize * 16) + (x * cellSize + cellSize / 2) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
-                        int ScreenY = (c * cellSize * 16) + (y * cellSize + cellSize / 2) - (7 * cellSize) - (int) ((player.yInChunk) * cellSize);
+                        int ScreenY = (c * cellSize * 16) + (y * cellSize) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
                         chunkMap[c][i].map[y][x].setLocation(ScreenX, ScreenY);
                     }
                 }

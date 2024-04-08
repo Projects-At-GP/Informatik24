@@ -23,9 +23,9 @@ public class Game extends World {
     public Game(int tps) {
         super(1600, 900, 1, false);  // TODO
         this.tps = tps;
-        Player player = new Player(0, 0);
-        this.addObject(player, 800, 600);
+        Player player = new Player(16, 16);
         this.render = new Renderer(this, player);
+        this.addObject(player, 800, 450);
         Greenfoot.start();
     }
 
