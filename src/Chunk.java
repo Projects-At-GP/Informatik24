@@ -8,7 +8,12 @@ public class Chunk {
 
     public Tile[][] map = new Tile[16][16];
 
+    private int x;
+    private int y;
+
     public Chunk(int x, int y){
+        this.x = x;
+        this.y = y;
         System.out.printf("Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
     }
@@ -31,7 +36,9 @@ public class Chunk {
                 for (int i = 0; i < string.length; i++){
                     int id = Integer.parseInt(string[i]);
                     //System.out.println(id);
-                    map[counter][i] = new Tile(id);
+                    int tileX = (this.x * 16) + i;
+                    int tileY = (this.y * 16) + counter;
+                    map[counter][i] = new Tile(id, tileX, tileY);
                 }
                 counter++;
             }

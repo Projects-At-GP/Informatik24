@@ -29,9 +29,13 @@ public class BaseActor extends Actor {
         this.setLocation(this.getX() + dx, this.getY() + dy);
     }
 
+    /**
+     * Used for entities to initiate.
+     * Will be called once on startup.
+     */
+    protected void start() {}
 
     // .*Tick()-methods to replace .act()
-
     /**
      * Ensured to be called every tick.
      * Also called in the first loop.

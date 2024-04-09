@@ -18,12 +18,15 @@ public class Game extends World {
     protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;
-    private Renderer render;
+
+    private boolean started = false;
+
+    public Renderer render;
 
     public Game(int tps) {
         super(1600, 900, 1, false);  // TODO
         this.tps = tps;
-        Player player = new Player(16, 16);
+        Player player = new Player(this, 18.5F, 20.5F);
         this.render = new Renderer(this, player);
         this.addObject(player, 800, 450);
         Greenfoot.start();
@@ -45,6 +48,8 @@ public class Game extends World {
             throw new RuntimeException(e);
         }
 
+        if(!started) this.getObjects(BaseActor.class).forEach(BaseActor::start);
+        started = true;
 
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);

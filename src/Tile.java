@@ -6,10 +6,16 @@ import java.util.logging.Logger;
 public class Tile extends BaseActor{
     int id;
     int imgscale = 64;
+
+    public int x;
+    public int y;
+
     public boolean wakable = false;
 
-    public Tile(int id){
+    public Tile(int id, int x, int y){
         this.id = id;
+        this.x = x;
+        this.y = y;
         if (id == 1){
             GreenfootImage img = new GreenfootImage("./images/Wall.png");
             img.scale(imgscale, imgscale);

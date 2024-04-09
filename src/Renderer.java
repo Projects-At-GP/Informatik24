@@ -1,12 +1,17 @@
 import java.io.*;
 import java.util.*;
+import greenfoot.Color;
 
 public class Renderer {
     Game game;
     Player player;
     private boolean instantiated = false;
+
     final int cellSize = 64;
     final int mapSize = 16;
+
+    final float playerSize = 0.8F;
+    final float tileSize = 1F;
 
     private int chunkX;
     private int chunkY;
@@ -42,11 +47,33 @@ public class Renderer {
         chunkY = player.chunkY;
     }
 
+    boolean checkCollision(){
+
+
+
+        List<Tile> tiles = game.getObjects(Tile.class);
+        for (Tile tile : tiles){
+            if(tile.wakable || Math.abs(tile.x - player.x) > 2 || Math.abs(tile.y - player.y) > 2) continue;
+            if (    
+                player.x - playerSize / 2   < tile.x + tileSize &&
+                player.x + playerSize / 2   > tile.x            &&
+                player.y - playerSize / 2   < tile.y + tileSize &&
+                player.y + playerSize / 2   > tile.y
+            ) {
+                System.out.println("collision detected");
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     void render(){
+        game.getBackground().setColor(Color.GREEN);
+        game.getBackground().drawRect(800-(int) (32*playerSize), 450-(int) (32*playerSize), (int) (64*playerSize), (int) (64*playerSize));
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
