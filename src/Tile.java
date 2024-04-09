@@ -1,3 +1,4 @@
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
 
@@ -10,12 +11,16 @@ public class Tile extends BaseActor{
     public int x;
     public int y;
 
-    public boolean wakable = false;
+    public boolean walkable = false;
 
     public Tile(int id, int x, int y){
         this.id = id;
         this.x = x;
         this.y = y;
+        setGraphics();
+    }
+
+    private void setGraphics(){
         if (id == 1){
             GreenfootImage img = new GreenfootImage("./images/Wall.png");
             img.scale(imgscale, imgscale);
@@ -25,14 +30,61 @@ public class Tile extends BaseActor{
             img.scale(imgscale, imgscale);
             setImage(img);
         } else if (id == 3){
-            wakable = true;
+            walkable = true;
             GreenfootImage img = new GreenfootImage("./images/Grass.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+        } else if (id == 4){
+            GreenfootImage img = new GreenfootImage("./images/WallFront.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+        } else if (id == 5){
+            GreenfootImage img = new GreenfootImage("./images/WallTop.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+        } else if (id == 6){
+            walkable = true;
+            GreenfootImage img = new GreenfootImage("./images/Door.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+        } else if (id == 7){
+            GreenfootImage img = new GreenfootImage("./images/WallTopCorner.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+        } else if (id == 8){
+            walkable = true;
+            GreenfootImage img = new GreenfootImage("./images/Floor.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+        } else if (id == 9){
+            GreenfootImage img = new GreenfootImage("./images/Chest.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
         } else {
-            wakable = true;
+            walkable = true;
         }
     }
 
+    public void highlight(){
+        int count = 1;
+        while (count > 0){
+            GreenfootImage img = new GreenfootImage("./images/texture.png");
+            img.scale(imgscale, imgscale);
+            setImage(img);
+            count--;
+        }
+        //setGraphics();
+    }
+
+    @Override
+    protected void priorityTick(Game.State state){
+        if(Greenfoot.mouseClicked(this)){
+            // TODO logic for interactables
+        }
+    }
+
+
+    // to override logging when added to world
+    @Override
     protected void addedToWorld(World world) {}
 }

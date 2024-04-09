@@ -47,24 +47,22 @@ public class Renderer {
         chunkY = player.chunkY;
     }
 
-    boolean checkCollision(){
-
-
-
+    Tile checkCollision(){
         List<Tile> tiles = game.getObjects(Tile.class);
         for (Tile tile : tiles){
-            if(tile.wakable || Math.abs(tile.x - player.x) > 2 || Math.abs(tile.y - player.y) > 2) continue;
+            if(tile.walkable || Math.abs(tile.x - player.x) > 2 || Math.abs(tile.y - player.y) > 2) continue;
             if (    
                 player.x - playerSize / 2   < tile.x + tileSize &&
                 player.x + playerSize / 2   > tile.x            &&
                 player.y - playerSize / 2   < tile.y + tileSize &&
                 player.y + playerSize / 2   > tile.y
             ) {
-                System.out.println("collision detected");
-                return true;
+                System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
+                //tile.highlight();
+                return tile;
             }
         }
-        return false;
+        return null;
     }
 
 

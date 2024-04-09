@@ -1,5 +1,6 @@
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 
 import java.util.logging.Logger;
