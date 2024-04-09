@@ -16,16 +16,17 @@ public class Animation {
     int scale;
     int animFrameCount;
     int baseImg;
-    String path;
+    final String path = "./src/images/tmp";
 
     int counter;
     int currentAnim;
 
+
+    GreenfootImage[][] frames;
     public boolean isRunning;
 
     public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg){
         try {
-            this.path = animSheetPath;
             this.actor = actor;
             this.baseImg = baseImg;
             this.frameSize = frameSize;
@@ -47,12 +48,15 @@ public class Animation {
     }
 
     void createFrames(BufferedImage sheet) throws IOException{
-        path = path.replace(".png", "/");
-        deleteDirectory(new File(path));
+        frames = new GreenfootImage[animSheet.getHeight() / frameSize][animSheet.getWidth() / frameSize];
+        new File(path).mkdir();
         for(int c = 0; c < sheet.getHeight() / frameSize; c++){
             for(int i = 0; i < sheet.getWidth() / frameSize; i++){
                 BufferedImage subImg = sheet.getSubimage(i * frameSize, c * frameSize, frameSize, frameSize);
-                ImageIO.write(subImg, "png", new File(path + "tmp" + c + "_" + i + "_.png"));
+                File file = new File(path + "tmp" + c + "_" + i + "_.png");
+                ImageIO.write(subImg, "png", file);
+                frames[c][i] = new GreenfootImage(path + "tmp" + c + "_" + i + "_.png");
+                file.delete();
             }
         }
     }
@@ -61,9 +65,9 @@ public class Animation {
         if(counter >= animFrameCount) counter = 0;
         GreenfootImage img;
         if(isRunning) {
-            img = new GreenfootImage("./src/images/tmpPlayerAnim/crop_" + currentAnim + "_" + counter + "_.png");
+            img = frames[currentAnim][counter];
         } else {
-            img = new GreenfootImage("./src/images/tmpPlayerAnim/crop_0_" + baseImg + "_.png");
+            img = frames[currentAnim][baseImg];
         }
         img.scale(frameSize * scale, frameSize * scale);
         actor.setImage(img);

@@ -31,6 +31,11 @@ public class BaseActor extends Actor {
     }
 
     /**
+     * Will be called once on startup before start.
+     */
+    protected void awake() {}
+
+    /**
      * Used for entities to initiate.
      * Will be called once on startup.
      */

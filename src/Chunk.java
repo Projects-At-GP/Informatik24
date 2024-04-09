@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Chunk {
 
-    public Tile[][] map = new Tile[16][16];
+    public Tile[][][] map = new Tile[16][16][2];
 
     private int x;
     private int y;
@@ -38,7 +38,7 @@ public class Chunk {
                     //System.out.println(id);
                     int tileX = (this.x * 16) + i;
                     int tileY = (this.y * 16) + counter;
-                    map[counter][i] = new Tile(id, tileX, tileY);
+                    map[counter][i][0] = new Tile(id, tileX, tileY);
                 }
                 counter++;
             }
@@ -49,13 +49,4 @@ public class Chunk {
 
         return null;
     }
-
-    public void unload(World world){
-        for (Tile[] tiles : map){
-            for (Tile tile : tiles){
-                world.removeObject(tile);
-            }
-        }
-    }
-
 }

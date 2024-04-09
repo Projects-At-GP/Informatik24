@@ -1,4 +1,3 @@
-import java.io.*;
 import java.util.*;
 import greenfoot.Color;
 
@@ -16,6 +15,8 @@ public class Renderer {
     private int chunkX;
     private int chunkY;
 
+    public List<EntityVisual> visuals = new ArrayList<EntityVisual>();
+
     private Chunk[][] chunkMap = new Chunk[3][3];
 
     public Renderer(Game game, Player player){
@@ -27,7 +28,6 @@ public class Renderer {
                 chunkMap[c][i] = new Chunk(c, i);
             }
         }
-        prepare();
     }
     /**
      * Method to prepare the environment. Creates new tiles for every position in a grid of 3x3 chunks
@@ -38,28 +38,39 @@ public class Renderer {
             for(int c = 0; c < 3; c++){ // loop through y in chunk map
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
-                        game.addObject(chunkMap[c][i].map[y][x], 0, 0);
+                        game.addObject(chunkMap[c][i].map[y][x][0], 0, 0);
                     }
                 }
             }
         }
         chunkX = player.chunkX;
         chunkY = player.chunkY;
+
+        for (EntityVisual e : visuals){
+            game.removeObject(e);
+            System.out.println(e.screenX);
+            game.addObject(e, e.screenX, e.screenY);
+        }
     }
 
     Tile checkCollision(){
-        List<Tile> tiles = game.getObjects(Tile.class);
-        for (Tile tile : tiles){
-            if(tile.walkable || Math.abs(tile.x - player.x) > 2 || Math.abs(tile.y - player.y) > 2) continue;
-            if (    
-                player.x - playerSize / 2   < tile.x + tileSize &&
-                player.x + playerSize / 2   > tile.x            &&
-                player.y - playerSize / 2   < tile.y + tileSize &&
-                player.y + playerSize / 2   > tile.y
-            ) {
-                System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
-                //tile.highlight();
-                return tile;
+        for(int i = 0; i < 3; i++){ // loop through x in chunk map
+            for(int c = 0; c < 3; c++){ // loop through y in chunk map
+                for(int x = 0; x < mapSize; x++){
+                    for(int y = 0; y < mapSize; y++){
+                        Tile tile = chunkMap[c][i].map[y][x][0];
+                        if(tile.walkable || Math.abs(tile.x - player.x) > 3 || Math.abs(tile.y - player.y) > 3) continue;
+                        if (
+                                player.x - playerSize / 2   < tile.x + tileSize &&
+                                player.x + playerSize / 2   > tile.x            &&
+                                player.y - playerSize / 2   < tile.y + tileSize &&
+                                player.y + playerSize / 2   > tile.y
+                        ) {
+                            System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
+                            return tile;
+                        }
+                    }
+                }
             }
         }
         return null;
@@ -148,7 +159,7 @@ public class Renderer {
                     for(int y = 0; y < mapSize; y++){
                         int ScreenX = (i * cellSize * 16) + (x * cellSize + cellSize / 2) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
                         int ScreenY = (c * cellSize * 16) + (y * cellSize) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
-                        chunkMap[c][i].map[y][x].setLocation(ScreenX, ScreenY);
+                        chunkMap[c][i].map[y][x][0].setLocation(ScreenX, ScreenY);
                     }
                 }
             }

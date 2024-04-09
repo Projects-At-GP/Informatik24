@@ -1,4 +1,4 @@
-import greenfoot.GreenfootImage;
+import greenfoot.*;
 import animator.*;
 
 public class Player extends BaseActor{
@@ -12,27 +12,30 @@ public class Player extends BaseActor{
     float xInChunk;
     float yInChunk;
 
-    final float speed = 3;
+    final float speed = 4;
 
     Game game;
     Renderer render;
     Animation anim;
+    EntityVisual visual;
 
     public Player(Game game, float x, float y){
         GreenfootImage img = new GreenfootImage("./images/player1.png");
         img.scale(64,64);
+        img.setTransparency(0);
         this.setImage(img);
         this.game = game;
         this.x = x;
         this.y = y;
 
-        anim = new Animation("./src/images/playerSheet.png", this, 16, 4, 1);
-        anim.setAnim(0);
     }
 
     @Override
-    protected void start(){
+    protected void awake(){
         render = game.render;
+        visual = new EntityVisual(800, 450);
+        render.visuals.add(visual);
+        anim = new Animation("./src/images/playerSheet.png", visual, 16, 4, 1);
     }
 
     @Override

@@ -48,7 +48,11 @@ public class Game extends World {
             throw new RuntimeException(e);
         }
 
-        if(!started) this.getObjects(BaseActor.class).forEach(BaseActor::start);
+        if(!started){
+            this.getObjects(BaseActor.class).forEach(BaseActor::awake);
+            this.getObjects(BaseActor.class).forEach(BaseActor::start);
+            render.prepare();
+        }
         started = true;
 
         State state1 = new State(this.tick, 1, this.deltaTime, this);
