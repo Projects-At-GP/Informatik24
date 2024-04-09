@@ -19,9 +19,13 @@ public class Renderer {
 
     private Chunk[][] chunkMap = new Chunk[3][3];
 
+    NPC npc;
+
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
+        npc = new NPC(this);
+        game.addObject(npc,  800, 100);
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
@@ -47,8 +51,8 @@ public class Renderer {
         chunkY = player.chunkY;
 
         for (EntityVisual e : visuals){
+            System.out.println("creating visual");
             game.removeObject(e);
-            System.out.println(e.screenX);
             game.addObject(e, e.screenX, e.screenY);
         }
     }
@@ -163,6 +167,13 @@ public class Renderer {
                     }
                 }
             }
+        }
+        for (EntityVisual e : visuals){
+            if(e.isStatic) continue;
+            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize));
+            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize));
+
+            e.setLocation(ScreenX, ScreenY);
         }
     }
 

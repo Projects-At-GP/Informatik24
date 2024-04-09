@@ -37,19 +37,8 @@ public class Animation {
         } catch (Exception e){ e.printStackTrace(); }
     }
 
-    boolean deleteDirectory(File directoryToBeDeleted) {
-        File[] allContents = directoryToBeDeleted.listFiles();
-        if (allContents != null) {
-            for (File file : allContents) {
-                deleteDirectory(file);
-            }
-        }
-        return directoryToBeDeleted.delete();
-    }
-
     void createFrames(BufferedImage sheet) throws IOException{
         frames = new GreenfootImage[animSheet.getHeight() / frameSize][animSheet.getWidth() / frameSize];
-        new File(path).mkdir();
         for(int c = 0; c < sheet.getHeight() / frameSize; c++){
             for(int i = 0; i < sheet.getWidth() / frameSize; i++){
                 BufferedImage subImg = sheet.getSubimage(i * frameSize, c * frameSize, frameSize, frameSize);

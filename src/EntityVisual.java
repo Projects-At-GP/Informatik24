@@ -8,6 +8,8 @@ public class EntityVisual extends Actor {
     int screenX;
     int screenY;
 
+    public boolean isStatic = false;
+
     public EntityVisual(float x, float y){
         this.x = x;
         this.y = y;
@@ -17,6 +19,7 @@ public class EntityVisual extends Actor {
     }
 
     public EntityVisual(int x, int y){
+        this.isStatic = true;
         this.screenX = x;
         this.screenY = y;
         GreenfootImage img = new GreenfootImage(64, 64);
