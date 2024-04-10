@@ -16,7 +16,8 @@ public class Animation {
     int scale;
     int animFrameCount;
     int baseImg;
-    final String path = ((new File("./src/")).exists()? "./src/" : "./") + "images/tmp";
+    private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
+    final String path = this.filePrefix + "images/tmp";
 
     int counter;
     int currentAnim;
@@ -31,7 +32,7 @@ public class Animation {
             this.baseImg = baseImg;
             this.frameSize = frameSize;
             this.scale = scale;
-            this.animSheet = ImageIO.read(new File(animSheetPath));
+            this.animSheet = ImageIO.read(new File(this.filePrefix + animSheetPath));
             createFrames(this.animSheet);
             this.animFrameCount = animSheet.getWidth() / frameSize;
         } catch (Exception e) {

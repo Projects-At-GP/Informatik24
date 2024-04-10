@@ -14,7 +14,7 @@ public class NPC extends BaseEnemy{
         System.out.println("npc awake");
         //visual = new EntityVisual(20.5F, 20.5F);
         visual = new EntityVisual(800, 100);
-        anim = new Animation("./src/images/skeletonSheet.png", visual, 16, 4, 1);
+        anim = new Animation("images/skeletonSheet.png", visual, 16, 4, 1);
         render.visuals.add(visual);
     }
 

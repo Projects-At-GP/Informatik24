@@ -35,7 +35,7 @@ public class Player extends BaseActor{
         this.renderer = game.render;
         visual = new EntityVisual(800, 450);
         this.renderer.visuals.add(visual);
-        anim = new Animation("./src/images/playerSheet.png", visual, 16, 4, 1);
+        anim = new Animation("images/playerSheet.png", visual, 16, 4, 1);
     }
 
     @Override
