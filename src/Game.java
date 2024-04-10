@@ -19,17 +19,19 @@ public class Game extends World {
     private long curAct = 0;
     private long tick = 0;
 
-    private boolean started = false;
-
     public Renderer render;
 
     public Game(int tps) {
-        super(1600, 900, 1, false);  // TODO
+        super(1600, 900, 1, false);
         this.tps = tps;
         Player player = new Player(this, 18.5F, 20.5F);
         this.render = new Renderer(this, player);
+        NPC npc = new NPC(this.render);
+        addObject(npc, 0, 0);
+        this.render.entities.add(npc);
+
         this.addObject(player, 800, 450);
-        // this.setPaintOrder();  // TODO
+        this.setPaintOrder(BaseActor.class, Tile.class);
         Greenfoot.start();
     }
 
@@ -49,12 +51,13 @@ public class Game extends World {
             throw new RuntimeException(e);
         }
 
-        if(!started){
-            this.getObjects(BaseActor.class).forEach(BaseActor::awake);
-            this.getObjects(BaseActor.class).forEach(BaseActor::start);
-            render.prepare();
+        for (BaseActor actor : this.getObjects(BaseActor.class)){
+            if(!actor.started){
+                actor.awake();
+                actor.start();
+                actor.started = true;
+            }
         }
-        started = true;
 
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);
@@ -76,6 +79,7 @@ public class Game extends World {
         //System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
+        if(this.deltaTime > 1000000) updateDeltaTime();
     }
 
     /**

@@ -1,8 +1,7 @@
 import animator.*;
 
-public class NPC extends BaseEnemy{
+public class NPC extends BaseEntity {
     Animation anim;
-    EntityVisual visual;
 
     public NPC(Renderer renderer) {
         super(renderer);
@@ -10,11 +9,10 @@ public class NPC extends BaseEnemy{
 
     @Override
     protected void awake(){
-        System.out.println("npc awake");
-        //visual = new EntityVisual(20.5F, 20.5F);
-        visual = new EntityVisual(800, 100);
-        anim = new Animation("images/skeletonSheet.png", visual, 16, 4, 1);
-        this.renderer.visuals.add(visual);
+        this.x = 16F;
+        this.y = 17F;
+        this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
+        this.anim.setAnim(2);
     }
 
     @Override
@@ -23,7 +21,12 @@ public class NPC extends BaseEnemy{
     }
 
     @Override
-    protected void priorityTick(Game.State state) {
-        anim.update();
+    protected void entityTick(Game.State state) {
+
+        this.anim.update();
+        this.anim.resume();
+        if (this.x < 24){
+            this.x += 3 * state.deltaTime;
+        } else this.x = 16;
     }
 }

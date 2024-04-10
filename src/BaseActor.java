@@ -1,5 +1,6 @@
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 
 import java.util.logging.Logger;
@@ -8,6 +9,11 @@ import java.util.logging.Logger;
 public class BaseActor extends Actor {
     protected Logger logger;
     protected Renderer renderer;
+
+    float x;
+    float y;
+
+    public boolean started = false;
 
     public BaseActor(Renderer renderer){
         this.renderer = renderer;

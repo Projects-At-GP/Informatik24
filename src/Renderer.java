@@ -15,7 +15,7 @@ public class Renderer {
     private int chunkX;
     private int chunkY;
 
-    public List<EntityVisual> visuals = new ArrayList<>();
+    public List<BaseEntity> entities = new ArrayList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
 
@@ -24,14 +24,13 @@ public class Renderer {
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
-        npc = new NPC(this);
-        game.addObject(npc, 800, 100);
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
                 chunkMap[c][i] = new Chunk(c, i);
             }
         }
+        prepare();
     }
     /**
      * Method to prepare the environment. Creates new tiles for every position in a grid of 3x3 chunks
@@ -49,12 +48,6 @@ public class Renderer {
         }
         chunkX = player.chunkX;
         chunkY = player.chunkY;
-
-        for (EntityVisual e : visuals){
-            System.out.println("creating visual");
-            game.removeObject(e);
-            game.addObject(e, e.screenX, e.screenY);
-        }
     }
 
     Tile checkCollision(){
@@ -70,7 +63,7 @@ public class Renderer {
                                 player.y - playerSize / 2   < tile.y + tileSize &&
                                 player.y + playerSize / 2   > tile.y
                         ) {
-                            System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
+                            //System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
                             return tile;
                         }
                     }
@@ -168,10 +161,14 @@ public class Renderer {
                 }
             }
         }
-        for (EntityVisual e : visuals){
-            if(e.isStatic) continue;
-            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize));
-            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize));
+        for (BaseEntity e : entities){
+
+            if(e.getWorld() == null){
+                game.addObject(e, 100, 100);
+            }
+
+            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize) - (4 * cellSize) + (cellSize / 2));
+            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize) - (9 * cellSize));
 
             e.setLocation(ScreenX, ScreenY);
         }

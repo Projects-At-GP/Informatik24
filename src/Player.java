@@ -3,9 +3,6 @@ import animator.*;
 
 public class Player extends BaseActor{
 
-    float x;
-    float y;
-
     int chunkX;
     int chunkY;
 
@@ -16,14 +13,9 @@ public class Player extends BaseActor{
 
     Game game;
     Animation anim;
-    EntityVisual visual;
 
     public Player(Game game, float x, float y){
         super(null);
-        GreenfootImage img = new GreenfootImage("./images/player1.png");
-        img.scale(64,64);
-        img.setTransparency(0);
-        this.setImage(img);
         this.game = game;
         this.x = x;
         this.y = y;
@@ -33,30 +25,42 @@ public class Player extends BaseActor{
     @Override
     protected void awake(){
         this.renderer = game.render;
-        visual = new EntityVisual(800, 450);
-        this.renderer.visuals.add(visual);
-        anim = new Animation("images/playerSheet.png", visual, 16, 4, 1);
+        anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
     }
 
     @Override
     protected void priorityTick(Game.State state) {
+        movement(state.deltaTime);
+        combat();
+    }
 
+    private void combat(){
+        if (Greenfoot.mouseClicked(null) && Greenfoot.getMouseInfo() != null){
+            System.out.println("fire!");
+            spell fire = new spell(renderer, (float) (x - 0.5), (float) (y - 0.5));
+            game.addObject(fire, 0, 0);
+            renderer.entities.add(fire);
+            fire.rotate();
+        }
+    }
+
+    private void movement(float dt){
         float dx = (float) (intIsKeyPressed("d") - intIsKeyPressed("a"));
         float dy = (float) (intIsKeyPressed("s") - intIsKeyPressed("w"));
         double sqrt = Math.sqrt(dx * dx + dy * dy);
         if(sqrt != 0) {
-            x += dx * speed * state.deltaTime / (float) sqrt;
-            y += dy * speed * state.deltaTime / (float) sqrt;
+            x += dx * speed * dt / (float) sqrt;
+            y += dy * speed * dt / (float) sqrt;
             //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
 
             Tile col = renderer.checkCollision();
             if(col != null){
-                x -= dx * speed * state.deltaTime / (float) sqrt;
-                y -= dy * speed * state.deltaTime / (float) sqrt;
+                x -= dx * speed * dt / (float) sqrt;
+                y -= dy * speed * dt / (float) sqrt;
 
                 //System.out.printf("Collision detected at x: %d, y: %d\n", col.x, col.y);
             }
-            anim.isRunning = true;
+            anim.resume();
 
             if(dx > 0) {
                 anim.setAnim(2);
@@ -67,7 +71,7 @@ public class Player extends BaseActor{
             } else if (dy < 0) {
                 anim.setAnim(3);
             }
-        } else anim.isRunning = false;
+        } else anim.stop();
         if(x < 0) x = 0;
         if(y < 0) y = 0;
 
@@ -80,6 +84,6 @@ public class Player extends BaseActor{
 
     @Override
     protected void entityTick(Game.State state){
-        anim.update();
+        this.anim.update();
     }
 }
