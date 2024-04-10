@@ -3,8 +3,8 @@ import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.nio.Buffer;
+import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Animation {
@@ -16,7 +16,7 @@ public class Animation {
     int scale;
     int animFrameCount;
     int baseImg;
-    final String path = "./src/images/tmp";
+    final String path = ((new File("./src/")).exists()? "./src/" : "./") + "images/tmp";
 
     int counter;
     int currentAnim;
@@ -34,7 +34,9 @@ public class Animation {
             this.animSheet = ImageIO.read(new File(animSheetPath));
             createFrames(this.animSheet);
             this.animFrameCount = animSheet.getWidth() / frameSize;
-        } catch (Exception e){ e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     void createFrames(BufferedImage sheet) throws IOException{
