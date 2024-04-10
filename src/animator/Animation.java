@@ -9,21 +9,21 @@ import javax.imageio.ImageIO;
 
 public class Animation {
 
-    BufferedImage animSheet;
-    Actor actor;
+    private BufferedImage animSheet;
+    private Actor actor;
 
-    int frameSize;
-    int scale;
-    int animFrameCount;
-    int baseImg;
+    private int frameSize;
+    private int scale;
+    private int animFrameCount;
+    private int baseImg;
     private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
     final String path = this.filePrefix + "images/tmp";
 
-    int counter;
-    int currentAnim;
+    private int counter;
+    private int currentAnim;
 
 
-    GreenfootImage[][] frames;
+    private GreenfootImage[][] frames;
     public boolean isRunning;
 
     public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg){
@@ -34,39 +34,34 @@ public class Animation {
             this.scale = scale;
             this.animSheet = ImageIO.read(new File(this.filePrefix + animSheetPath));
             createFrames(this.animSheet);
-            this.animFrameCount = animSheet.getWidth() / frameSize;
+            this.animFrameCount = this.animSheet.getWidth() / frameSize;
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     void createFrames(BufferedImage sheet) throws IOException{
-        frames = new GreenfootImage[animSheet.getHeight() / frameSize][animSheet.getWidth() / frameSize];
-        for(int c = 0; c < sheet.getHeight() / frameSize; c++){
-            for(int i = 0; i < sheet.getWidth() / frameSize; i++){
-                BufferedImage subImg = sheet.getSubimage(i * frameSize, c * frameSize, frameSize, frameSize);
-                File file = new File(path + "tmp" + c + "_" + i + "_.png");
+        this.frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][this.animSheet.getWidth() / this.frameSize];
+        for(int c = 0; c < sheet.getHeight() / this.frameSize; c++){
+            for(int i = 0; i < sheet.getWidth() / this.frameSize; i++){
+                BufferedImage subImg = sheet.getSubimage(i * this.frameSize, c * this.frameSize, this.frameSize, this.frameSize);
+                File file = new File(this.path + "tmp" + c + "_" + i + "_.png");
                 ImageIO.write(subImg, "png", file);
-                frames[c][i] = new GreenfootImage(path + "tmp" + c + "_" + i + "_.png");
+                this.frames[c][i] = new GreenfootImage(this.path + "tmp" + c + "_" + i + "_.png");
                 file.delete();
             }
         }
     }
 
     public void update(){
-        if(counter >= animFrameCount) counter = 0;
-        GreenfootImage img;
-        if(isRunning) {
-            img = frames[currentAnim][counter];
-        } else {
-            img = frames[currentAnim][baseImg];
-        }
-        img.scale(frameSize * scale, frameSize * scale);
-        actor.setImage(img);
-        counter++;
+        if(this.counter >= this.animFrameCount) this.counter = 0;
+        GreenfootImage img = this.frames[currentAnim][this.isRunning ? this.counter : this.baseImg];
+        img.scale(this.frameSize * this.scale, this.frameSize * this.scale);
+        this.actor.setImage(img);
+        this.counter++;
     }
 
     public void setAnim(int animId){
-        currentAnim = animId;
+        this.currentAnim = animId;
     }
 }

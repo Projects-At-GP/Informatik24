@@ -24,8 +24,8 @@ public class Renderer {
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
-        // npc = new NPC(this);
-        // game.addObject(npc,  800, 100);
+        npc = new NPC(this);
+        game.addObject(npc, 800, 100);
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){

@@ -2,7 +2,6 @@ import animator.*;
 
 public class NPC extends BaseEnemy{
     Animation anim;
-    Renderer render;
     EntityVisual visual;
 
     public NPC(Renderer renderer) {
@@ -15,7 +14,7 @@ public class NPC extends BaseEnemy{
         //visual = new EntityVisual(20.5F, 20.5F);
         visual = new EntityVisual(800, 100);
         anim = new Animation("images/skeletonSheet.png", visual, 16, 4, 1);
-        render.visuals.add(visual);
+        this.renderer.visuals.add(visual);
     }
 
     @Override
