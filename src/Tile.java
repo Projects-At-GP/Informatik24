@@ -14,6 +14,7 @@ public class Tile extends BaseActor{
     public boolean walkable = false;
 
     public Tile(int id, int x, int y){
+        super(null);
         this.id = id;
         this.x = x;
         this.y = y;
@@ -86,5 +87,7 @@ public class Tile extends BaseActor{
 
     // to override logging when added to world
     @Override
-    protected void addedToWorld(World world) {}
+    protected void addedToWorld(World world) {
+        this.logger = Logger.getLogger(this.getClass().getSimpleName());
+    }
 }

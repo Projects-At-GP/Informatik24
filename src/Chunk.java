@@ -1,6 +1,3 @@
-import greenfoot.Greenfoot;
-import greenfoot.World;
-
 import java.io.File;
 import java.util.Scanner;
 
@@ -8,8 +5,11 @@ public class Chunk {
 
     public Tile[][][] map = new Tile[16][16][2];
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
+
+    private final String chunkPrefix = (new File("./src/")).exists()? "./src/" : "./";
+    private final String defaultChunk = chunkPrefix + "mapdata/overworld/chunk-4-4.dat";
 
     public Chunk(int x, int y){
         this.x = x;
@@ -24,9 +24,9 @@ public class Chunk {
      */
     private Chunk readChunk(String chunkID){
         try {
-            File file = new File("./src/mapdata/overworld/chunk-" + chunkID + ".dat");
+            File file = new File(this.chunkPrefix + "mapdata/overworld/chunk-" + chunkID + ".dat");
             if (!file.exists()){
-                file = new File("./src/mapdata/overworld/chunk-4-4.dat");
+                file = new File(this.defaultChunk);
             }
             Scanner reader = new Scanner(file);
             int counter = 0;

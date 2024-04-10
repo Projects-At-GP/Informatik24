@@ -1,4 +1,5 @@
-import greenfoot.*;
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
 
 public class EntityVisual extends Actor {
 

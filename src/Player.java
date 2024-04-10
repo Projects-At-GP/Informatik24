@@ -15,11 +15,11 @@ public class Player extends BaseActor{
     final float speed = 4;
 
     Game game;
-    Renderer render;
     Animation anim;
     EntityVisual visual;
 
     public Player(Game game, float x, float y){
+        super(null);
         GreenfootImage img = new GreenfootImage("./images/player1.png");
         img.scale(64,64);
         img.setTransparency(0);
@@ -32,9 +32,9 @@ public class Player extends BaseActor{
 
     @Override
     protected void awake(){
-        render = game.render;
+        this.renderer = game.render;
         visual = new EntityVisual(800, 450);
-        render.visuals.add(visual);
+        this.renderer.visuals.add(visual);
         anim = new Animation("./src/images/playerSheet.png", visual, 16, 4, 1);
     }
 
@@ -49,7 +49,7 @@ public class Player extends BaseActor{
             y += dy * speed * state.deltaTime / (float) sqrt;
             //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
 
-            Tile col = render.checkCollision();
+            Tile col = renderer.checkCollision();
             if(col != null){
                 x -= dx * speed * state.deltaTime / (float) sqrt;
                 y -= dy * speed * state.deltaTime / (float) sqrt;

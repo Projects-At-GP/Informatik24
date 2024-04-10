@@ -1,6 +1,5 @@
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
 import greenfoot.World;
 
 import java.util.logging.Logger;
@@ -8,10 +7,15 @@ import java.util.logging.Logger;
 
 public class BaseActor extends Actor {
     protected Logger logger;
+    protected Renderer renderer;
+
+    public BaseActor(Renderer renderer){
+        this.renderer = renderer;
+    }
 
     protected void addedToWorld(World world) {
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
-        this.logger.info(String.format("got added to the world at %d/%d", this.getX(), this.getY()));
+        this.logger.finest(String.format("got added to the world at %d/%d", this.getX(), this.getY()));
     }
 
     /**

@@ -1,14 +1,12 @@
 import animator.*;
 
-public class NPC extends BaseActor{
-
+public class NPC extends BaseEnemy{
     Animation anim;
     Renderer render;
     EntityVisual visual;
 
-    public NPC(Renderer render){
-        this.render = render;
-        System.out.println("npc spawn");
+    public NPC(Renderer renderer) {
+        super(renderer);
     }
 
     @Override

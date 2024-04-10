@@ -29,6 +29,7 @@ public class Game extends World {
         Player player = new Player(this, 18.5F, 20.5F);
         this.render = new Renderer(this, player);
         this.addObject(player, 800, 450);
+        // this.setPaintOrder();  // TODO
         Greenfoot.start();
     }
 
