@@ -1,5 +1,6 @@
 import java.util.*;
 import greenfoot.Color;
+import vector.Vector;
 
 public class Renderer {
     Game game;
@@ -18,8 +19,6 @@ public class Renderer {
     public List<BaseEntity> entities = new ArrayList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
-
-    NPC npc;
 
     public Renderer(Game game, Player player){
         this.game = game;
@@ -55,7 +54,7 @@ public class Renderer {
             for(int c = 0; c < 3; c++){ // loop through y in chunk map
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
-                        Tile tile = chunkMap[c][i].map[y][x][0];
+                        Tile tile = this.chunkMap[c][i].map[y][x][0];
                         if(tile.walkable || Math.abs(tile.x - player.x) > 3 || Math.abs(tile.y - player.y) > 3) continue;
                         if (
                                 player.x - playerSize / 2   < tile.x + tileSize &&
@@ -167,8 +166,8 @@ public class Renderer {
                 game.addObject(e, 100, 100);
             }
 
-            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize) - (4 * cellSize) + (cellSize / 2));
-            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize) - (9 * cellSize));
+            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
+            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
 
             e.setLocation(ScreenX, ScreenY);
         }
