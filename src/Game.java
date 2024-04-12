@@ -1,9 +1,11 @@
 import greenfoot.Greenfoot;
 import greenfoot.World;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
-
+import vector.Vector2;
 
 public class Game extends World {
     private static final Logger logger;
@@ -59,6 +61,8 @@ public class Game extends World {
             }
         }
 
+        handleCollision();
+
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
@@ -70,6 +74,24 @@ public class Game extends World {
         render.render();
 
         this.tick++;
+    }
+
+    private void handleCollision(){
+        List<BaseActor> actorList = new ArrayList<>(this.getObjects(BaseEntity.class));
+        actorList.removeIf(actor -> !actor.hasCollider);
+        List<BaseActor> otherList = new ArrayList<>(this.getObjects(BaseActor.class));
+        otherList.removeIf(actor -> !actor.hasCollider);
+
+        for (BaseActor actor : actorList){
+            for (BaseActor other : otherList){
+                if (actor == other) continue;
+                Vector2 mtv = CollisionDetection.checkCollision(actor, other);
+                if (mtv != null) {
+                    actor.onCollision(other, mtv);
+                    break;
+                }
+            }
+        }
     }
 
     private void updateDeltaTime() {

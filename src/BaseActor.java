@@ -2,7 +2,9 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import vector.Vector2;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -10,8 +12,11 @@ public class BaseActor extends Actor {
     protected Logger logger;
     protected Renderer renderer;
 
-    float x;
-    float y;
+    double x;
+    double y;
+    public collider col;
+    public boolean hasCollider = false;
+    public boolean isStatic = true;
 
     public boolean started = false;
 
@@ -23,6 +28,12 @@ public class BaseActor extends Actor {
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
         this.logger.finest(String.format("got added to the world at %d/%d", this.getX(), this.getY()));
     }
+
+    /**
+     * @param other reference to other collider
+     * Will be called if a collision occurs
+     */
+    protected void onCollision(BaseActor other, Vector2 mtv){}
 
     /**
      * @param keyName the name of the key
@@ -69,4 +80,9 @@ public class BaseActor extends Actor {
      * May not be called every tick (e.g. every second tick), but if ticked everything is ticked in the same tick.
      */
     protected void entityTick(Game.State state) {}
+
+    @Override
+    public String toString() {
+        return String.format("Actor with %s collider at position %d, %d", hasCollider? "a" : "no", (int) this.x, (int) this.y);
+    }
 }

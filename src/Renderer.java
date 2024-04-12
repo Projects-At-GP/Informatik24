@@ -1,6 +1,5 @@
 import java.util.*;
 import greenfoot.Color;
-import vector.Vector;
 
 public class Renderer {
     Game game;
@@ -47,29 +46,6 @@ public class Renderer {
         }
         chunkX = player.chunkX;
         chunkY = player.chunkY;
-    }
-
-    Tile checkCollision(){
-        for(int i = 0; i < 3; i++){ // loop through x in chunk map
-            for(int c = 0; c < 3; c++){ // loop through y in chunk map
-                for(int x = 0; x < mapSize; x++){
-                    for(int y = 0; y < mapSize; y++){
-                        Tile tile = this.chunkMap[c][i].map[y][x][0];
-                        if(tile.walkable || Math.abs(tile.x - player.x) > 3 || Math.abs(tile.y - player.y) > 3) continue;
-                        if (
-                                player.x - playerSize / 2   < tile.x + tileSize &&
-                                player.x + playerSize / 2   > tile.x            &&
-                                player.y - playerSize / 2   < tile.y + tileSize &&
-                                player.y + playerSize / 2   > tile.y
-                        ) {
-                            //System.out.printf("Player Info: x: %f y:%f Collision Info: x:%d y:%d id:%d walkable:%b\n",player.x, player.y, tile.x, tile.y, tile.id, tile.walkable);
-                            return tile;
-                        }
-                    }
-                }
-            }
-        }
-        return null;
     }
 
 
@@ -153,8 +129,8 @@ public class Renderer {
             for(int c = 0; c < 3; c++){
                 for(int x = 0; x < mapSize; x++){
                     for(int y = 0; y < mapSize; y++){
-                        int ScreenX = (i * cellSize * 16) + (x * cellSize + cellSize / 2) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
-                        int ScreenY = (c * cellSize * 16) + (y * cellSize) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
+                        int ScreenX = (i * cellSize * 16) + (x * cellSize) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
+                        int ScreenY = (c * cellSize * 16) + (y * cellSize - cellSize / 2) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
                         chunkMap[c][i].map[y][x][0].setLocation(ScreenX, ScreenY);
                     }
                 }

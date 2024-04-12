@@ -5,6 +5,11 @@ public class NPC extends BaseEntity {
 
     public NPC(Renderer renderer) {
         super(renderer);
+        this.hp = 100;
+        this.isStatic = false;
+        this.col = new collider();
+        this.col.octagon(0.8, 0.3);
+        this.hasCollider = true;
     }
 
     @Override

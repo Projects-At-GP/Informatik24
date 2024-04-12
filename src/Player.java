@@ -1,13 +1,17 @@
 import greenfoot.*;
 import animator.*;
+import vector.Vector2;
 
-public class Player extends BaseActor{
+public class Player extends BaseEntity{
 
     int chunkX;
     int chunkY;
 
     float xInChunk;
     float yInChunk;
+
+    double oldX;
+    double oldY;
 
     final float speed = 4;
 
@@ -19,7 +23,10 @@ public class Player extends BaseActor{
         this.game = game;
         this.x = x;
         this.y = y;
-
+        this.isStatic = false;
+        this.col = new collider();
+        this.col.octagon(0.8, 0.3);
+        this.hasCollider = true;
     }
 
     @Override
@@ -48,18 +55,14 @@ public class Player extends BaseActor{
         float dx = (float) (intIsKeyPressed("d") - intIsKeyPressed("a"));
         float dy = (float) (intIsKeyPressed("s") - intIsKeyPressed("w"));
         double sqrt = Math.sqrt(dx * dx + dy * dy);
+
+        oldX = this.x;
+        oldY = this.y;
+
         if(sqrt != 0) {
             x += dx * speed * dt / (float) sqrt;
             y += dy * speed * dt / (float) sqrt;
             //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
-
-            Tile col = renderer.checkCollision();
-            if(col != null){
-                x -= dx * speed * dt / (float) sqrt;
-                y -= dy * speed * dt / (float) sqrt;
-
-                //System.out.printf("Collision detected at x: %d, y: %d\n", col.x, col.y);
-            }
             anim.resume();
 
             if(dx > 0) {
@@ -85,5 +88,11 @@ public class Player extends BaseActor{
     @Override
     protected void entityTick(Game.State state){
         this.anim.update();
+    }
+
+    @Override
+    protected void onCollision(BaseActor other, Vector2 mtv){
+        this.x = oldX;
+        this.y = oldY;
     }
 }

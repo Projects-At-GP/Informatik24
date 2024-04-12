@@ -1,5 +1,6 @@
 import animator.Animation;
 import greenfoot.*;
+import vector.Vector2;
 
 import java.awt.*;
 
@@ -21,6 +22,10 @@ public class spell extends BaseEntity {
         GreenfootImage img = new GreenfootImage(16, 16);
         img.setTransparency(0);
         setImage(img);
+        this.col = new collider();
+        this.col.octagon(0.3);
+        this.hasCollider = true;
+        this.isStatic = false;
     }
 
     @Override
@@ -54,5 +59,15 @@ public class spell extends BaseEntity {
         this.dy = (float) (dmy / root);
 
         System.out.printf("Mouse x: %d, y: %d\n", mouse.getX(), mouse.getY());
+    }
+
+    @Override
+    protected void onCollision(BaseActor other, Vector2 mtv){
+        System.out.println("Spell hit!");
+        if (other.getClass() == NPC.class) {
+            ((NPC) other).takeDamage(15);
+        }
+        renderer.entities.remove(this);
+        this.getWorld().removeObject(this);
     }
 }

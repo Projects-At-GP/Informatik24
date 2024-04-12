@@ -1,6 +1,7 @@
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
+import vector.Vector2;
 
 import java.util.logging.Logger;
 
@@ -8,16 +9,15 @@ public class Tile extends BaseActor{
     int id;
     int imgscale = 64;
 
-    public int x;
-    public int y;
-
     public boolean walkable = false;
 
-    public Tile(int id, int x, int y){
+    public Tile(int id, float x, float y){
         super(null);
         this.id = id;
         this.x = x;
         this.y = y;
+        this.col = new collider();
+        this.col.square(1);
         setGraphics();
     }
 
@@ -26,10 +26,12 @@ public class Tile extends BaseActor{
             GreenfootImage img = new GreenfootImage("./images/Wall.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else if (id == 2){
             GreenfootImage img = new GreenfootImage("./images/Baum.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else if (id == 3){
             walkable = true;
             GreenfootImage img = new GreenfootImage("./images/Grass.png");
@@ -39,10 +41,12 @@ public class Tile extends BaseActor{
             GreenfootImage img = new GreenfootImage("./images/WallFront.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else if (id == 5){
             GreenfootImage img = new GreenfootImage("./images/WallTop.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else if (id == 6){
             walkable = true;
             GreenfootImage img = new GreenfootImage("./images/Door.png");
@@ -52,6 +56,7 @@ public class Tile extends BaseActor{
             GreenfootImage img = new GreenfootImage("./images/WallTopCorner.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else if (id == 8){
             walkable = true;
             GreenfootImage img = new GreenfootImage("./images/Floor.png");
@@ -61,20 +66,10 @@ public class Tile extends BaseActor{
             GreenfootImage img = new GreenfootImage("./images/Chest.png");
             img.scale(imgscale, imgscale);
             setImage(img);
+            this.hasCollider = true;
         } else {
             walkable = true;
         }
-    }
-
-    public void highlight(){
-        int count = 1;
-        while (count > 0){
-            GreenfootImage img = new GreenfootImage("./images/texture.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            count--;
-        }
-        //setGraphics();
     }
 
     @Override
