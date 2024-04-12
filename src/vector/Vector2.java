@@ -37,6 +37,7 @@ public class Vector2 {
     // Unit vector
     public Vector2 normalize() {
         double mag = magnitude();
+        if (mag == 0) return new Vector2(0, 0);
         return new Vector2(x / mag, y / mag);
     }
 

@@ -26,7 +26,7 @@ public class Game extends World {
     public Game(int tps) {
         super(1600, 900, 1, false);
         this.tps = tps;
-        Player player = new Player(this, 18.5F, 20.5F);
+        Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);
@@ -77,16 +77,18 @@ public class Game extends World {
     }
 
     private void handleCollision(){
-        List<BaseActor> actorList = new ArrayList<>(this.getObjects(BaseEntity.class));
+        List<BaseEntity> actorList = new ArrayList<>(this.getObjects(BaseEntity.class));
         actorList.removeIf(actor -> !actor.hasCollider);
         List<BaseActor> otherList = new ArrayList<>(this.getObjects(BaseActor.class));
         otherList.removeIf(actor -> !actor.hasCollider);
 
-        for (BaseActor actor : actorList){
+        for (BaseEntity actor : actorList){
+            actor.collided = false;
             for (BaseActor other : otherList){
                 if (actor == other) continue;
                 Vector2 mtv = CollisionDetection.checkCollision(actor, other);
                 if (mtv != null) {
+                    actor.collided = true;
                     actor.onCollision(other, mtv);
                     break;
                 }

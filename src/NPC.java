@@ -1,4 +1,5 @@
 import animator.*;
+import vector.Vector2;
 
 public class NPC extends BaseEntity {
     Animation anim;
@@ -6,7 +7,6 @@ public class NPC extends BaseEntity {
     public NPC(Renderer renderer) {
         super(renderer);
         this.hp = 100;
-        this.isStatic = false;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
@@ -14,8 +14,7 @@ public class NPC extends BaseEntity {
 
     @Override
     protected void awake(){
-        this.x = 16F;
-        this.y = 17F;
+        this.pos = new Vector2(16, 17);
         this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);
     }
@@ -30,8 +29,8 @@ public class NPC extends BaseEntity {
 
         this.anim.update();
         this.anim.resume();
-        if (this.x < 24){
-            this.x += 3 * state.deltaTime;
-        } else this.x = 16;
+        if (this.pos.x < 24){
+            this.pos.x += 3 * state.deltaTime;
+        } else this.pos.x = 16;
     }
 }

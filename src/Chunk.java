@@ -1,3 +1,5 @@
+import vector.Vector2;
+
 import java.io.File;
 import java.util.Scanner;
 import java.util.logging.Logger;
@@ -37,9 +39,8 @@ public class Chunk {
                 for (int i = 0; i < string.length; i++){
                     int id = Integer.parseInt(string[i]);
                     //System.out.println(id);
-                    int tileX = (this.x * 16) + i;
-                    int tileY = (this.y * 16) + counter;
-                    map[counter][i][0] = new Tile(id, tileX, tileY);
+                    Vector2 tilePos = new Vector2((this.x * 16) + i, (this.y * 16) + counter);
+                    map[counter][i][0] = new Tile(id, tilePos);
                 }
                 counter++;
             }

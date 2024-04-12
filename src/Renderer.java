@@ -10,7 +10,6 @@ public class Renderer {
     final int mapSize = 16;
 
     final float playerSize = 0.8F;
-    final float tileSize = 1F;
 
     private int chunkX;
     private int chunkY;
@@ -142,8 +141,8 @@ public class Renderer {
                 game.addObject(e, 100, 100);
             }
 
-            int ScreenX = (int) ((e.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
-            int ScreenY = (int) ((e.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
+            int ScreenX = (int) ((e.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
+            int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
 
             e.setLocation(ScreenX, ScreenY);
         }

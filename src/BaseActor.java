@@ -12,12 +12,9 @@ public class BaseActor extends Actor {
     protected Logger logger;
     protected Renderer renderer;
 
-    double x;
-    double y;
+    Vector2 pos;
     public collider col;
     public boolean hasCollider = false;
-    public boolean isStatic = true;
-
     public boolean started = false;
 
     public BaseActor(Renderer renderer){
@@ -83,6 +80,6 @@ public class BaseActor extends Actor {
 
     @Override
     public String toString() {
-        return String.format("Actor with %s collider at position %d, %d", hasCollider? "a" : "no", (int) this.x, (int) this.y);
+        return String.format("Actor with %s collider at position %s", hasCollider? "a" : "no", pos.toString());
     }
 }

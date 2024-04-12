@@ -10,20 +10,17 @@ public class Player extends BaseEntity{
     float xInChunk;
     float yInChunk;
 
-    double oldX;
-    double oldY;
+    Vector2 oldPos;
 
     final float speed = 4;
 
     Game game;
     Animation anim;
 
-    public Player(Game game, float x, float y){
+    public Player(Game game, Vector2 pos){
         super(null);
         this.game = game;
-        this.x = x;
-        this.y = y;
-        this.isStatic = false;
+        this.pos = pos;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
@@ -43,8 +40,7 @@ public class Player extends BaseEntity{
 
     private void combat(){
         if (Greenfoot.mouseClicked(null) && Greenfoot.getMouseInfo() != null){
-            System.out.println("fire!");
-            spell fire = new spell(renderer, (float) (x - 0.5), (float) (y - 0.5));
+            spell fire = new spell(renderer, pos.subtract(new Vector2(0.5, 0.5)));
             game.addObject(fire, 0, 0);
             renderer.entities.add(fire);
             fire.rotate();
@@ -52,37 +48,33 @@ public class Player extends BaseEntity{
     }
 
     private void movement(float dt){
-        float dx = (float) (intIsKeyPressed("d") - intIsKeyPressed("a"));
-        float dy = (float) (intIsKeyPressed("s") - intIsKeyPressed("w"));
-        double sqrt = Math.sqrt(dx * dx + dy * dy);
+        Vector2 dv = new Vector2((intIsKeyPressed("d") - intIsKeyPressed("a")), (intIsKeyPressed("s") - intIsKeyPressed("w"))).normalize();
 
-        oldX = this.x;
-        oldY = this.y;
+        oldPos = this.pos;
 
-        if(sqrt != 0) {
-            x += dx * speed * dt / (float) sqrt;
-            y += dy * speed * dt / (float) sqrt;
-            //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates X: %d,Y: %d\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, (int) x, (int) y);
+        if(dv.magnitude() != 0) {
+            pos = pos.add(dv.scale(speed * dt));
+            //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates %s\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, this.pos.toString());
             anim.resume();
 
-            if(dx > 0) {
+            if(dv.x > 0) {
                 anim.setAnim(2);
-            } else if (dx < 0) {
+            } else if (dv.x < 0) {
                 anim.setAnim(1);
-            } else if (dy > 0) {
+            } else if (dv.y > 0) {
                 anim.setAnim(0);
-            } else if (dy < 0) {
+            } else if (dv.y < 0) {
                 anim.setAnim(3);
             }
         } else anim.stop();
-        if(x < 0) x = 0;
-        if(y < 0) y = 0;
+        if(pos.x < 0) pos.x = 0;
+        if(pos.y < 0) pos.y = 0;
 
-        chunkX = (int) Math.floor( x / 16);
-        chunkY = (int) Math.floor( y / 16);
+        chunkX = (int) Math.floor( pos.x / 16);
+        chunkY = (int) Math.floor( pos.y / 16);
 
-        xInChunk = (float) ((x % 16) - 0.5);
-        yInChunk = (float) ((y % 16) - 0.5);
+        xInChunk = (float) ((pos.x % 16) - 0.5);
+        yInChunk = (float) ((pos.y % 16) - 0.5);
     }
 
     @Override
@@ -92,7 +84,7 @@ public class Player extends BaseEntity{
 
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
-        this.x = oldX;
-        this.y = oldY;
+        System.out.println("collided");
+        this.pos = oldPos;
     }
 }

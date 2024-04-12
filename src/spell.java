@@ -13,11 +13,11 @@ public class spell extends BaseEntity {
 
     private float dx;
     private float dy;
+    private Vector2 dv;
 
-    public spell(Renderer renderer, float x, float y){
+    public spell(Renderer renderer, Vector2 pos){
         super(renderer);
-        this.x = x;
-        this.y = y;
+        this.pos = pos;
 
         GreenfootImage img = new GreenfootImage(16, 16);
         img.setTransparency(0);
@@ -25,7 +25,6 @@ public class spell extends BaseEntity {
         this.col = new collider();
         this.col.octagon(0.3);
         this.hasCollider = true;
-        this.isStatic = false;
     }
 
     @Override
@@ -44,27 +43,21 @@ public class spell extends BaseEntity {
 
     @Override
     protected void priorityTick(Game.State state) {
-        this.x += dx * speed * state.deltaTime;
-        this.y += dy * speed * state.deltaTime;
+        Vector2 dvscaled = dv.scale(speed * state.deltaTime);
+        this.pos = this.pos.add(dvscaled);
     }
 
     public void rotate(){
         greenfoot.MouseInfo mouse = Greenfoot.getMouseInfo();
-
-        int dmx = mouse.getX() - 800;
-        int dmy = mouse.getY() - (450 - 32);
-
-        double root = Math.sqrt((dmx * dmx) + (dmy * dmy));
-        this.dx = (float) (dmx / root);
-        this.dy = (float) (dmy / root);
-
-        System.out.printf("Mouse x: %d, y: %d\n", mouse.getX(), mouse.getY());
+        Vector2 dmouse = new Vector2(mouse.getX() - 800, mouse.getY() - (450 - 32));
+        this.dv = dmouse.normalize();
     }
 
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
-        System.out.println("Spell hit!");
+        if(other.getClass() == spell.class || other.getClass() == Player.class) return;
         if (other.getClass() == NPC.class) {
+            System.out.println("Spell hit!");
             ((NPC) other).takeDamage(15);
         }
         renderer.entities.remove(this);

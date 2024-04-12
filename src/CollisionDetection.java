@@ -54,7 +54,7 @@ public class CollisionDetection {
         double min = Double.MAX_VALUE;
         double max = Double.MIN_VALUE;
         for (Vector2 vertex : actor.col.vertices) {
-            Vector2 adjustedVertex = vertex.add(new Vector2(actor.x, actor.y));
+            Vector2 adjustedVertex = vertex.add(actor.pos);
             double projection = adjustedVertex.dotProduct(axis);
             min = Math.min(min, projection);
             max = Math.max(max, projection);

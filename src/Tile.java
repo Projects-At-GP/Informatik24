@@ -11,11 +11,10 @@ public class Tile extends BaseActor{
 
     public boolean walkable = false;
 
-    public Tile(int id, float x, float y){
+    public Tile(int id, Vector2 pos){
         super(null);
         this.id = id;
-        this.x = x;
-        this.y = y;
+        this.pos = pos;
         this.col = new collider();
         this.col.square(1);
         setGraphics();
