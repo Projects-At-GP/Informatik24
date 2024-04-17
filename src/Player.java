@@ -22,7 +22,8 @@ public class Player extends BaseEntity{
         this.game = game;
         this.pos = pos;
         this.col = new collider();
-        this.col.octagon(0.8, 0.3);
+        //this.col.octagon(0.8, 0.3);
+        this.col.square(1, 0.3);
         this.hasCollider = true;
     }
 
