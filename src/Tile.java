@@ -3,6 +3,7 @@ import greenfoot.GreenfootImage;
 import greenfoot.World;
 import vector.Vector2;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 public class Tile extends BaseActor{
@@ -21,53 +22,16 @@ public class Tile extends BaseActor{
     }
 
     private void setGraphics(){
-        if (id == 1){
-            GreenfootImage img = new GreenfootImage("./images/Wall.png");
+        File file = new File("./src/images/textures/");
+        File[] dir = file.listFiles();
+
+        if(dir == null) return;
+        if (id >= 0 && id < dir.length){
+            GreenfootImage img = new GreenfootImage(dir[id].getPath());
             img.scale(imgscale, imgscale);
             setImage(img);
-            this.hasCollider = true;
-        } else if (id == 2){
-            GreenfootImage img = new GreenfootImage("./images/Baum.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            this.hasCollider = true;
-        } else if (id == 3){
-            walkable = true;
-            GreenfootImage img = new GreenfootImage("./images/Grass.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-        } else if (id == 4){
-            GreenfootImage img = new GreenfootImage("./images/WallFront.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            this.hasCollider = true;
-        } else if (id == 5){
-            GreenfootImage img = new GreenfootImage("./images/WallTop.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            this.hasCollider = true;
-        } else if (id == 6){
-            walkable = true;
-            GreenfootImage img = new GreenfootImage("./images/Door.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-        } else if (id == 7){
-            GreenfootImage img = new GreenfootImage("./images/WallTopCorner.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            this.hasCollider = true;
-        } else if (id == 8){
-            walkable = true;
-            GreenfootImage img = new GreenfootImage("./images/Floor.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-        } else if (id == 9){
-            GreenfootImage img = new GreenfootImage("./images/Chest.png");
-            img.scale(imgscale, imgscale);
-            setImage(img);
-            this.hasCollider = true;
-        } else {
-            walkable = true;
+            String[] keys = dir[id].getName().replace(".png", "").split("-");
+            if(keys[1].equals("N")) this.hasCollider = true;
         }
     }
 
