@@ -5,12 +5,16 @@ import java.util.ArrayList;
 public class collider {
     ArrayList<Vector2> vertices = new ArrayList<>();
 
-    public void square(double scale){
+    public void square(double scale, double yoffset){
         this.vertices.clear();
-        this.vertices.add(new Vector2(-0.5, -0.5)); // top    left  corner
-        this.vertices.add(new Vector2(0.5, -0.5));  // top    right corner
-        this.vertices.add(new Vector2(0.5, 0.5));   // bottom right corner
-        this.vertices.add(new Vector2(-0.5, 0.5));  // bottom left  corner
+        this.vertices.add(new Vector2(-0.5 * scale, (-0.5 * scale) + yoffset)); // top    left  corner
+        this.vertices.add(new Vector2(0.5 * scale, (-0.5 * scale) + yoffset));  // top    right corner
+        this.vertices.add(new Vector2(0.5 * scale, (0.5 * scale) + yoffset));   // bottom right corner
+        this.vertices.add(new Vector2(-0.5 * scale, (0.5 * scale) + yoffset));  // bottom left  corner
+    }
+
+    public void square(double scale){
+        square(scale, 0);
     }
 
     public void octagon(double scale, double yoffset){

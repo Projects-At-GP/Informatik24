@@ -61,13 +61,12 @@ public class Game extends World {
             }
         }
 
-        handleCollision();
-
         State state1 = new State(this.tick, 1, this.deltaTime, this);
         State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
 
         this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state1));
+        handleCollision();
         if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
         if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state2));
 

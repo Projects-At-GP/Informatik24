@@ -12,7 +12,7 @@ public class Chunk {
     private final int y;
 
     private final String chunkPrefix = (new File("./src/")).exists()? "./src/" : "./";
-    private final String defaultChunk = chunkPrefix + "mapdata/overworld/chunk-4-4.dat";
+    private final String defaultChunk = chunkPrefix + "mapdata/default.dat";
 
     public Chunk(int x, int y){
         this.x = x;
