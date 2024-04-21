@@ -31,7 +31,7 @@ public class Renderer {
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
-                chunkMap[c][i] = new Chunk(c, i);
+                chunkMap[c][i] = new Chunk(c, i, game);
             }
         }
         prepare();
@@ -74,9 +74,9 @@ public class Renderer {
             if(dx == 1){
                 System.out.println("nach rechts gegangen");
 
-                tmpChunkMap[0][2] = new Chunk(0,player.chunkX+1);
-                tmpChunkMap[1][2] = new Chunk(1,player.chunkX+1);
-                tmpChunkMap[2][2] = new Chunk(2,player.chunkX+1);
+                tmpChunkMap[0][2] = new Chunk(0,player.chunkX+1, game);
+                tmpChunkMap[1][2] = new Chunk(1,player.chunkX+1, game);
+                tmpChunkMap[2][2] = new Chunk(2,player.chunkX+1, game);
 
                 tmpChunkMap[0][1] = chunkMap[0][2];
                 tmpChunkMap[1][1] = chunkMap[1][2];
@@ -88,9 +88,9 @@ public class Renderer {
             } else if (dx == -1) {
                 System.out.println("nach links gegangen");
 
-                tmpChunkMap[0][0] = new Chunk(0,player.chunkX-1);
-                tmpChunkMap[1][0] = new Chunk(1,player.chunkX-1);
-                tmpChunkMap[2][0] = new Chunk(2,player.chunkX-1);
+                tmpChunkMap[0][0] = new Chunk(0,player.chunkX-1, game);
+                tmpChunkMap[1][0] = new Chunk(1,player.chunkX-1, game);
+                tmpChunkMap[2][0] = new Chunk(2,player.chunkX-1, game);
 
                 tmpChunkMap[0][1] = chunkMap[0][0];
                 tmpChunkMap[1][1] = chunkMap[1][0];
@@ -102,9 +102,9 @@ public class Renderer {
             } else if (dy == 1) {
                 System.out.println("nach unten gegangen");
 
-                tmpChunkMap[2][0] = new Chunk(player.chunkY+1,0);
-                tmpChunkMap[2][1] = new Chunk(player.chunkY+1,1);
-                tmpChunkMap[2][2] = new Chunk(player.chunkY+1,2);
+                tmpChunkMap[2][0] = new Chunk(player.chunkY+1,0, game);
+                tmpChunkMap[2][1] = new Chunk(player.chunkY+1,1, game);
+                tmpChunkMap[2][2] = new Chunk(player.chunkY+1,2, game);
 
                 tmpChunkMap[1][0] = chunkMap[2][0];
                 tmpChunkMap[1][1] = chunkMap[2][1];
@@ -116,9 +116,9 @@ public class Renderer {
             } else if (dy == -1) {
                 System.out.println("nach oben gegangen");
 
-                tmpChunkMap[0][0] = new Chunk(player.chunkY-1,0);
-                tmpChunkMap[0][1] = new Chunk(player.chunkY-1,1);
-                tmpChunkMap[0][2] = new Chunk(player.chunkY-1,2);
+                tmpChunkMap[0][0] = new Chunk(player.chunkY-1,0, game);
+                tmpChunkMap[0][1] = new Chunk(player.chunkY-1,1, game);
+                tmpChunkMap[0][2] = new Chunk(player.chunkY-1,2, game);
 
                 tmpChunkMap[1][0] = chunkMap[0][0];
                 tmpChunkMap[1][1] = chunkMap[0][1];

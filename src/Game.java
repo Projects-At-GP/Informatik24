@@ -1,6 +1,8 @@
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -20,11 +22,13 @@ public class Game extends World {
     protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;
+    private File[] dir;
 
     public Renderer render;
 
     public Game(int tps) {
         super(1600, 900, 1, false);
+        setDir();
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
@@ -39,6 +43,22 @@ public class Game extends World {
 
     public Game() {
         this(30);
+    }
+
+    private void setDir(){
+        File file = new File("./src/images/textures/");
+        this.dir = file.listFiles();
+    }
+
+    public void setImageByID(int id, Tile tile, int imgscale){
+        if(dir == null) return;
+        if (id >= 0 && id < dir.length){
+            GreenfootImage img = new GreenfootImage(dir[id].getPath());
+            img.scale(imgscale, imgscale);
+            tile.setImage(img);
+            String[] keys = dir[id].getName().replace(".png", "").split("-");
+            if(keys[1].equals("N")) tile.hasCollider = true;
+        }
     }
 
     @Override
