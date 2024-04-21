@@ -1,5 +1,7 @@
+import dialogue.Text;
+import greenfoot.Actor;
+
 import java.util.*;
-import greenfoot.Color;
 
 public class Renderer {
     Game game;
@@ -17,10 +19,15 @@ public class Renderer {
     public List<BaseEntity> entities = new ArrayList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
+    private final Text text;
+    private final Actor dialogueBox;
 
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
+        this.dialogueBox = new BaseActor(this);
+        this.game.addObject(dialogueBox, 800, 700);
+        this.text = new Text(this.game, dialogueBox);
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
@@ -29,6 +36,9 @@ public class Renderer {
         }
         prepare();
     }
+
+
+
     /**
      * Method to prepare the environment. Creates new tiles for every position in a grid of 3x3 chunks
      */
@@ -52,8 +62,8 @@ public class Renderer {
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     void render(){
-        game.getBackground().setColor(Color.GREEN);
-        game.getBackground().drawRect(800-(int) (32*playerSize), 450-(int) (32*playerSize), (int) (64*playerSize), (int) (64*playerSize));
+        String stringValue = String.format("X: %.2f Y: %.2f", player.pos.x, player.pos.y);
+        this.text.showText(stringValue);
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
@@ -137,13 +147,12 @@ public class Renderer {
         }
         for (BaseEntity e : entities){
 
-            if(e.getWorld() == null){
-                game.addObject(e, 100, 100);
-            }
-
             int ScreenX = (int) ((e.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
             int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
-
+            if(e.getWorld() == null){
+                game.addObject(e, ScreenX, ScreenY);
+                continue;
+            }
             e.setLocation(ScreenX, ScreenY);
         }
     }

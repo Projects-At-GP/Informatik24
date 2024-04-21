@@ -1,6 +1,7 @@
 import greenfoot.*;
 import animator.*;
 import vector.Vector2;
+import dialogue.Text;
 
 public class Player extends BaseEntity{
 
@@ -16,6 +17,7 @@ public class Player extends BaseEntity{
 
     Game game;
     Animation anim;
+
 
     public Player(Game game, Vector2 pos){
         super(null);
@@ -85,6 +87,6 @@ public class Player extends BaseEntity{
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
         System.out.println("collided");
-        this.pos = oldPos;
+        if(other.getClass() != spell.class) this.pos = oldPos;
     }
 }
