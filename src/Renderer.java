@@ -62,7 +62,8 @@ public class Renderer {
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     void render(){
-        String stringValue = String.format("X: %.2f Y: %.2f", player.pos.x, player.pos.y);
+        String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
+        //String stringValue = "TEST\\nTEST2";
         this.text.showText(stringValue);
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
