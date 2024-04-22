@@ -14,7 +14,7 @@ public class Tile extends BaseActor{
     public boolean walkable = false;
 
     public Tile(int id, Vector2 pos, Game game){
-        super(null);
+        super(game.render);
         this.id = id;
         this.pos = pos;
         this.col = new collider();
@@ -24,13 +24,15 @@ public class Tile extends BaseActor{
     }
 
     private void setGraphics(){
-        game.setImageByID(id, this, imgscale);
+        this.game.setImageByID(id, this, imgscale);
     }
 
     @Override
     protected void priorityTick(Game.State state){
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
+            System.out.println(this.game.render);
+            this.game.render.showText("CLICKED TILE ID " + id, this);
         }
     }
 

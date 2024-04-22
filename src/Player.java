@@ -86,7 +86,7 @@ public class Player extends BaseEntity{
 
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
-        System.out.println("collided");
+        System.out.println("collided with" + other);
         if(other.getClass() != spell.class) this.pos = oldPos;
     }
 }

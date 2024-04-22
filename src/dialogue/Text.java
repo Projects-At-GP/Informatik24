@@ -12,9 +12,13 @@ import java.nio.Buffer;
 public class Text {
     private BufferedImage[] chars;
     private BufferedImage sheet;
+    private BufferedImage box;
+    private final int xOffset = 8;
+    private final int yOffset = 10;
     private final int frameSize = 8;
     private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
     private final String sheetPath = "images/textSheet.png";
+    private final String boxPath = "images/textbox.png";
     private final String path = this.filePrefix + "images/tmp/";
     private final World game;
     private Actor dialogueBox;
@@ -26,6 +30,10 @@ public class Text {
         this.dialogueBox = dialogueBox;
         try {
             this.sheet = ImageIO.read(new File(this.filePrefix + sheetPath));
+            this.box = new BufferedImage(256, 64, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2d = this.box.createGraphics();
+            g2d.drawImage(ImageIO.read(new File(this.filePrefix + boxPath)), 0, 0,256 , 64, null);
+            g2d.dispose();
             createFrames();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,9 +41,8 @@ public class Text {
     }
 
     public void showText(String text){
-        BufferedImage img = chars[textLookup.indexOf(" ")];
+        BufferedImage img = box;
         GreenfootImage returnImg;
-        System.out.print(text.charAt(0));
         int line = 0;
         int coloumn = 0;
         for (int i = 0; i < text.length(); i++){
@@ -46,13 +53,11 @@ public class Text {
                     i += 2;
                 }
             }
-            System.out.print(text.charAt(i));
             coloumn++;
             int index = textLookup.indexOf(text.charAt(i));
             if(index == -1) index = 0;
             img = merge(img, chars[index], coloumn, line);
         }
-        System.out.println();
         try {
             File file = new File(this.path + text.hashCode() + "text.png");
             ImageIO.write(img, "png", file);
@@ -68,12 +73,12 @@ public class Text {
 
     private BufferedImage merge(BufferedImage source, BufferedImage image2, int coloumn, int line){
         int newWidth = Math.max(8 + coloumn * 8, source.getWidth());
-        int newHeight = 8 + line * 8;
+        int newHeight = Math.max(8 + line * 8, source.getHeight());
 
         BufferedImage mergedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = mergedImage.createGraphics();
         g2d.drawImage(source, 0, 0, null);
-        g2d.drawImage(image2, coloumn * 8, line * 8, null);
+        g2d.drawImage(image2, coloumn * 8 + xOffset, line * 8 + yOffset, null);
         g2d.dispose();
 
         return mergedImage;

@@ -16,8 +16,8 @@ public class Chunk {
     private final Game game;
 
     public Chunk(int x, int y, Game game){
-        this.x = x;
-        this.y = y;
+        this.x = y; // TODO Do properly; was hotfixed to fix collision problems
+        this.y = x;
         this.game = game;
         System.out.printf("Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
@@ -42,7 +42,7 @@ public class Chunk {
                     int id = Integer.parseInt(string[i]);
                     //System.out.println(id);
                     Vector2 tilePos = new Vector2((this.x * 16) + i, (this.y * 16) + counter);
-                    map[counter][i][0] = new Tile(id, tilePos, game);
+                    map[counter][i][0] = new Tile(id, tilePos, this.game);
                 }
                 counter++;
             }

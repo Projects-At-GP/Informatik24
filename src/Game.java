@@ -37,7 +37,7 @@ public class Game extends World {
         this.render.entities.add(npc);
 
         this.addObject(player, 800, 450);
-        this.setPaintOrder(BaseActor.class, Tile.class);
+        this.setPaintOrder(UI.class, BaseActor.class, Tile.class);
         Greenfoot.start();
     }
 

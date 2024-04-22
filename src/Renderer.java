@@ -21,12 +21,13 @@ public class Renderer {
     private Chunk[][] chunkMap = new Chunk[3][3];
     private final Text text;
     private final Actor dialogueBox;
+    private BaseActor currentTextSource;
 
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
-        this.dialogueBox = new BaseActor(this);
-        this.game.addObject(dialogueBox, 800, 700);
+        this.dialogueBox = new UI(this);
+        this.game.addObject(dialogueBox, 800, 780);
         this.text = new Text(this.game, dialogueBox);
 
         for(int i = 0; i < 3; i++){
@@ -57,14 +58,25 @@ public class Renderer {
         chunkY = player.chunkY;
     }
 
+    public void showText(String text, BaseActor textSource){
+        this.text.showText(text);
+        this.currentTextSource = textSource;
+        this.dialogueBox.getImage().setTransparency(255);
+    }
+
 
     /**
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     void render(){
         String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
-        //String stringValue = "TEST\\nTEST2";
         this.text.showText(stringValue);
+        if (this.currentTextSource != null){
+            if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
+                dialogueBox.getImage().setTransparency(0);
+            }
+        }
+        this.dialogueBox.getImage().setTransparency(255);
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
