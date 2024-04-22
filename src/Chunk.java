@@ -16,8 +16,8 @@ public class Chunk {
     private final Game game;
 
     public Chunk(int x, int y, Game game){
-        this.x = y; // TODO Do properly; was hotfixed to fix collision problems
-        this.y = x;
+        this.y = y; // TODO Do properly; was hotfixed to fix collision problems
+        this.x = x;
         this.game = game;
         System.out.printf("Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);

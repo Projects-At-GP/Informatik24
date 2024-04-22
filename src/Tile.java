@@ -31,7 +31,7 @@ public class Tile extends BaseActor{
     protected void priorityTick(Game.State state){
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
-            System.out.println(this.game.render);
+            System.out.println(this.pos);
             this.game.render.showText("CLICKED TILE ID " + id, this);
         }
     }

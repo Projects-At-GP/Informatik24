@@ -32,7 +32,7 @@ public class Renderer {
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
-                chunkMap[c][i] = new Chunk(c, i, game);
+                chunkMap[i][c] = new Chunk(c, i, game);
             }
         }
         prepare();
