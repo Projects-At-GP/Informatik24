@@ -1,5 +1,6 @@
 import dialogue.Text;
 import greenfoot.Actor;
+import vector.Vector2;
 
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class Renderer {
     private final Text text;
     private final Actor dialogueBox;
     private BaseActor currentTextSource;
+    private String world = "overworld";
 
     public Renderer(Game game, Player player){
         this.game = game;
@@ -30,7 +32,19 @@ public class Renderer {
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
-                chunkMap[i][c] = new Chunk(c, i, game);
+                chunkMap[i][c] = new Chunk(c, i, game, world);
+            }
+        }
+        prepare();
+    }
+
+    public void changeWorld(String world){
+        System.out.println("changing world");
+        this.world = world;
+        this.player.pos = new Vector2(1, 0);
+        for(int i = 0; i < 3; i++){
+            for(int c = 0; c < 3; c++){
+                chunkMap[i][c] = new Chunk(c, i, game, world);
             }
         }
         prepare();
@@ -67,8 +81,6 @@ public class Renderer {
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     void render(){
-        String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
-        this.text.showText(stringValue);
         if (this.currentTextSource != null){
             if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
                 dialogueBox.getImage().setTransparency(0);
@@ -82,7 +94,7 @@ public class Renderer {
             System.out.printf("Richtung x:%d\n", dx);
             for(int i = 0; i < 3; i++){
                 for(int c = 0; c < 3; c++){
-                    tmpChunkMap[i][c] = new Chunk((int) tmpChunkMap[i][c].pos.x+dx, (int) tmpChunkMap[i][c].pos.y+dy, game);
+                    tmpChunkMap[i][c] = new Chunk((int) tmpChunkMap[i][c].pos.x+dx, (int) tmpChunkMap[i][c].pos.y+dy, game, world);
                 }
             }
 

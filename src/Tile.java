@@ -36,6 +36,15 @@ public class Tile extends BaseActor{
             System.out.println(this.pos);
             this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
         }
+        if (this.id == 16){
+            mineDoor();
+        }
+    }
+
+    private void mineDoor(){
+        if (this.isTouching(Player.class)){
+            this.game.render.changeWorld("dungeon");
+        }
     }
 
 

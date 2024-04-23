@@ -10,11 +10,13 @@ public class Chunk {
     public final Vector2 pos;
 
     private final String chunkPrefix = (new File("./src/")).exists()? "./src/" : "./";
-    private final String defaultChunk = chunkPrefix + "mapdata/default.dat";
+    private final String defaultChunk = chunkPrefix + "mapdata/";
     private final Game game;
+    private final String world;
 
-    public Chunk(int x, int y, Game game){
+    public Chunk(int x, int y, Game game, String world){
         this.pos = new Vector2(x, y);
+        this.world = world;
         this.game = game;
         System.out.printf("Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
@@ -26,9 +28,9 @@ public class Chunk {
      */
     private Chunk readChunk(String chunkID){
         try {
-            File file = new File(this.chunkPrefix + "mapdata/overworld/chunk-" + chunkID + ".dat");
+            File file = new File(this.chunkPrefix + "mapdata/" + world + "/chunk-" + chunkID + ".dat");
             if (!file.exists()){
-                file = new File(this.defaultChunk);
+                file = new File(this.defaultChunk + world + "/default.dat");
             }
             Scanner reader = new Scanner(file);
             int counter = 0;
