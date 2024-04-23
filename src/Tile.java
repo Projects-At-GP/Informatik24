@@ -10,16 +10,18 @@ public class Tile extends BaseActor{
     int id;
     int imgscale = 64;
     Game game;
+    Chunk parent;
 
     public boolean walkable = false;
 
-    public Tile(int id, Vector2 pos, Game game){
+    public Tile(int id, Vector2 pos, Game game, Chunk parent){
         super(game.render);
         this.id = id;
         this.pos = pos;
         this.col = new collider();
         this.col.square(1);
         this.game = game;
+        this.parent = parent;
         setGraphics();
     }
 
@@ -32,7 +34,7 @@ public class Tile extends BaseActor{
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
             System.out.println(this.pos);
-            this.game.render.showText("CLICKED TILE ID " + id, this);
+            this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
         }
     }
 

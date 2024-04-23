@@ -47,7 +47,14 @@ public class Game extends World {
 
     private void setDir(){
         File file = new File("./src/images/textures/");
-        this.dir = file.listFiles();
+        File[] files = file.listFiles();
+        this.dir = new File[files.length];
+        for (File f : files){
+            int index;
+            String[] keys = f.getName().split("-");
+            index = Integer.parseInt(keys[0]);
+            dir[index] = f;
+        }
     }
 
     public void setImageByID(int id, Tile tile, int imgscale){

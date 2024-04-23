@@ -7,17 +7,14 @@ import java.util.logging.Logger;
 public class Chunk {
 
     public Tile[][][] map = new Tile[16][16][2];
-
-    private final int x;
-    private final int y;
+    public final Vector2 pos;
 
     private final String chunkPrefix = (new File("./src/")).exists()? "./src/" : "./";
     private final String defaultChunk = chunkPrefix + "mapdata/default.dat";
     private final Game game;
 
     public Chunk(int x, int y, Game game){
-        this.y = y; // TODO Do properly; was hotfixed to fix collision problems
-        this.x = x;
+        this.pos = new Vector2(x, y);
         this.game = game;
         System.out.printf("Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
@@ -41,8 +38,8 @@ public class Chunk {
                 for (int i = 0; i < string.length; i++){
                     int id = Integer.parseInt(string[i]);
                     //System.out.println(id);
-                    Vector2 tilePos = new Vector2((this.x * 16) + i, (this.y * 16) + counter);
-                    map[counter][i][0] = new Tile(id, tilePos, this.game);
+                    Vector2 tilePos = new Vector2((this.pos.x * 16) + i, (this.pos.y * 16) + counter);
+                    map[counter][i][0] = new Tile(id, tilePos, this.game, this);
                 }
                 counter++;
             }
