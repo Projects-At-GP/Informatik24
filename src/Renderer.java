@@ -11,8 +11,6 @@ public class Renderer {
     final int cellSize = 64;
     final int mapSize = 16;
 
-    final float playerSize = 0.8F;
-
     private int chunkX;
     private int chunkY;
 
@@ -28,7 +26,6 @@ public class Renderer {
         this.player = player;
         this.dialogueBox = new UI(this);
         this.game.addObject(dialogueBox, 800, 780);
-        this.dialogueBox.getImage().setTransparency(0);
         this.text = new Text(this.game, dialogueBox);
 
         for(int i = 0; i < 3; i++){
@@ -71,75 +68,22 @@ public class Renderer {
      */
     void render(){
         String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
-        //this.text.showText(stringValue);
+        this.text.showText(stringValue);
         if (this.currentTextSource != null){
             if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
                 dialogueBox.getImage().setTransparency(0);
             }
         }
-        dialogueBox.getImage().setTransparency(255);
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
             System.out.printf("Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
-            Chunk[][] tmpChunkMap = new Chunk[3][3];
+            Chunk[][] tmpChunkMap = chunkMap;
             System.out.printf("Richtung x:%d\n", dx);
-            if(dx == 1){
-                System.out.println("nach rechts gegangen");
-
-                tmpChunkMap[0][2] = new Chunk(player.chunkX+1, 0, game);
-                tmpChunkMap[1][2] = new Chunk(player.chunkX+1, 1, game);
-                tmpChunkMap[2][2] = new Chunk(player.chunkX+1, 2, game);
-
-                tmpChunkMap[0][1] = chunkMap[0][2];
-                tmpChunkMap[1][1] = chunkMap[1][2];
-                tmpChunkMap[2][1] = chunkMap[2][2];
-
-                tmpChunkMap[0][0] = chunkMap[0][1];
-                tmpChunkMap[1][0] = chunkMap[1][1];
-                tmpChunkMap[2][0] = chunkMap[2][1];
-            } else if (dx == -1) {
-                System.out.println("nach links gegangen");
-
-                tmpChunkMap[0][0] = new Chunk(player.chunkX-1,0, game);
-                tmpChunkMap[1][0] = new Chunk(player.chunkX-1,1, game);
-                tmpChunkMap[2][0] = new Chunk(player.chunkX-1,2, game);
-
-                tmpChunkMap[0][1] = chunkMap[0][0];
-                tmpChunkMap[1][1] = chunkMap[1][0];
-                tmpChunkMap[2][1] = chunkMap[2][0];
-
-                tmpChunkMap[0][2] = chunkMap[0][1];
-                tmpChunkMap[1][2] = chunkMap[1][1];
-                tmpChunkMap[2][2] = chunkMap[2][1];
-            } else if (dy == 1) {
-                System.out.println("nach unten gegangen");
-
-                tmpChunkMap[2][0] = new Chunk(0, player.chunkY+1, game);
-                tmpChunkMap[2][1] = new Chunk(1, player.chunkY+1, game);
-                tmpChunkMap[2][2] = new Chunk(2, player.chunkY+1, game);
-
-                tmpChunkMap[1][0] = chunkMap[2][0];
-                tmpChunkMap[1][1] = chunkMap[2][1];
-                tmpChunkMap[1][2] = chunkMap[2][2];
-
-                tmpChunkMap[0][0] = chunkMap[1][0];
-                tmpChunkMap[0][1] = chunkMap[1][1];
-                tmpChunkMap[0][2] = chunkMap[1][2];
-            } else if (dy == -1) {
-                System.out.println("nach oben gegangen");
-
-                tmpChunkMap[0][0] = new Chunk(0, player.chunkY-1, game);
-                tmpChunkMap[0][1] = new Chunk(1, player.chunkY-1, game);
-                tmpChunkMap[0][2] = new Chunk(2, player.chunkY-1, game);
-
-                tmpChunkMap[1][0] = chunkMap[0][0];
-                tmpChunkMap[1][1] = chunkMap[0][1];
-                tmpChunkMap[1][2] = chunkMap[0][2];
-
-                tmpChunkMap[2][0] = chunkMap[1][0];
-                tmpChunkMap[2][1] = chunkMap[1][1];
-                tmpChunkMap[2][2] = chunkMap[1][2];
+            for(int i = 0; i < 3; i++){
+                for(int c = 0; c < 3; c++){
+                    tmpChunkMap[i][c] = new Chunk((int) tmpChunkMap[i][c].pos.x+dx, (int) tmpChunkMap[i][c].pos.y+dy, game);
+                }
             }
 
             chunkMap = tmpChunkMap;
