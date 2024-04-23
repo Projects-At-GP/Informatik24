@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 public class Tile extends BaseActor{
     int id;
     int imgscale = 64;
+    public Vector2 pos;
 
     public boolean walkable = false;
 

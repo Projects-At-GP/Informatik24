@@ -6,14 +6,14 @@ import java.util.List;
 
 
 public class EnemyAI {
-    protected final Intelligence intelligence;
+    protected final IntelligenceEnum intelligence;
     public final int aggressionRange;
 
     protected int aggressionWeariness;
     protected boolean isAggro = false;
     protected Vector2 playerPosCache = new Vector2(-0x69d, -0x69);  // just a placeholder out of range
 
-    public EnemyAI(Intelligence intelligence, int aggressionRange) {
+    public EnemyAI(IntelligenceEnum intelligence, int aggressionRange) {
         this.intelligence = intelligence;
         this.aggressionRange = aggressionRange;
     }
@@ -92,10 +92,10 @@ public class EnemyAI {
     }
 
     public void alertToSwarm(BaseEnemyInterface self, List<BaseEnemyInterface> enemies) {
-        if (this.intelligence.equals(Intelligence.SWARM_INTELLIGENCE)) {
+        if (this.intelligence.equals(IntelligenceEnum.SWARM_INTELLIGENCE)) {
             for (BaseEnemyInterface enemy : enemies) {
                 if (enemy.getPos().subtract(self.getPos()).magnitude() > enemy.getAI().aggressionRange) continue;
-                if (!enemy.getAI().intelligence.equals(Intelligence.SWARM_INTELLIGENCE)) continue;
+                if (!enemy.getAI().intelligence.equals(IntelligenceEnum.SWARM_INTELLIGENCE)) continue;
                 enemy.getAlerted(this.playerPosCache);
             }
         }
