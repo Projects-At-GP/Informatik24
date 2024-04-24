@@ -28,7 +28,6 @@ public class BaseEnemy extends BaseEntity implements BaseEnemyInterface {
             this.anim.update();
             this.anim.resume();
         }
-        this.enemyAI.chaseIfPossible();  // maybe move to priorityTick()
     }
 
     @Override
