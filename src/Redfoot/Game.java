@@ -1,3 +1,5 @@
+package Redfoot;
+
 import greenfoot.Greenfoot;
 import greenfoot.World;
 
@@ -28,9 +30,13 @@ public class Game extends World {
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
+
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);
         this.render.entities.add(npc);
+        TestEnemy testEnemy = new TestEnemy(this.render);
+        this.render.entities.add(testEnemy);
+        System.out.println(testEnemy.pos);
 
         this.addObject(player, 800, 450);
         this.setPaintOrder(BaseActor.class, Tile.class);

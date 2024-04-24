@@ -1,8 +1,9 @@
+package Redfoot;
+
 import vector.Vector2;
 
 import java.io.File;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class Chunk {
 
@@ -17,7 +18,7 @@ public class Chunk {
     public Chunk(int x, int y){
         this.x = x;
         this.y = y;
-        System.out.printf("Chunk %d-%d is reading data\n", x, y);
+        System.out.printf("Redfoot.Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
     }
 

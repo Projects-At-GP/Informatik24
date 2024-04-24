@@ -1,3 +1,5 @@
+package Redfoot;
+
 import greenfoot.*;
 import animator.*;
 import vector.Vector2;
@@ -54,7 +56,7 @@ public class Player extends BaseEntity{
 
         if(dv.magnitude() != 0) {
             pos = pos.add(dv.scale(speed * dt));
-            //System.out.printf("Chunk Coordinates x: %d,y: %d; Coordinates in Chunk x: %d, y: %d; PlayerCoordinates %s\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, this.pos.toString());
+            //System.out.printf("Redfoot.Chunk Coordinates x: %d,y: %d; Coordinates in Redfoot.Chunk x: %d, y: %d; PlayerCoordinates %s\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, this.pos.toString());
             anim.resume();
 
             if(dv.x > 0) {

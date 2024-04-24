@@ -1,3 +1,8 @@
+package Redfoot;
+
+import Redfoot.BaseActor;
+import Redfoot.Game;
+import Redfoot.collider;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;
@@ -6,9 +11,10 @@ import vector.Vector2;
 import java.io.File;
 import java.util.logging.Logger;
 
-public class Tile extends BaseActor{
+public class Tile extends BaseActor {
     int id;
     int imgscale = 64;
+    public Vector2 pos;
 
     public boolean walkable = false;
 
