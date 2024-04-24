@@ -1,4 +1,7 @@
+package Redfoot;
+
 import java.util.*;
+
 import greenfoot.Color;
 import vector.Vector2;
 
@@ -58,7 +61,7 @@ public class Renderer {
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
-            System.out.printf("Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
+            System.out.printf("Redfoot.Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
             Chunk[][] tmpChunkMap = new Chunk[3][3];
             System.out.printf("Richtung x:%d\n", dx);
             if(dx == 1){

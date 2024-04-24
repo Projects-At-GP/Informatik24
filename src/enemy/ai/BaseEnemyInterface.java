@@ -1,5 +1,6 @@
 package enemy.ai;
 
+import enemy.ai.EnemyAI;
 import vector.Vector2;
 
 public interface BaseEnemyInterface {

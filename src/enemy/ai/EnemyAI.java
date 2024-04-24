@@ -11,7 +11,7 @@ public class EnemyAI {
 
     protected int aggressionWeariness;
     protected boolean isAggro = false;
-    protected Vector2 playerPosCache = new Vector2(-0x69d, -0x69);  // just a placeholder out of range
+    protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
 
     public EnemyAI(IntelligenceEnum intelligence, int aggressionRange) {
         this.intelligence = intelligence;
@@ -101,8 +101,9 @@ public class EnemyAI {
         }
     }
 
-    public void chaseIfPossible() {
-        if (!this.isAggro) return;
+    public boolean chaseIfPossible() {
+        if (!this.isAggro) return false;
         // TODO
+        return true;
     }
 }
