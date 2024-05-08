@@ -1,9 +1,11 @@
 package Redfoot;
 
-import java.util.*;
-
-import greenfoot.Color;
+import dialogue.Text;
+import greenfoot.GreenfootImage;
 import vector.Vector2;
+
+import java.io.File;
+import java.util.*;
 
 public class Renderer {
     Game game;
@@ -13,26 +15,60 @@ public class Renderer {
     final int cellSize = 64;
     final int mapSize = 16;
 
-    final float playerSize = 0.8F;
-
     private int chunkX;
     private int chunkY;
 
     public List<BaseEntity> entities = new ArrayList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
+    private final Text text;
+    public final UIManager uiManager;
+    private BaseActor currentTextSource;
+    private String world = "overworld";
+    private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
 
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
 
+        this.uiManager = new UIManager(this.game);
+        this.uiManager.setElement(new UI(this), "dialogueBox", new Vector2(800, 700));
+        this.text = new Text(this.game, this.uiManager.getElement("dialogueBox"));
+
+        this.uiManager.setElement(new UI(this), "hotbar", new Vector2(800, 850));
+        GreenfootImage img = new GreenfootImage(filePrefix + "images/hotbar.png");
+        img.scale(744, 96);
+        this.uiManager.getElement("hotbar").setImage(img);
+        this.uiManager.enableElement("hotbar");
+
+        this.uiManager.setElement(new UI(this), "selection", new Vector2(476, 850));
+        img = new GreenfootImage(filePrefix + "images/selection.png");
+        img.scale(76, 76);
+        this.uiManager.getElement("selection").setImage(img);
+        this.uiManager.enableElement("selection");
+
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
-                chunkMap[c][i] = new Chunk(c, i);
+                chunkMap[i][c] = new Chunk(c, i, game, world);
             }
         }
         prepare();
     }
+
+    public void changeWorld(String world){
+        System.out.println("changing world");
+        this.world = world;
+        this.player.pos = new Vector2(1, 1);
+        for(int i = 0; i < 2; i++){
+            for(int c = 0; c < 3; c++){
+                chunkMap[i+1][c] = new Chunk(c, i, game, world);
+            }
+        }
+        prepare();
+    }
+
+
+
     /**
      * Method to prepare the environment. Creates new tiles for every position in a grid of 3x3 chunks
      */
@@ -51,75 +87,38 @@ public class Renderer {
         chunkY = player.chunkY;
     }
 
+    public void showText(String text, BaseActor textSource){
+        this.text.showText(text);
+        this.currentTextSource = textSource;
+    }
+
+    private void renderUI(){
+        this.uiManager.update();
+    }
+
 
     /**
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
-    void render(){
-        game.getBackground().setColor(Color.GREEN);
-        game.getBackground().drawRect(800-(int) (32*playerSize), 450-(int) (32*playerSize), (int) (64*playerSize), (int) (64*playerSize));
+    public void render(){
+        //String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
+        //this.text.showText(stringValue);
+        if (this.currentTextSource != null){
+            if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
+                uiManager.disableElement("dialogueBox");
+            }
+        }
+        //uiManager.enableElement("dialogueBox");
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
             System.out.printf("Redfoot.Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
-            Chunk[][] tmpChunkMap = new Chunk[3][3];
+            Chunk[][] tmpChunkMap = chunkMap;
             System.out.printf("Richtung x:%d\n", dx);
-            if(dx == 1){
-                System.out.println("nach rechts gegangen");
-
-                tmpChunkMap[0][2] = new Chunk(0,player.chunkX+1);
-                tmpChunkMap[1][2] = new Chunk(1,player.chunkX+1);
-                tmpChunkMap[2][2] = new Chunk(2,player.chunkX+1);
-
-                tmpChunkMap[0][1] = chunkMap[0][2];
-                tmpChunkMap[1][1] = chunkMap[1][2];
-                tmpChunkMap[2][1] = chunkMap[2][2];
-
-                tmpChunkMap[0][0] = chunkMap[0][1];
-                tmpChunkMap[1][0] = chunkMap[1][1];
-                tmpChunkMap[2][0] = chunkMap[2][1];
-            } else if (dx == -1) {
-                System.out.println("nach links gegangen");
-
-                tmpChunkMap[0][0] = new Chunk(0,player.chunkX-1);
-                tmpChunkMap[1][0] = new Chunk(1,player.chunkX-1);
-                tmpChunkMap[2][0] = new Chunk(2,player.chunkX-1);
-
-                tmpChunkMap[0][1] = chunkMap[0][0];
-                tmpChunkMap[1][1] = chunkMap[1][0];
-                tmpChunkMap[2][1] = chunkMap[2][0];
-
-                tmpChunkMap[0][2] = chunkMap[0][1];
-                tmpChunkMap[1][2] = chunkMap[1][1];
-                tmpChunkMap[2][2] = chunkMap[2][1];
-            } else if (dy == 1) {
-                System.out.println("nach unten gegangen");
-
-                tmpChunkMap[2][0] = new Chunk(player.chunkY+1,0);
-                tmpChunkMap[2][1] = new Chunk(player.chunkY+1,1);
-                tmpChunkMap[2][2] = new Chunk(player.chunkY+1,2);
-
-                tmpChunkMap[1][0] = chunkMap[2][0];
-                tmpChunkMap[1][1] = chunkMap[2][1];
-                tmpChunkMap[1][2] = chunkMap[2][2];
-
-                tmpChunkMap[0][0] = chunkMap[1][0];
-                tmpChunkMap[0][1] = chunkMap[1][1];
-                tmpChunkMap[0][2] = chunkMap[1][2];
-            } else if (dy == -1) {
-                System.out.println("nach oben gegangen");
-
-                tmpChunkMap[0][0] = new Chunk(player.chunkY-1,0);
-                tmpChunkMap[0][1] = new Chunk(player.chunkY-1,1);
-                tmpChunkMap[0][2] = new Chunk(player.chunkY-1,2);
-
-                tmpChunkMap[1][0] = chunkMap[0][0];
-                tmpChunkMap[1][1] = chunkMap[0][1];
-                tmpChunkMap[1][2] = chunkMap[0][2];
-
-                tmpChunkMap[2][0] = chunkMap[1][0];
-                tmpChunkMap[2][1] = chunkMap[1][1];
-                tmpChunkMap[2][2] = chunkMap[1][2];
+            for(int i = 0; i < 3; i++){
+                for(int c = 0; c < 3; c++){
+                    tmpChunkMap[i][c] = new Chunk((int) tmpChunkMap[i][c].pos.x+dx, (int) tmpChunkMap[i][c].pos.y+dy, game, world);
+                }
             }
 
             chunkMap = tmpChunkMap;
@@ -134,22 +133,27 @@ public class Renderer {
                     for(int y = 0; y < mapSize; y++){
                         int ScreenX = (i * cellSize * 16) + (x * cellSize) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
                         int ScreenY = (c * cellSize * 16) + (y * cellSize - cellSize / 2) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
+                        if(ScreenX <= -64 || ScreenX >= 1664 || ScreenY <= -64 || ScreenY >= 964){
+                            chunkMap[c][i].map[y][x][0].getImage().setTransparency(0);
+                            continue;
+                        }
                         chunkMap[c][i].map[y][x][0].setLocation(ScreenX, ScreenY);
+                        chunkMap[c][i].map[y][x][0].getImage().setTransparency(255);
                     }
                 }
             }
         }
         for (BaseEntity e : entities){
 
-            if(e.getWorld() == null){
-                game.addObject(e, 100, 100);
-            }
-
             int ScreenX = (int) ((e.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
             int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
-
+            if(e.getWorld() == null){
+                game.addObject(e, ScreenX, ScreenY);
+                continue;
+            }
             e.setLocation(ScreenX, ScreenY);
         }
+        renderUI();
     }
 
     public CachedMapData exportToMapData(){
