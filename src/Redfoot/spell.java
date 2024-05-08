@@ -1,8 +1,8 @@
+package Redfoot;
+
 import animator.Animation;
 import greenfoot.*;
 import vector.Vector2;
-
-import java.awt.*;
 
 public class spell extends BaseEntity {
 

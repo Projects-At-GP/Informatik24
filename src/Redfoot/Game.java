@@ -1,3 +1,5 @@
+package Redfoot;
+
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.World;

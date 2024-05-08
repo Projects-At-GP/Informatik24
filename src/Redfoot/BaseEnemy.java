@@ -1,9 +1,9 @@
+package Redfoot;
+
 import enemy.ai.BaseEnemyInterface;
 import enemy.ai.EnemyAI;
 import enemy.ai.Intelligence;
 import vector.Vector2;
-
-import java.util.Collections;
 
 public class BaseEnemy extends BaseEntity implements BaseEnemyInterface {
     protected final EnemyAI enemyAI;

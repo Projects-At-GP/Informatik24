@@ -1,3 +1,5 @@
+package Redfoot;
+
 import animator.*;
 import vector.Vector2;
 

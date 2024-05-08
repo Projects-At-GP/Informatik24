@@ -1,3 +1,5 @@
+package Redfoot;
+
 public class BaseEntity extends BaseActor{
 
     double hp;

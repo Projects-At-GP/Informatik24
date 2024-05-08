@@ -1,8 +1,9 @@
+package Redfoot;
+
 import vector.Vector2;
 
 import java.io.File;
 import java.util.Scanner;
-import java.util.logging.Logger;
 
 public class Chunk {
 
@@ -18,7 +19,7 @@ public class Chunk {
         this.pos = new Vector2(x, y);
         this.world = world;
         this.game = game;
-        System.out.printf("Chunk %d-%d is reading data\n", x, y);
+        System.out.printf("Redfoot.Chunk %d-%d is reading data\n", x, y);
         readChunk(x + "-" + y);
     }
 

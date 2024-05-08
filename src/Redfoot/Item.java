@@ -1,4 +1,5 @@
-import animator.Animation;
+package Redfoot;
+
 import greenfoot.GreenfootImage;
 import vector.Vector2;
 
@@ -22,7 +23,7 @@ public class Item extends BaseEntity{
     @Override
     protected void entityTick(Game.State state){
         if(this.isTouching(Player.class)){
-            System.out.println("Player picked up Item!");
+            System.out.println("Redfoot.Player picked up Redfoot.Item!");
             renderer.player.pickupItem(this);
             renderer.entities.remove(this);
             renderer.game.removeObject(this);

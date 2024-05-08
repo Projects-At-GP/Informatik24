@@ -1,10 +1,10 @@
+package Redfoot;
+
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
 import greenfoot.World;
 import vector.Vector2;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 
@@ -27,7 +27,7 @@ public class BaseActor extends Actor {
     }
 
     /**
-     * @param other reference to other collider
+     * @param other reference to other Redfoot.collider
      * Will be called if a collision occurs
      */
     protected void onCollision(BaseActor other, Vector2 mtv){}
@@ -80,6 +80,6 @@ public class BaseActor extends Actor {
 
     @Override
     public String toString() {
-        return String.format("Actor with %s collider at position %s", hasCollider? "a" : "no", pos.toString());
+        return String.format("Actor with %s Redfoot.collider at position %s", hasCollider? "a" : "no", pos.toString());
     }
 }

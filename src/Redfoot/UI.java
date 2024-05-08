@@ -1,3 +1,5 @@
+package Redfoot;
+
 import vector.Vector2;
 
 public class UI extends BaseActor{

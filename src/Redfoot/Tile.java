@@ -1,9 +1,9 @@
+package Redfoot;
+
 import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
 import greenfoot.World;
 import vector.Vector2;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 public class Tile extends BaseActor{
@@ -56,6 +56,6 @@ public class Tile extends BaseActor{
 
     @Override
     public String toString() {
-        return String.format("Tile ID %d with %s collider at position %s", this.id, hasCollider? "a" : "no", pos.toString());
+        return String.format("Redfoot.Tile ID %d with %s Redfoot.collider at position %s", this.id, hasCollider? "a" : "no", pos.toString());
     }
 }
