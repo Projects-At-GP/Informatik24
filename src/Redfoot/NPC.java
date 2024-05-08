@@ -14,7 +14,7 @@ public class NPC extends BaseEntity {
 
     @Override
     protected void awake(){
-        this.pos = new Vector2(16, 17);
+        this.pos = new Vector2(16, 18);
         this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);
     }

@@ -45,6 +45,10 @@ public class spell extends BaseEntity {
     protected void priorityTick(Game.State state) {
         Vector2 dvscaled = dv.scale(speed * state.deltaTime);
         this.pos = this.pos.add(dvscaled);
+        if(renderer.player.pos.subtract(this.pos).magnitude() > 50){ // 50 blocks range
+            renderer.entities.remove(this);
+            this.getWorld().removeObject(this);
+        }
     }
 
     public void rotate(){

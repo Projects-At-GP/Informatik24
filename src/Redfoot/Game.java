@@ -1,8 +1,10 @@
 package Redfoot;
 
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.World;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -22,11 +24,13 @@ public class Game extends World {
     protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;
+    private File[] dir;
 
     public Renderer render;
 
     public Game(int tps) {
         super(1600, 900, 1, false);
+        setDir();
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
@@ -38,13 +42,40 @@ public class Game extends World {
         this.render.entities.add(testEnemy);
         System.out.println(testEnemy.pos);
 
+        Weapon sword = new Weapon(this.render, "SilverSword.png");
+        addObject(sword, 0, 0);
+        this.render.entities.add(sword);
+
         this.addObject(player, 800, 450);
-        this.setPaintOrder(BaseActor.class, Tile.class);
+        this.setPaintOrder(UI.class, BaseActor.class, Item.class, Tile.class);
         Greenfoot.start();
     }
 
     public Game() {
         this(30);
+    }
+
+    private void setDir(){
+        File file = new File("./images/textures/");
+        File[] files = file.listFiles();
+        this.dir = new File[files.length];
+        for (File f : files){
+            int index;
+            String[] keys = f.getName().split("-");
+            index = Integer.parseInt(keys[0]);
+            dir[index] = f;
+        }
+    }
+
+    public void setImageByID(int id, Tile tile, int imgscale){
+        if(dir == null) return;
+        if (id >= 0 && id < dir.length){
+            GreenfootImage img = new GreenfootImage(dir[id].getPath());
+            img.scale(imgscale, imgscale);
+            tile.setImage(img);
+            String[] keys = dir[id].getName().replace(".png", "").split("-");
+            if(keys[1].equals("N")) tile.hasCollider = true;
+        }
     }
 
     @Override
