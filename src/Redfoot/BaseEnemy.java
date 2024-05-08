@@ -2,7 +2,7 @@ package Redfoot;
 
 import enemy.ai.BaseEnemyInterface;
 import enemy.ai.EnemyAI;
-import enemy.ai.Intelligence;
+import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
 
 public class BaseEnemy extends BaseEntity implements BaseEnemyInterface {
@@ -14,7 +14,7 @@ public class BaseEnemy extends BaseEntity implements BaseEnemyInterface {
     }
 
     public BaseEnemy(Renderer renderer) {
-        this(renderer, new EnemyAI(Intelligence.LINE_OF_SIGHT_LVL0, 10));
+        this(renderer, new EnemyAI(IntelligenceEnum.LINE_OF_SIGHT_LVL0, 10));
     }
 
     @Override
