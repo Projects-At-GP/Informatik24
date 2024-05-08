@@ -18,6 +18,7 @@ https://github.com/Rc-Cookie/greenfoot-sources-combined/blob/main/Greenfoot%20in
     <option name="MAIN_CLASS_NAME" value="greenfoot.export.GreenfootScenarioApplication" />
     <module name="Informatik24" />
     <option name="VM_PARAMETERS" value="--module-path=&quot;REPLACE_ME&quot; --add-modules=javafx.controls,javafx.fxml" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
