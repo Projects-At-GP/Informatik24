@@ -8,6 +8,10 @@ import vector.Vector2;
 public class TestEnemy extends BaseEnemy {
     public TestEnemy(Renderer renderer, EnemyAI enemyAI) {
         super(renderer, enemyAI);
+        this.hp = 100;
+        this.col = new collider();
+        this.col.octagon(0.8, 0.3);
+        this.hasCollider = true;
     }
 
     public TestEnemy(Renderer renderer) {
@@ -16,9 +20,10 @@ public class TestEnemy extends BaseEnemy {
 
     @Override
     protected void awake() {
-        this.pos = new Vector2(this.renderer.player.pos.x - 5, this.renderer.player.pos.y - 5);
+        this.pos = new Vector2(this.renderer.player.pos.x - 6, this.renderer.player.pos.y - 5);
         this.anim = new Animation("images/testEnemySheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);
+        this.anim.update();
     }
 
     @Override

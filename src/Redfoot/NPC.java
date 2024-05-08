@@ -4,6 +4,8 @@ import animator.*;
 import vector.Vector2;
 
 public class NPC extends BaseEntity {
+    Animation anim;
+
     public NPC(Renderer renderer) {
         super(renderer);
         this.hp = 100;

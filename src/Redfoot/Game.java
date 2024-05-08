@@ -38,7 +38,9 @@ public class Game extends World {
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);
         this.render.entities.add(npc);
+
         TestEnemy testEnemy = new TestEnemy(this.render);
+        addObject(testEnemy, 0, 0);
         this.render.entities.add(testEnemy);
         System.out.println(testEnemy.pos);
 

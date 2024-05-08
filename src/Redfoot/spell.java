@@ -60,9 +60,9 @@ public class spell extends BaseEntity {
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
         if(other.getClass() == spell.class || other.getClass() == Player.class) return;
-        if (other.getClass() == NPC.class) {
+        if (other instanceof BaseEntity) {
             System.out.println("Spell hit!");
-            ((NPC) other).takeDamage(15);
+            ((BaseEntity) other).takeDamage(15);
         }
         renderer.entities.remove(this);
         this.getWorld().removeObject(this);
