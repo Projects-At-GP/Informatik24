@@ -2,6 +2,7 @@ package Redfoot;
 
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+import greenfoot.GreenfootSound;
 import greenfoot.World;
 
 import java.io.File;
@@ -25,6 +26,7 @@ public class Game extends World {
     private long curAct = 0;
     private long tick = 0;
     private File[] dir;
+    private GreenfootSound menuMusic;
 
     public Renderer render;
 
@@ -58,6 +60,10 @@ public class Game extends World {
 
         this.addObject(player, 800, 450);
         this.setPaintOrder(UI.class, Player.class, BaseActor.class, Item.class, Tile.class);
+
+        menuMusic = new GreenfootSound("./sound/Menu.mp3");
+        menuMusic.playLoop();
+
         Greenfoot.start();
     }
 
