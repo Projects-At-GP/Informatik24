@@ -37,6 +37,11 @@ public class Animation {
             this.animSheet = ImageIO.read(new File(this.filePrefix + animSheetPath));
             createFrames(this.animSheet);
             this.animFrameCount = this.animSheet.getWidth() / frameSize;
+
+            File tmpDir = new File("./images/tmp");
+            if(!tmpDir.exists()){
+                tmpDir.mkdir();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -36,8 +36,12 @@ public class Game extends World {
         addObject(npc, 0, 0);
         this.render.entities.add(npc);
 
+        Weapon sword = new Weapon(this.render, "SilverSword.png");
+        addObject(sword, 0, 0);
+        this.render.entities.add(sword);
+
         this.addObject(player, 800, 450);
-        this.setPaintOrder(UI.class, BaseActor.class, Tile.class);
+        this.setPaintOrder(UI.class, BaseActor.class, Item.class, Tile.class);
         Greenfoot.start();
     }
 
@@ -46,7 +50,7 @@ public class Game extends World {
     }
 
     private void setDir(){
-        File file = new File("./src/images/textures/");
+        File file = new File("./images/textures/");
         File[] files = file.listFiles();
         this.dir = new File[files.length];
         for (File f : files){

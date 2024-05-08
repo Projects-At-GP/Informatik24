@@ -12,7 +12,7 @@ public class BaseActor extends Actor {
     protected Logger logger;
     protected Renderer renderer;
 
-    Vector2 pos;
+    public Vector2 pos;
     public collider col;
     public boolean hasCollider = false;
     public boolean started = false;

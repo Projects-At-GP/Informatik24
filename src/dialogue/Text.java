@@ -68,7 +68,8 @@ public class Text {
             throw new RuntimeException(e);
         }
         returnImg.scale(returnImg.getWidth() * 3, returnImg.getHeight() * 3);
-        dialogueBox.setImage(returnImg);
+        this.dialogueBox.setImage(returnImg);
+        this.dialogueBox.getImage().setTransparency(255);
     }
 
     private BufferedImage merge(BufferedImage source, BufferedImage image2, int coloumn, int line){

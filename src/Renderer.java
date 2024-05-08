@@ -1,7 +1,10 @@
 import dialogue.Text;
 import greenfoot.Actor;
+import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import vector.Vector2;
 
+import java.io.File;
 import java.util.*;
 
 public class Renderer {
@@ -19,16 +22,30 @@ public class Renderer {
 
     private Chunk[][] chunkMap = new Chunk[3][3];
     private final Text text;
-    private final Actor dialogueBox;
+    public final UIManager uiManager;
     private BaseActor currentTextSource;
     private String world = "overworld";
+    private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
 
     public Renderer(Game game, Player player){
         this.game = game;
         this.player = player;
-        this.dialogueBox = new UI(this);
-        this.game.addObject(dialogueBox, 800, 780);
-        this.text = new Text(this.game, dialogueBox);
+
+        this.uiManager = new UIManager(this.game);
+        this.uiManager.setElement(new UI(this), "dialogueBox", new Vector2(800, 700));
+        this.text = new Text(this.game, this.uiManager.getElement("dialogueBox"));
+
+        this.uiManager.setElement(new UI(this), "hotbar", new Vector2(800, 850));
+        GreenfootImage img = new GreenfootImage(filePrefix + "images/hotbar.png");
+        img.scale(744, 96);
+        this.uiManager.getElement("hotbar").setImage(img);
+        this.uiManager.enableElement("hotbar");
+
+        this.uiManager.setElement(new UI(this), "selection", new Vector2(476, 850));
+        img = new GreenfootImage(filePrefix + "images/selection.png");
+        img.scale(76, 76);
+        this.uiManager.getElement("selection").setImage(img);
+        this.uiManager.enableElement("selection");
 
         for(int i = 0; i < 3; i++){
             for(int c = 0; c < 3; c++){
@@ -41,10 +58,10 @@ public class Renderer {
     public void changeWorld(String world){
         System.out.println("changing world");
         this.world = world;
-        this.player.pos = new Vector2(1, 0);
-        for(int i = 0; i < 3; i++){
+        this.player.pos = new Vector2(1, 1);
+        for(int i = 0; i < 2; i++){
             for(int c = 0; c < 3; c++){
-                chunkMap[i][c] = new Chunk(c, i, game, world);
+                chunkMap[i+1][c] = new Chunk(c, i, game, world);
             }
         }
         prepare();
@@ -73,19 +90,25 @@ public class Renderer {
     public void showText(String text, BaseActor textSource){
         this.text.showText(text);
         this.currentTextSource = textSource;
-        this.dialogueBox.getImage().setTransparency(255);
+    }
+
+    private void renderUI(){
+        this.uiManager.update();
     }
 
 
     /**
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
-    void render(){
+    public void render(){
+        //String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
+        //this.text.showText(stringValue);
         if (this.currentTextSource != null){
             if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
-                dialogueBox.getImage().setTransparency(0);
+                uiManager.disableElement("dialogueBox");
             }
         }
+        //uiManager.enableElement("dialogueBox");
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
@@ -110,7 +133,12 @@ public class Renderer {
                     for(int y = 0; y < mapSize; y++){
                         int ScreenX = (i * cellSize * 16) + (x * cellSize) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
                         int ScreenY = (c * cellSize * 16) + (y * cellSize - cellSize / 2) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
+                        if(ScreenX <= -64 || ScreenX >= 1664 || ScreenY <= -64 || ScreenY >= 964){
+                            chunkMap[c][i].map[y][x][0].getImage().setTransparency(0);
+                            continue;
+                        }
                         chunkMap[c][i].map[y][x][0].setLocation(ScreenX, ScreenY);
+                        chunkMap[c][i].map[y][x][0].getImage().setTransparency(255);
                     }
                 }
             }
@@ -125,6 +153,7 @@ public class Renderer {
             }
             e.setLocation(ScreenX, ScreenY);
         }
+        renderUI();
     }
 
 }

@@ -34,7 +34,7 @@ public class Tile extends BaseActor{
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
             System.out.println(this.pos);
-            this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
+            //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
         }
         if (this.id == 16){
             mineDoor();
@@ -52,5 +52,10 @@ public class Tile extends BaseActor{
     @Override
     protected void addedToWorld(World world) {
         this.logger = Logger.getLogger(this.getClass().getSimpleName());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Tile ID %d with %s collider at position %s", this.id, hasCollider? "a" : "no", pos.toString());
     }
 }
