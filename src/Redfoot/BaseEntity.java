@@ -18,6 +18,7 @@ public class BaseEntity extends BaseActor{
             renderer.entities.remove(this);
             this.getWorld().removeObject(this);
             logger.info("I am dead");
+            renderer.game.spawnEntity();
             return;
         }
         logger.info(String.format("Took %d Damage! Now at %d HP", (int) dmg, (int) hp));

@@ -11,7 +11,6 @@ public class Item extends BaseEntity{
     public Item(Renderer renderer, String imgPath) {
         super(renderer);
         this.img =new GreenfootImage(filePrefix + "images/weapons/" + imgPath);
-        this.pos = new Vector2(20.5, 20.5);
     }
 
     @Override

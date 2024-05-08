@@ -2,6 +2,7 @@ package Redfoot;
 
 public class Weapon extends Item{
     private final int damage = 20;
+    public final double cooldown = 1;
 
     public Weapon(Renderer renderer, String imgPath) {
         super(renderer, imgPath);

@@ -144,9 +144,9 @@ public class Renderer {
             }
         }
         for (BaseEntity e : entities){
-
-            int ScreenX = (int) ((e.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4 * cellSize) + (cellSize / 2));
-            int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9 * cellSize));
+            if(e.pos == null) continue;
+            int ScreenX = (int) ((e.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4.5 * cellSize) + (cellSize / 2));
+            int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9.5 * cellSize));
             if(e.getWorld() == null){
                 game.addObject(e, ScreenX, ScreenY);
                 continue;

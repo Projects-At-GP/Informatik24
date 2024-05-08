@@ -25,6 +25,7 @@ public class Animation {
 
 
     private GreenfootImage[][] frames;
+    public int frameCount;
     private boolean isRunning;
 
     public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg){
@@ -48,7 +49,8 @@ public class Animation {
     }
 
     void createFrames(BufferedImage sheet) throws IOException{
-        this.frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][this.animSheet.getWidth() / this.frameSize];
+        this.frameCount = this.animSheet.getWidth() / this.frameSize;
+        this.frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][frameCount];
         String[] keys = sheetPath.replace(".png", "").split("/");
         String key = keys[keys.length-1];
         for(int c = 0; c < sheet.getHeight() / this.frameSize; c++){

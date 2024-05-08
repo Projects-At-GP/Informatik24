@@ -21,8 +21,10 @@ public class Player extends BaseEntity{
     Game game;
     Animation anim;
     public ArrayList<Item> inventory = new ArrayList<>();
+    private double[] cooldownArray = new double[10];
     public int selectedInventoryIndex;
     private int dir; // 0 for north, clockwise after that
+    private int oldIndex;
 
 
     public Player(Game game, Vector2 pos){
@@ -48,7 +50,8 @@ public class Player extends BaseEntity{
     @Override
     protected void priorityTick(Game.State state) {
         movement(state.deltaTime);
-        combat();
+        combat(state);
+        oldIndex = selectedInventoryIndex;
         for (int i = 1; i < 10; i++){
             int value = intIsKeyPressed("" + i) * i;
             if (value != 0){
@@ -58,21 +61,29 @@ public class Player extends BaseEntity{
         if (intIsKeyPressed("0") != 0){
             selectedInventoryIndex = 9;
         }
+        if (oldIndex != selectedInventoryIndex && selectedInventoryIndex < inventory.size()) cooldownArray[selectedInventoryIndex] = ((Weapon) inventory.get(selectedInventoryIndex)).cooldown;
+        oldIndex = selectedInventoryIndex;
         renderer.uiManager.setSelectionIndex(selectedInventoryIndex);
     }
 
-    private void combat(){
+    private void combat(Game.State state){
+        for (int i = 0; i < 10; i++){
+            if(cooldownArray[i] <= 0) continue;
+            cooldownArray[i] -= state.deltaTime;
+        }
+
         if (Greenfoot.mouseClicked(null) && Greenfoot.getMouseInfo() != null){
             if(selectedInventoryIndex < inventory.size()){
                 Item selectedItem = inventory.get(selectedInventoryIndex);
-                if (selectedItem instanceof Weapon){
+                if (selectedItem instanceof Weapon && cooldownArray[selectedInventoryIndex] <= 0){
                     ((Weapon) selectedItem).doDamage(this, dir);
+                    cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
                 }
             } else {
-                spell fire = new spell(renderer, pos.subtract(new Vector2(0.5, 0.5)));
-                game.addObject(fire, 0, 0);
-                renderer.entities.add(fire);
-                fire.rotate();
+                //spell fire = new spell(renderer, pos.subtract(new Vector2(0.5, 0.5)));
+                //game.addObject(fire, 0, 0);
+                //renderer.entities.add(fire);
+                //fire.rotate();
             }
         }
     }

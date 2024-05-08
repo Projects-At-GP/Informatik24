@@ -39,18 +39,32 @@ public class Game extends World {
         addObject(npc, 0, 0);
         this.render.entities.add(npc);
 
-        TestEnemy testEnemy = new TestEnemy(this.render);
-        addObject(testEnemy, 0, 0);
-        this.render.entities.add(testEnemy);
-        System.out.println(testEnemy.pos);
+        spawnEntity();
 
         Weapon sword = new Weapon(this.render, "SilverSword.png");
+        sword.pos = new Vector2(21, 21);
         addObject(sword, 0, 0);
         this.render.entities.add(sword);
 
+        Weapon kunai = new Weapon(this.render, "Kunai.png");
+        kunai.pos = new Vector2(23, 21);
+        addObject(kunai, 0, 0);
+        this.render.entities.add(kunai);
+
+        spellItem fireBall = new spellItem(this.render, "darkFireball.png");
+        fireBall.pos = new Vector2(25, 21);
+        addObject(fireBall, 0, 0);
+        this.render.entities.add(fireBall);
+
         this.addObject(player, 800, 450);
-        this.setPaintOrder(UI.class, BaseActor.class, Item.class, Tile.class);
+        this.setPaintOrder(UI.class, Player.class, BaseActor.class, Item.class, Tile.class);
         Greenfoot.start();
+    }
+
+    public void spawnEntity(){ // TODO implement different entities
+        TestEnemy testEnemy = new TestEnemy(this.render);
+        addObject(testEnemy, 0, 0);
+        this.render.entities.add(testEnemy);
     }
 
     public Game() {
@@ -82,6 +96,7 @@ public class Game extends World {
 
     @Override
     public void act() {
+        Greenfoot.setSpeed(100);
         updateDeltaTime();
         double secondsUntilNextTick = (1d / this.tps) - (this.deltaTime / 1000d);
         try {
@@ -123,7 +138,8 @@ public class Game extends World {
         for (BaseEntity actor : actorList){
             actor.collided = false;
             for (BaseActor other : otherList){
-                if (actor == other) continue;
+                if (actor == other || !actor.hasCollider || !other.hasCollider) continue;
+                if(actor.pos == null || other.pos == null) continue;
                 Vector2 mtv = CollisionDetection.checkCollision(actor, other);
                 if (mtv != null) {
                     actor.collided = true;
