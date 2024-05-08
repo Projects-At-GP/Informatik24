@@ -24,7 +24,10 @@ public class BaseEnemy extends BaseEntity implements BaseEnemyInterface {
         this.enemyAI.autoAggro();
         this.enemyAI.increaseAggressionWearinessIfApplicable();
         this.enemyAI.alertToSwarm(this, this.getWorld().getObjects(BaseEnemyInterface.class));
-        this.enemyAI.chaseIfPossible();  // maybe move to priorityTick()
+        if (this.enemyAI.chaseIfPossible()) {  // maybe move to priorityTick()
+            this.anim.update();
+            this.anim.resume();
+        }
     }
 
     @Override

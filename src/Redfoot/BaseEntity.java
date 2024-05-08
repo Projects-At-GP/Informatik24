@@ -1,9 +1,13 @@
 package Redfoot;
 
+import animator.Animation;
+
 public class BaseEntity extends BaseActor{
 
     double hp;
     public boolean collided;
+    protected Animation anim;
+
     public BaseEntity(Renderer renderer) {
         super(renderer);
     }

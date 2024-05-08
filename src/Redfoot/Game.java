@@ -34,9 +34,13 @@ public class Game extends World {
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
+
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);
         this.render.entities.add(npc);
+        //TestEnemy testEnemy = new TestEnemy(this.render);
+        //this.render.entities.add(testEnemy);
+        //System.out.println(testEnemy.pos);
 
         Weapon sword = new Weapon(this.render, "SilverSword.png");
         addObject(sword, 0, 0);
