@@ -39,24 +39,24 @@ public class Game extends World {
 
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);
-        this.render.entities.add(npc);
+        this.render.addEntity(npc);
 
         spawnEntity();
 
         Weapon sword = new Weapon(this.render, "SilverSword.png");
         sword.pos = new Vector2(21, 21);
         addObject(sword, 0, 0);
-        this.render.entities.add(sword);
+        this.render.addEntity(sword);
 
         Weapon kunai = new Weapon(this.render, "Kunai.png");
         kunai.pos = new Vector2(23, 21);
         addObject(kunai, 0, 0);
-        this.render.entities.add(kunai);
+        this.render.addEntity(kunai);
 
         spellItem fireBall = new spellItem(this.render, "darkFireball.png");
         fireBall.pos = new Vector2(25, 21);
         addObject(fireBall, 0, 0);
-        this.render.entities.add(fireBall);
+        this.render.addEntity(fireBall);
 
         this.addObject(player, 800, 450);
         this.setPaintOrder(UI.class, Player.class, BaseActor.class, Item.class, Tile.class);
@@ -71,7 +71,7 @@ public class Game extends World {
     public void spawnEntity(){ // TODO implement different entities
         TestEnemy testEnemy = new TestEnemy(this.render);
         addObject(testEnemy, 0, 0);
-        this.render.entities.add(testEnemy);
+        this.render.addEntity(testEnemy);
     }
 
     public Game() {

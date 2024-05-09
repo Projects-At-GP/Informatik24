@@ -48,7 +48,7 @@ public class spell extends BaseEntity {
         this.anim.resume();
         if(this.hit){
             if(this.deathAnimCounter <= 0){
-                renderer.entities.remove(this);
+                renderer.ceaseEntity(this);
                 this.getWorld().removeObject(this);
             }
             this.deathAnimCounter--;
@@ -65,7 +65,7 @@ public class spell extends BaseEntity {
     @Override
     protected void blockTick(Game.State state) {
         if(renderer.player.pos.subtract(this.pos).magnitude() > 50){ // 50 blocks range
-            renderer.entities.remove(this);
+            renderer.ceaseEntity(this);
             this.getWorld().removeObject(this);
         }
     }
@@ -83,7 +83,7 @@ public class spell extends BaseEntity {
             ((BaseEntity) other).takeDamage(damage);
         }
         List<BaseEntity> entitiesToDoDamage = new ArrayList<>();
-        for (BaseEntity actor : renderer.entities){
+        for (BaseEntity actor : renderer.getEntities()){
             if(actor==null || actor.getClass() == spell.class || actor.getClass() == Player.class) continue;
             if(actor.pos == null) continue;
             if (actor.pos.subtract(renderer.player.pos).magnitude() <= 3){

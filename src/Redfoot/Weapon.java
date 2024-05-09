@@ -9,7 +9,7 @@ public class Weapon extends Item{
     }
 
     public void doDamage(Player player, int direction){
-        for (BaseEntity actor : renderer.entities){
+        for (BaseEntity actor : renderer.getEntities()) {
             if (actor.pos.subtract(player.pos).magnitude() <= 2){
                 actor.takeDamage(damage);
                 break;

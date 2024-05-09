@@ -24,7 +24,7 @@ public class Item extends BaseEntity{
         if(this.isTouching(Player.class)){
             System.out.println("Redfoot.Player picked up Redfoot.Item!");
             renderer.player.pickupItem(this);
-            renderer.entities.remove(this);
+            renderer.ceaseEntity(this);
             renderer.game.removeObject(this);
         }
     }

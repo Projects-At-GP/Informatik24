@@ -18,7 +18,8 @@ public class Renderer {
     private int chunkX;
     private int chunkY;
 
-    public List<BaseEntity> entities = new ArrayList<>();
+    private List<BaseEntity> entities = new ArrayList<>();
+    private Queue<BaseEntity> ceasedEntities = new LinkedList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
     private final Text text;
@@ -53,6 +54,22 @@ public class Renderer {
             }
         }
         prepare();
+    }
+
+    public List<BaseEntity> getEntities() {
+        return this.entities;
+    }
+
+    public void addEntity(BaseEntity entity) {
+        this.entities.add(entity);
+    }
+
+    public void ceaseEntity(BaseEntity entity) {
+        entity.isDead = true;
+        entity.pos = new Vector2(-0x1337, -0x1337);
+        this.entities.remove(entity);
+        this.ceasedEntities.add(entity);
+        if (this.ceasedEntities.size() > 16) this.ceasedEntities.remove();
     }
 
     public void changeWorld(String world){

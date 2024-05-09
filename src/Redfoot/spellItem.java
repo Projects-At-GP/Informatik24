@@ -11,7 +11,7 @@ public class spellItem extends Weapon{
     public void doDamage(Player player, int direction){
         spell fire = new spell(renderer, player.pos);
         renderer.game.addObject(fire, 0, 0);
-        renderer.entities.add(fire);
+        renderer.addEntity(fire);
         fire.rotate();
     }
 }

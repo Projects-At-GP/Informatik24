@@ -16,7 +16,7 @@ public class BaseEntity extends BaseActor{
     public void takeDamage(double dmg){
         hp -= dmg;
         if(hp <= 0) {
-            renderer.entities.remove(this);
+            renderer.ceaseEntity(this);
             this.getWorld().removeObject(this);
             logger.info("I am dead");
             this.isDead = true;
