@@ -69,7 +69,6 @@ public class Algorithms {
     private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
         start = new Vector2(Math.round(start.x), Math.round(start.y));
         end = new Vector2(Math.round(end.x), Math.round(end.y));
-        System.out.print("S/E: ");System.out.print(start);System.out.print(" ");System.out.println(end);
 
         // cameFrom
         LinkedHashMap<Vector2, Vector2> cameFrom = new LinkedHashMap<>();

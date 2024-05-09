@@ -76,7 +76,7 @@ public class EnemyAI {
         try {
             path = Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence);
         } catch (NoPathAvailable e) {
-            System.out.println(e.getMessage());  // TODO: remove debug message
+            //System.out.println(e.getMessage());
             return false;
         }
         Vector2 firstCandidate;
@@ -86,11 +86,8 @@ public class EnemyAI {
             if ((firstCandidate = path.peekFirst()) == null) return false;
         }
         Vector2 direction = firstCandidate.subtract(self.pos);
-        System.out.println(self.pos);
         self.pos.x += direction.normalize().x * state.deltaTime * self.enemyAI.intelligence.speed;
         self.pos.y += direction.normalize().y * state.deltaTime * self.enemyAI.intelligence.speed;
-        System.out.println(self.pos);
-        System.out.println();
         return true;
     }
 }
