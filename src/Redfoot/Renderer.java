@@ -66,7 +66,7 @@ public class Renderer {
 
     public void ceaseEntity(BaseEntity entity) {
         entity.isDead = true;
-        entity.pos = new Vector2(-0x1337, -0x1337);
+        entity.pos = new Vector2(-0xDEAD, -0xDEAD);
         this.entities.remove(entity);
         this.ceasedEntities.add(entity);
         if (this.ceasedEntities.size() > 16) this.ceasedEntities.remove();
