@@ -9,6 +9,6 @@ public class NoPathAvailable extends Exception {
     }
 
     public NoPathAvailable(Vector2 a, Vector2 b, IntelligenceEnum intelligence) {
-        super(String.format("No path available from %1$,.2f|%2$,.2f to %3$,.2f|%4$,.2f with intelligence %5$s (max %6$d turns)", a.x, a.y, b.x, b.y, intelligence, intelligence.maxTurns));
+        super(String.format("No path available from %1$,.2f|%2$,.2f to %3$,.2f|%4$,.2f with intelligence %5$s (max range %6$d)", a.x, a.y, b.x, b.y, intelligence, intelligence.range));
     }
 }

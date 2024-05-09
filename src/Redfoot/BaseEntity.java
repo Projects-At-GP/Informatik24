@@ -5,6 +5,7 @@ import animator.Animation;
 public class BaseEntity extends BaseActor{
 
     double hp;
+    public boolean isDead = false;
     public boolean collided;
     protected Animation anim;
 
@@ -18,6 +19,7 @@ public class BaseEntity extends BaseActor{
             renderer.entities.remove(this);
             this.getWorld().removeObject(this);
             logger.info("I am dead");
+            this.isDead = true;
             renderer.game.spawnEntity();
             return;
         }

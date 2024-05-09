@@ -41,11 +41,13 @@ public class Algorithms {
         return true;
     }
 
+    // TODO
     public static LinkedList<Vector2> getLineOfSightPath(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
-        return getPath(map, start, end, IntelligenceEnum.LINE_OF_SIGHT_LVL0);
+        return getPath(map, start, end, IntelligenceEnum.NOOB_INTELLIGENCE);
     }
 
     public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence) throws NoPathAvailable {
+        if (start == null || end == null) return new LinkedList<>();
         if (isCached(map, start, end, intelligence)) return cachedPath;  // just computed?
 
         LinkedList<Vector2> path;
@@ -53,8 +55,9 @@ public class Algorithms {
         path = aStar(map, start, end);  // get detailed path
         path = collapseToDirectLines(path);  // remove detail to get connecting lines
 
-        int turns = path.size() - 2;  // -2 since 2 points make a straight line, e.g. 3 points would have one corner
-        if (turns > intelligence.maxTurns) throw new NoPathAvailable(start, end, intelligence);
+        // TODO: uncomment code
+        //int turns = path.size() - 2;  // -2 since 2 points make a straight line, e.g. 3 points would have one corner
+        //if (turns > intelligence.maxTurns) throw new NoPathAvailable(start, end, intelligence);
 
         setCache(map, start, end, intelligence, path);
         return path;
@@ -64,6 +67,9 @@ public class Algorithms {
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(A_Star)</i></a>
      */
     private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
+        start = new Vector2(Math.round(start.x), Math.round(start.y));
+        end = new Vector2(Math.round(end.x), Math.round(end.y));
+
         // cameFrom
         LinkedHashMap<Vector2, Vector2> cameFrom = new LinkedHashMap<>();
 
@@ -94,11 +100,11 @@ public class Algorithms {
                     new Vector2(finalCurrent.x, finalCurrent.y+1),
                     new Vector2(finalCurrent.x, finalCurrent.y-1))
             );
-            Vector2[] neighbors = (Vector2[]) Arrays.stream(map.mapData).flatMap(Arrays::stream)
-                                                                        .filter(tile -> possibleNeighbors.contains(tile.pos))
-                                                                        .filter(tile -> tile.walkable)
-                                                                        .map(tile -> tile.pos)
-                                                                        .toArray();
+            Vector2[] neighbors = Arrays.stream(map.mapData).flatMap(Arrays::stream)
+                                                            .filter(tile -> possibleNeighbors.contains(tile.pos))
+                                                            .filter(tile -> tile.walkable)
+                                                            .map(tile -> tile.pos)
+                                                            .toArray(Vector2[]::new);
             for (Vector2 neighbor : neighbors) {
                 tentativeGScore = gScore.get(current) + 1;  // 1 is default value for walking up/down/left/right; no diagonals here
                 if (tentativeGScore < gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {
@@ -133,6 +139,7 @@ public class Algorithms {
 
         // TODO: work out some code to reduce length of list
 
-        return collapsedPath;
+        //return collapsedPath;
+        return notCollapsedPath;  // TODO: remove demo placeholder
     }
 }

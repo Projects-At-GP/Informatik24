@@ -16,7 +16,7 @@ public class TestEnemy extends BaseEnemy {
     }
 
     public TestEnemy(Renderer renderer) {
-        this(renderer, new EnemyAI(IntelligenceEnum.LINE_OF_SIGHT_LVL0, 16));
+        this(renderer, new EnemyAI(IntelligenceEnum.PRO_INTELLIGENCE));
     }
 
     @Override

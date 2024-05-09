@@ -169,8 +169,7 @@ public class Renderer {
             for (int j = 0; j < dimensions; j++) {
                 mapJ = j / this.chunkMap.length;
                 chunkJ = j % this.chunkMap.length;
-
-                mapData[i][j] = this.chunkMap[mapI][mapJ].map[chunkI][chunkJ][0];
+                mapData[i][j] = this.chunkMap[chunkI][chunkJ].map[mapI][mapJ][0];
             }
         }
         return new CachedMapData(mapData, new Vector2(this.chunkX*this.mapSize, this.chunkY*this.mapSize));

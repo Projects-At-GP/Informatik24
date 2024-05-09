@@ -1,21 +1,22 @@
 package enemy.ai;
 
+import Redfoot.BaseEnemy;
+import Redfoot.Game;
+import enemy.ai.Exceptions.NoPathAvailable;
 import vector.Vector2;
 
+import java.util.LinkedList;
 import java.util.List;
 
 
 public class EnemyAI {
     protected final IntelligenceEnum intelligence;
-    public final int aggressionRange;
-
     protected int aggressionWeariness;
     protected boolean isAggro = false;
     protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
 
-    public EnemyAI(IntelligenceEnum intelligence, int aggressionRange) {
+    public EnemyAI(IntelligenceEnum intelligence) {
         this.intelligence = intelligence;
-        this.aggressionRange = aggressionRange;
     }
 
     public void setPlayerPosCache(Vector2 playerPosCache) {
@@ -27,18 +28,11 @@ public class EnemyAI {
     }
 
     /**
-     * Only increase aggression weariness if the player can't be seen
+     * Only increase aggression weariness if the player is out of range
      */
-    public void increaseAggressionWearinessIfApplicable() {
-        switch (this.intelligence) {
-            case LINE_OF_SIGHT_LVL0:
-                if (this.tryAggressionLOS0()) return;
-            case LINE_OF_SIGHT_LVL1:
-                if (this.tryAggressionLOS1()) return;
-            case LINE_OF_SIGHT_LVL2:
-            case SWARM_INTELLIGENCE:
-                if (this.tryAggressionLOS2()) return;
-        }
+    public void increaseAggressionWearinessIfApplicable(BaseEnemy self) {
+        if (self == null) return;
+        if (self.pos.subtract(playerPosCache).magnitude() <= self.enemyAI.intelligence.range) return;
         this.aggressionWeariness++;
         this.reevaluateAggression();
     }
@@ -56,7 +50,7 @@ public class EnemyAI {
         if (this.isAggro) return;
 
         // LOS required for initial aggression if not alerted
-        this.isAggro = this.tryAggressionLOS0();
+        //this.isAggro = this.tryAggressionLOS0();  // TODO
     }
 
     public void aggro(Vector2 targetPos) {
@@ -65,45 +59,34 @@ public class EnemyAI {
         this.setPlayerPosCache(targetPos);
     }
 
-    /**
-     * Check if aggression would be possible for LineOfSight of level 0
-     * @return whether aggression would be possible
-     */
-    protected boolean tryAggressionLOS0() {
-        return false;  // TODO
-    }
 
-    /**
-     * Check if aggression would be possible for LineOfSight of level 1
-     * @return whether aggression would be possible
-     */
-    protected boolean tryAggressionLOS1() {
-        if (this.tryAggressionLOS0()) return true;
-        return false;  // TODO
-    }
-
-    /**
-     * Check if aggression would be possible for LineOfSight of level 2
-     * @return whether aggression would be possible
-     */
-    protected boolean tryAggressionLOS2() {
-        if (this.tryAggressionLOS1()) return true;
-        return false;  // TODO
-    }
-
-    public void alertToSwarm(BaseEnemyInterface self, List<BaseEnemyInterface> enemies) {
-        if (this.intelligence.equals(IntelligenceEnum.SWARM_INTELLIGENCE)) {
-            for (BaseEnemyInterface enemy : enemies) {
-                if (enemy.getPos().subtract(self.getPos()).magnitude() > enemy.getAI().aggressionRange) continue;
-                if (!enemy.getAI().intelligence.equals(IntelligenceEnum.SWARM_INTELLIGENCE)) continue;
+    public void alertToSwarm(BaseEnemy self, List<BaseEnemy> enemies) {
+        if (this.intelligence.canAlarm && !self.isDead) {
+            for (BaseEnemy enemy : enemies) {
+                if (enemy.pos.subtract(self.pos).magnitude() > enemy.enemyAI.intelligence.range) continue;
+                if (!enemy.enemyAI.intelligence.canAlarm) continue;
                 enemy.getAlerted(this.playerPosCache);
             }
         }
     }
 
-    public boolean chaseIfPossible() {
-        if (!this.isAggro) return false;
-        // TODO
+    public boolean chaseIfPossible(BaseEnemy self, Game.State state) {
+        if (!this.isAggro || self.isDead) return false;
+        LinkedList<Vector2> path;
+        try {
+            path = Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence);
+        } catch (NoPathAvailable e) {
+            System.out.println(e.getMessage());  // TODO: remove debug message
+            return false;
+        }
+        Vector2 firstCandidate;
+        if ((firstCandidate = path.peekFirst()) == null) return false;
+        Vector2 direction = firstCandidate.subtract(self.pos);
+        System.out.println(self.pos);
+        self.pos.x += direction.normalize().x * state.deltaTime;
+        self.pos.y += direction.normalize().y * state.deltaTime;
+        System.out.println(self.pos);
+        System.out.println();
         return true;
     }
 }
