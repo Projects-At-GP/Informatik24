@@ -19,12 +19,19 @@ public class Algorithms {
     private static IntelligenceEnum cachedIntelligence;
     private static LinkedList<Vector2> cachedPath;
 
+    /**
+     * Checks if the path was already calculated to prevent redundant calculations
+     */
     private static boolean isCached(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence) {
         return (cachedMap == map &&
                 cachedStart == start &&
                 cachedEnd == end &&
                 cachedIntelligence == intelligence);
     }
+
+    /**
+     * Sets the cache to reduce redundant calculations
+     */
     private static void setCache(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence, LinkedList<Vector2> path) {
         cachedMap = map;
         cachedStart = start;
@@ -47,6 +54,15 @@ public class Algorithms {
         return getPath(map, start, end, IntelligenceEnum.NOOB_INTELLIGENCE);
     }
 
+    /**
+     * Determines a walkable path from a starting position to an ending position if one is available
+     * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
+     * @param start the starting position
+     * @param end the ending position
+     * @param intelligence information about the available intelligence
+     * @return the walkable path with the first element being the start
+     * @throws NoPathAvailable if no path was found throws this exception
+     */
     public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence) throws NoPathAvailable {
         if (start == null || end == null) return new LinkedList<>();
         if (isCached(map, start, end, intelligence)) return cachedPath;  // just computed?
@@ -65,6 +81,11 @@ public class Algorithms {
 
     /**
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(A_Star)</i></a>
+     * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
+     * @param start the starting position
+     * @param end the ending position
+     * @return the walkable path with the first element being the start
+     * @throws NoPathAvailable if no path was found throws this exception
      */
     private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
         start = new Vector2(Math.round(start.x), Math.round(start.y));
@@ -119,6 +140,9 @@ public class Algorithms {
 
     /**
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(reconstruct_path)</i></a>
+     * @param cameFrom the originating position
+     * @param current the current position
+     * @return the walkable path with the first element being the start
      */
     private static LinkedList<Vector2> reconstructAStarPath(LinkedHashMap<Vector2, Vector2> cameFrom, Vector2 current) {
         LinkedList<Vector2> total_path = new LinkedList<>(List.of(current));
@@ -128,6 +152,12 @@ public class Algorithms {
         return total_path;
     }
 
+    /**
+     * Calculate the cost to go from current to target
+     * @param current the current position
+     * @param target the target position
+     * @return the cost calculated based on the distance from current to target
+     */
     private static Double calculateCost(Vector2 current, Vector2 target) {
         return current.subtract(target).magnitude();
     }
