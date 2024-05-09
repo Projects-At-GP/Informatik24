@@ -18,7 +18,11 @@ import Redfoot.Game;
  * But we're here to help:
  * <ol>
  *     <li>Close the Greenfoot-App.</li>
- *     <li></li>
+ *     <li>Open `project.greenfoot` in an editor of your liking (right click)</li>
+ *     <li>Empty the file</li>
+ *     <li>Write following lines:<br><i>world.lastInstantiated=Gate<br>simulation.speed=100<i></li>
+ *     <li>Save and close the file</li>
+ *     <li>Reopen `project.greenfoot` as usual</li>
  * </ol>
  */
 public class Gate extends Game {}
