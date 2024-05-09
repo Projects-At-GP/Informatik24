@@ -56,4 +56,10 @@ public class Vector2 {
     public String toString() {
         return "(" + x + ", " + y + ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Vector2) return ((Vector2) obj).x == this.x && ((Vector2) obj).y == this.y;
+        return false;
+    }
 }
