@@ -48,7 +48,7 @@ public class Tile extends BaseActor{
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
             System.out.println(this.pos);
-            //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
+            this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: \\$0000FF" + this.pos + "\\$000000 \\nCHUNK POS: " + parent.pos, this);
         }
     }
 

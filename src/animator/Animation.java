@@ -78,9 +78,14 @@ public class Animation {
 
     public void stop(){
         this.isRunning = false;
+        update();
     }
 
     public void resume(){
         this.isRunning = true;
+    }
+
+    public void resetCounter(){
+        this.counter = 0;
     }
 }

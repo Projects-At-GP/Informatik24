@@ -20,6 +20,7 @@ public class Renderer {
 
     private List<BaseEntity> entities = new ArrayList<>();
     private Queue<BaseEntity> ceasedEntities = new LinkedList<>();
+    private List<BaseActor> particles = new ArrayList<>();
 
     private Chunk[][] chunkMap = new Chunk[3][3];
     private final Text text;
@@ -64,6 +65,14 @@ public class Renderer {
         this.entities.add(entity);
     }
 
+    public void addParticle(BaseActor particle) {
+        this.particles.add(particle);
+    }
+
+    public void releaseParticle(BaseActor particle){
+        this.particles.remove(particle);
+    }
+
     public void ceaseEntity(BaseEntity entity) {
         entity.isDead = true;
         entity.pos = new Vector2(-0xDEAD, -0xDEAD);
@@ -105,7 +114,7 @@ public class Renderer {
     }
 
     public void showText(String text, BaseActor textSource){
-        this.text.showText(text);
+        this.text.showTextBox(text);
         this.currentTextSource = textSource;
     }
 
@@ -166,10 +175,24 @@ public class Renderer {
             int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9.5 * cellSize));
             if(e.getWorld() == null){
                 game.addObject(e, ScreenX, ScreenY);
-                continue;
+                continue; // TODO is this needed?
             }
             e.setLocation(ScreenX, ScreenY);
         }
+
+        for (BaseActor p : particles){
+            System.out.println(p.pos);
+            if(p.pos == null) continue;
+            int ScreenX = (int) ((p.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4.5 * cellSize) + (cellSize / 2));
+            int ScreenY = (int) ((p.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9.5 * cellSize));
+            if(p.getWorld() == null){
+                game.addObject(p, ScreenX, ScreenY);
+                continue; // TODO is this needed?
+            }
+            System.out.printf("particle x %d, y %d\n", ScreenX, ScreenY);
+            p.setLocation(ScreenX, ScreenY);
+        }
+
         renderUI();
     }
 

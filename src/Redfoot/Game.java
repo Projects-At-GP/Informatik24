@@ -4,6 +4,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.GreenfootSound;
 import greenfoot.World;
+import greenfoot.Actor;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class Game extends World {
     private GreenfootSound menuMusic;
 
     public Renderer render;
+    public ArrayList<Actor> deletionList = new ArrayList<>();
 
     public Game(int tps) {
         super(1600, 900, 1, false);
@@ -103,6 +105,9 @@ public class Game extends World {
 
     @Override
     public void act() {
+        for (Actor actor : deletionList){
+            this.removeObject(actor);
+        }
         Greenfoot.setSpeed(100);
         updateDeltaTime();
         double secondsUntilNextTick = (1d / this.tps) - (this.deltaTime / 1000d);

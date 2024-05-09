@@ -6,6 +6,7 @@ import greenfoot.*;
 import vector.Vector2;
 
 import javax.imageio.ImageIO;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.File;
@@ -45,10 +46,10 @@ public class Text {
 
     public void popup(String text, Vector2 pos, int time){ // pos works in screenspace
         Popup thread = new Popup();
-        thread.startup(pos, this.game, getTextImage(text, chars[1], 8, 10), time);
+        thread.startup(pos, this.game, getTextImage(text, chars[textLookup.indexOf(" ")], 8, 10), time);
     }
 
-    public void showText(String text){
+    public void showTextBox(String text){
         this.dialogueBox.setImage(getTextImage(text, box, 0, 0));
         this.dialogueBox.getImage().setTransparency(255);
     }
@@ -56,6 +57,7 @@ public class Text {
     public GreenfootImage getTextImage(String text, BufferedImage baseImg, int xOffset2, int yOffset2){
         BufferedImage img = baseImg;
         GreenfootImage returnImg;
+        Color colour = Color.BLACK;
         int line = 0;
         int coloumn = 0;
         for (int i = 0; i < text.length(); i++){
@@ -64,12 +66,15 @@ public class Text {
                     line++;
                     coloumn = 0;
                     i += 2;
+                } else if(text.charAt(i+1) == '$'){
+                    colour = getColorFromHex(text.substring(i + 2, i + 8));
+                    i += 8;
                 }
             }
             coloumn++;
             int index = textLookup.indexOf(text.charAt(i));
-            if(index == -1) index = 0;
-            img = merge(img, chars[index], coloumn, line, xOffset2, yOffset2);
+            if(index == -1) index = 0; // display 'A' if char does not exist in lookup
+            img = merge(img, changeImageColour(chars[index], colour), coloumn, line, xOffset2, yOffset2);
         }
         try {
             File file = new File(this.path + text.hashCode() + "text.png");
@@ -84,10 +89,38 @@ public class Text {
         return returnImg;
     }
 
+    private Color getColorFromHex(String hexColor) {
+        // Parse hex string to RGB components
+        int red = Integer.parseInt(hexColor.substring(0, 2), 16);
+        int green = Integer.parseInt(hexColor.substring(2, 4), 16);
+        int blue = Integer.parseInt(hexColor.substring(4, 6), 16);
+
+        // Create and return Color object
+        return new Color(red, green, blue);
+    }
+
+    private BufferedImage changeImageColour(BufferedImage image, Color colour) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                int pixel = image.getRGB(x, y);
+                if (pixel == Color.BLACK.getRGB()) {
+                    pixel = colour.getRGB();
+                }
+                result.setRGB(x, y, pixel);
+            }
+        }
+
+        return result;
+    }
+
     private BufferedImage merge(BufferedImage source, BufferedImage image2, int coloumn, int line, int xOffset2, int yOffset2){
         int newWidth = Math.max(8 + coloumn * 8, source.getWidth());
         int newHeight = Math.max(8 + line * 8, source.getHeight());
-        System.out.println(newWidth);
 
         BufferedImage mergedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = mergedImage.createGraphics();
@@ -115,7 +148,7 @@ public class Text {
 }
 
 class Popup extends Thread{
-    private final int timeToRun = 2000;
+    private final int timeToRun = 1000;
     private Vector2 pos;
     private Game game;
     private GreenfootImage img;
@@ -123,12 +156,17 @@ class Popup extends Thread{
     public void run(){
         long time = System.currentTimeMillis();
         UI actor = new UI(this.game.render);
-        this.game.addObject(actor, (int) pos.x, (int) pos.y);
+        actor.pos = this.pos;
+        this.game.addObject(actor, 100, 100);
+        this.game.render.addParticle(actor);
         actor.setImage(img);
-        while(System.currentTimeMillis() < time + timeToRun){
-            continue;
+        try {
+            sleep(timeToRun);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
-        this.game.removeObject(actor);
+        this.game.deletionList.add(actor);
+        this.game.render.releaseParticle(actor);
     }
 
     public void startup(Vector2 pos, Game game, GreenfootImage img, int timeToRun){

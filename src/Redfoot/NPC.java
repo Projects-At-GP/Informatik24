@@ -1,6 +1,7 @@
 package Redfoot;
 
 import animator.*;
+import dialogue.Text;
 import vector.Vector2;
 
 public class NPC extends BaseEntity {
@@ -19,6 +20,7 @@ public class NPC extends BaseEntity {
         this.pos = new Vector2(16, 19);
         this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);
+        this.text = new Text(this.renderer.game, null);
     }
 
     @Override

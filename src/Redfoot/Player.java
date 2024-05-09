@@ -30,7 +30,7 @@ public class Player extends BaseEntity{
     private Actor animHolder;
     private int animFramesToDo;
     private GreenfootSound stepSound = new GreenfootSound("./sound/steps.mp3");
-    private Text text;
+
 
 
     public Player(Game game, Vector2 pos){
@@ -43,7 +43,6 @@ public class Player extends BaseEntity{
         this.stepSound.setVolume(0);
         this.stepSound.playLoop();
         this.stepSound.pause();
-        this.text = new Text(this.game, null);
     }
 
     public void pickupItem(Item item){
@@ -57,7 +56,7 @@ public class Player extends BaseEntity{
         this.anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
         this.animHolder = new BaseActor(renderer);
         this.game.addObject(this.animHolder, 800, 450);
-        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 1);
+        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 7);
         this.combatAnim.resume();
     }
 
@@ -89,13 +88,16 @@ public class Player extends BaseEntity{
         }
 
         if (Greenfoot.mouseClicked(null) && Greenfoot.getMouseInfo() != null){
-            this.text.popup("20 SCHADEN", new Vector2(500, 500), 2000);
             if(selectedInventoryIndex < inventory.size()){
                 Item selectedItem = inventory.get(selectedInventoryIndex);
                 if (selectedItem instanceof Weapon && cooldownArray[selectedInventoryIndex] <= 0){
                     ((Weapon) selectedItem).doDamage(this, dir);
                     cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
-                    if (selectedItem.getClass() == Weapon.class) this.animFramesToDo = combatAnim.frameCount;
+                    if (selectedItem.getClass() == Weapon.class){
+                        this.animFramesToDo = combatAnim.frameCount;
+                        this.combatAnim.resetCounter();
+                        this.combatAnim.resume();
+                    }
                 }
             }
         }
@@ -152,12 +154,13 @@ public class Player extends BaseEntity{
         if (this.animFramesToDo > 0){
             this.combatAnim.update();
             this.animFramesToDo--;
-        }
+        } else this.combatAnim.stop();
     }
 
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
         System.out.println("collided with" + other);
-        if(other.getClass() != spell.class) this.pos = oldPos;
+        if(other instanceof BaseEntity) return;
+        this.pos = oldPos;
     }
 }
