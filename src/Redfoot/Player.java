@@ -20,11 +20,15 @@ public class Player extends BaseEntity{
 
     Game game;
     Animation anim;
+    Animation combatAnim;
     public ArrayList<Item> inventory = new ArrayList<>();
     private double[] cooldownArray = new double[10];
     public int selectedInventoryIndex;
     private int dir; // 0 for north, clockwise after that
     private int oldIndex;
+    private Actor animHolder;
+    private int animFramesToDo;
+    private GreenfootSound stepSound = new GreenfootSound("./sound/steps.mp3");
 
 
     public Player(Game game, Vector2 pos){
@@ -34,6 +38,9 @@ public class Player extends BaseEntity{
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
+        this.stepSound.setVolume(0);
+        this.stepSound.playLoop();
+        this.stepSound.pause();
     }
 
     public void pickupItem(Item item){
@@ -44,7 +51,11 @@ public class Player extends BaseEntity{
     @Override
     protected void awake(){
         this.renderer = game.render;
-        anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
+        this.anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
+        this.animHolder = new BaseActor(renderer);
+        this.game.addObject(this.animHolder, 800, 450);
+        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 1);
+        this.combatAnim.resume();
     }
 
     @Override
@@ -61,7 +72,9 @@ public class Player extends BaseEntity{
         if (intIsKeyPressed("0") != 0){
             selectedInventoryIndex = 9;
         }
-        if (oldIndex != selectedInventoryIndex && selectedInventoryIndex < inventory.size()) cooldownArray[selectedInventoryIndex] = ((Weapon) inventory.get(selectedInventoryIndex)).cooldown;
+        if (oldIndex != selectedInventoryIndex && selectedInventoryIndex < inventory.size()){
+            cooldownArray[selectedInventoryIndex] = ((Weapon) inventory.get(selectedInventoryIndex)).cooldown;
+        }
         oldIndex = selectedInventoryIndex;
         renderer.uiManager.setSelectionIndex(selectedInventoryIndex);
     }
@@ -78,12 +91,8 @@ public class Player extends BaseEntity{
                 if (selectedItem instanceof Weapon && cooldownArray[selectedInventoryIndex] <= 0){
                     ((Weapon) selectedItem).doDamage(this, dir);
                     cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
+                    if (selectedItem.getClass() == Weapon.class) this.animFramesToDo = combatAnim.frameCount;
                 }
-            } else {
-                //spell fire = new spell(renderer, pos.subtract(new Vector2(0.5, 0.5)));
-                //game.addObject(fire, 0, 0);
-                //renderer.entities.add(fire);
-                //fire.rotate();
             }
         }
     }
@@ -94,23 +103,35 @@ public class Player extends BaseEntity{
         oldPos = this.pos;
         
         if(dv.magnitude() != 0) {
+            this.stepSound.play();
+            if(!this.stepSound.isPlaying()){
+                this.stepSound.playLoop();
+                logger.info("play steps");
+            }
             pos = pos.add(dv.scale(speed * dt));
             //System.out.printf("Redfoot.Chunk Coordinates x: %d,y: %d; Coordinates in Redfoot.Chunk x: %d, y: %d; PlayerCoordinates %s\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, this.pos.toString());
             anim.resume();
             if(dv.x > 0) {
                 anim.setAnim(2);
                 dir = 1;
+                if(animFramesToDo == 0) this.animHolder.setRotation(0);
             } else if (dv.x < 0) {
                 anim.setAnim(1);
                 dir = 3;
+                if(animFramesToDo == 0) this.animHolder.setRotation(180);
             } else if (dv.y > 0) {
                 anim.setAnim(0);
                 dir = 2;
+                if(animFramesToDo == 0) this.animHolder.setRotation(90);
             } else if (dv.y < 0) {
                 anim.setAnim(3);
                 dir = 0;
+                if(animFramesToDo == 0) this.animHolder.setRotation(270);
             }
-        } else anim.stop();
+        } else {
+            this.anim.stop();
+            this.stepSound.pause();
+        }
         if(pos.x < 0) pos.x = 0;
         if(pos.y < 0) pos.y = 0;
 
@@ -124,6 +145,10 @@ public class Player extends BaseEntity{
     @Override
     protected void entityTick(Game.State state){
         this.anim.update();
+        if (this.animFramesToDo > 0){
+            this.combatAnim.update();
+            this.animFramesToDo--;
+        }
     }
 
     @Override

@@ -62,6 +62,7 @@ public class Game extends World {
         this.setPaintOrder(UI.class, Player.class, BaseActor.class, Item.class, Tile.class);
 
         menuMusic = new GreenfootSound("./sound/Menu.mp3");
+        menuMusic.setVolume(0);
         menuMusic.playLoop();
 
         Greenfoot.start();

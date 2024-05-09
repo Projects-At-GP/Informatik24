@@ -32,6 +32,7 @@ public class EnemyAI {
      */
     public void increaseAggressionWearinessIfApplicable(BaseEnemy self) {
         if (self == null) return;
+        if(self.pos == null) return; // TODO hotfix
         if (self.pos.subtract(playerPosCache).magnitude() <= self.enemyAI.intelligence.range) return;
         this.aggressionWeariness++;
         this.reevaluateAggression();

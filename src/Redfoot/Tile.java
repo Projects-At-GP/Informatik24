@@ -1,5 +1,6 @@
 package Redfoot;
 
+import animator.Animation;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 import vector.Vector2;
@@ -11,6 +12,9 @@ public class Tile extends BaseActor{
     int imgscale = 64;
     Game game;
     Chunk parent;
+    private Animation anim;
+    private int animFramesToDo;
+    private boolean open = false;
 
     public boolean walkable = false;
 
@@ -30,7 +34,15 @@ public class Tile extends BaseActor{
     }
 
     @Override
-    protected void priorityTick(Game.State state){
+    protected void awake(){
+        if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
+            this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
+            this.anim.resume();
+        }
+    }
+
+    @Override
+    protected void blockTick(Game.State state){
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
             System.out.println(this.pos);
@@ -38,12 +50,28 @@ public class Tile extends BaseActor{
         }
         if (this.id == 16){
             mineDoor();
+        } else if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
+            chest();
         }
     }
 
     private void mineDoor(){
         if (this.isTouching(Player.class)){
             this.game.render.changeWorld("dungeon");
+        }
+    }
+
+    private void chest(){
+        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2){
+            logger.info("player in range");
+            if (!open){
+                animFramesToDo = this.anim.frameCount;
+                open = true;
+            }
+        }
+        if(this.animFramesToDo > 0){ // TODO make chests an entity so that they do not get reloaded when crossing chunks
+            this.anim.update();
+            this.animFramesToDo--;
         }
     }
 
