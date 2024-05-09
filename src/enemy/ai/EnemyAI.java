@@ -81,10 +81,14 @@ public class EnemyAI {
         }
         Vector2 firstCandidate;
         if ((firstCandidate = path.peekFirst()) == null) return false;
+        if (Math.round(self.pos.x) == firstCandidate.x && Math.round(self.pos.y) == firstCandidate.y) {
+            path.removeFirst();
+            if ((firstCandidate = path.peekFirst()) == null) return false;
+        }
         Vector2 direction = firstCandidate.subtract(self.pos);
         System.out.println(self.pos);
-        self.pos.x += direction.normalize().x * state.deltaTime;
-        self.pos.y += direction.normalize().y * state.deltaTime;
+        self.pos.x += direction.normalize().x * state.deltaTime * self.enemyAI.intelligence.speed;
+        self.pos.y += direction.normalize().y * state.deltaTime * self.enemyAI.intelligence.speed;
         System.out.println(self.pos);
         System.out.println();
         return true;
