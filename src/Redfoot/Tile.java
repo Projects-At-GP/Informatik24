@@ -45,12 +45,16 @@ public class Tile extends BaseActor{
     }
 
     @Override
-    protected void blockTick(Game.State state){
+    protected void priorityTick(Game.State state){
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
             System.out.println(this.pos);
             //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: " + this.pos + "\\nCHUNK POS: " + parent.pos, this);
         }
+    }
+
+    @Override
+    protected void blockTick(Game.State state){
         if (this.id == 16){
             mineDoor();
         } else if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {

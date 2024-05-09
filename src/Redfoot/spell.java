@@ -44,20 +44,21 @@ public class spell extends BaseEntity {
     @Override
     protected void entityTick(Game.State state) {
         if(!awoke) return;
-        this.anim.update();
+        if(!hit) this.anim.update();
         this.anim.resume();
+    }
+
+    @Override
+    protected void priorityTick(Game.State state) {
         if(this.hit){
+            this.anim.update();
             if(this.deathAnimCounter <= 0){
                 renderer.ceaseEntity(this);
                 this.getWorld().removeObject(this);
             }
             this.deathAnimCounter--;
+            return;
         }
-    }
-
-    @Override
-    protected void priorityTick(Game.State state) {
-        if(hit) return;
         Vector2 dvscaled = dv.scale(speed * state.deltaTime);
         this.pos = this.pos.add(dvscaled);
     }
