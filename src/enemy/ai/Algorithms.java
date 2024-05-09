@@ -1,6 +1,7 @@
 package enemy.ai;
 
 import Redfoot.Renderer;
+import Redfoot.Tile;
 import enemy.ai.Exceptions.NoPathAvailable;
 import vector.Vector2;
 
@@ -53,7 +54,6 @@ public class Algorithms {
         LinkedList<Vector2> path;
 
         path = aStar(map, start, end);  // get detailed path
-        path = collapseToDirectLines(path);  // remove detail to get connecting lines
 
         // TODO: uncomment code
         //int turns = path.size() - 2;  // -2 since 2 points make a straight line, e.g. 3 points would have one corner
@@ -91,8 +91,6 @@ public class Algorithms {
             current = openSet.poll();
             if (current.equals(end)) return reconstructAStarPath(cameFrom, current);
 
-            openSet.poll();
-
             Vector2 finalCurrent = current;  // good practice to make a somewhat final version for lambdas
             LinkedList<Vector2> possibleNeighbors = new LinkedList<>(List.of(
                     new Vector2(finalCurrent.x+1, finalCurrent.y),
@@ -102,7 +100,7 @@ public class Algorithms {
             );
             Vector2[] neighbors = Arrays.stream(map.mapData).flatMap(Arrays::stream)
                                                             .filter(tile -> possibleNeighbors.contains(tile.pos))
-                                                            .filter(tile -> tile.walkable)
+                                                            .filter(Tile::isWalkable)
                                                             .map(tile -> tile.pos)
                                                             .toArray(Vector2[]::new);
             for (Vector2 neighbor : neighbors) {
@@ -132,14 +130,5 @@ public class Algorithms {
 
     private static Double calculateCost(Vector2 current, Vector2 target) {
         return current.subtract(target).magnitude();
-    }
-
-    private static LinkedList<Vector2> collapseToDirectLines(LinkedList<Vector2> notCollapsedPath) {
-        LinkedList<Vector2> collapsedPath = new LinkedList<>();
-
-        // TODO: work out some code to reduce length of list
-
-        //return collapsedPath;
-        return notCollapsedPath;  // TODO: remove demo placeholder
     }
 }

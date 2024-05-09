@@ -16,7 +16,6 @@ public class Tile extends BaseActor{
     private int animFramesToDo;
     private boolean open = false;
 
-    public boolean walkable = false;
 
     public Tile(int id, Vector2 pos, Game game, Chunk parent){
         super(game.render);
@@ -88,6 +87,9 @@ public class Tile extends BaseActor{
         }
     }
 
+    public boolean isWalkable() {
+        return !this.hasCollider;
+    }
 
     // to override logging when added to world
     @Override
