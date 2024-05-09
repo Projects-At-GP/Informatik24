@@ -38,6 +38,9 @@ public class Tile extends BaseActor{
         if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
             this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
             this.anim.resume();
+        } else if(this.id == 79){
+            this.anim = new Animation("./images/TorchSheet.png", this, 16, 4, 1);
+            this.anim.resume();
         }
     }
 
@@ -52,7 +55,13 @@ public class Tile extends BaseActor{
             mineDoor();
         } else if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
             chest();
+        } else if(this.id == 79){
+            torch();
         }
+    }
+
+    private void torch(){
+        this.anim.update();
     }
 
     private void mineDoor(){
