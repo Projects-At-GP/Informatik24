@@ -81,7 +81,7 @@ public class BaseEnemy extends BaseEntity {
         this.damageAlerted = true;
     }
 
-    public boolean gotDamaged() {
+    public boolean gotDamaged() {  // TODO for tomorrow: rename to `bypassesChaseRadius` with a 5sec cooldown
         return this.damageAlerted || !this.handledDamageAlert;
     }
 }
