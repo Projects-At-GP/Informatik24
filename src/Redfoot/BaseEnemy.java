@@ -1,15 +1,20 @@
 package Redfoot;
 
+import enemy.ai.Algorithms;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
 
+import java.util.LinkedList;
+
 public class BaseEnemy extends BaseEntity {
     public final EnemyAI enemyAI;
+    public LinkedList<Vector2> path;
 
     public BaseEnemy(Renderer renderer, EnemyAI enemyAI) {
         super(renderer);
         this.enemyAI = enemyAI;
+        this.path = new LinkedList<>();
     }
 
     public BaseEnemy(Renderer renderer) {
@@ -28,6 +33,11 @@ public class BaseEnemy extends BaseEntity {
             this.anim.update();
             this.anim.resume();
         }
+    }
+
+    @Override
+    protected void pathfindingTick(Game.State state) {
+        this.path = this.enemyAI.retrievePath(this, state);
     }
 
     public void getAlerted(Vector2 targetPos) {

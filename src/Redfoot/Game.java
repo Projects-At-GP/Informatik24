@@ -26,6 +26,7 @@ public class Game extends World {
     protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;
+    private int pathfindingTickIndex = -1;
     private File[] dir;
     private GreenfootSound menuMusic;
 
@@ -135,6 +136,15 @@ public class Game extends World {
         handleCollision();
         if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
         if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state2));
+
+        List<BaseEntity> pathfindingEntities = this.getObjects(BaseEntity.class);
+        int pathfindingTick = (int) Math.ceil((double) this.tps / pathfindingEntities.size());
+        System.out.println(pathfindingTick);
+        if (this.tick % pathfindingTick == 0) {
+            State stateP = new State(this.tick, pathfindingEntities.size() * pathfindingTick, this.deltaTime, this);
+            this.pathfindingTickIndex = (this.pathfindingTickIndex + 1) % pathfindingEntities.size();
+            pathfindingEntities.get(this.pathfindingTickIndex).pathfindingTick(stateP);
+        }
 
         render.render();
 

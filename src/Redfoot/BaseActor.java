@@ -78,6 +78,12 @@ public class BaseActor extends Actor {
      */
     protected void entityTick(Game.State state) {}
 
+    /**
+     * Used for entities for pathfinding.
+     * May not be called in constant intervals; depends on how many enemies want to be ticked.
+     */
+    protected void pathfindingTick(Game.State state) {}
+
     @Override
     public String toString() {
         return String.format("Actor with %s Redfoot.collider at position %s", hasCollider? "a" : "no", pos.toString());

@@ -71,26 +71,30 @@ public class EnemyAI {
         }
     }
 
+    public LinkedList<Vector2> retrievePath(BaseEnemy self, Game.State state) {
+        try {
+            return Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence);
+        } catch (NoPathAvailable e) {
+            return new LinkedList<>();
+        }
+    }
+
     public boolean chaseIfPossible(BaseEnemy self, Game.State state) {
         if (!this.isAggro || self.isDead) return false;
-        LinkedList<Vector2> path;
-        try {
-            path = Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence);
-        } catch (NoPathAvailable e) {
-            //System.out.println(e.getMessage());
-            return false;
-        }
+
         Vector2 firstCandidate;
-        if ((firstCandidate = path.peekFirst()) == null) return false;
+        if ((firstCandidate = self.path.peekFirst()) == null) return false;
         if (Math.round(self.pos.x) == firstCandidate.x && Math.round(self.pos.y) == firstCandidate.y) {
-            path.removeFirst();
-            if ((firstCandidate = path.peekFirst()) == null) return false;
+            self.path.removeFirst();
+            if ((firstCandidate = self.path.peekFirst()) == null) return false;
         }
+
         Vector2 direction = firstCandidate.subtract(self.pos);
+
         self.pos.x += direction.normalize().x * state.deltaTime * self.enemyAI.intelligence.speed;
         self.pos.y += direction.normalize().y * state.deltaTime * self.enemyAI.intelligence.speed;
 
-        if((int) direction.x > 0) {
+        if ((int) direction.x > 0) {
             self.anim.setAnim(2);
         } else if ((int) direction.x < 0) {
             self.anim.setAnim(1);
