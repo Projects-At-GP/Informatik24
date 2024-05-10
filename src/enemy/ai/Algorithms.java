@@ -40,20 +40,6 @@ public class Algorithms {
         cachedPath = path;
     }
 
-    public static boolean hasLineOfSight(Renderer.CachedMapData map, Vector2 start, Vector2 end) {
-        try {
-            getLineOfSightPath(map, start, end);
-        } catch (NoPathAvailable e) {
-            return false;
-        }
-        return true;
-    }
-
-    // TODO
-    public static LinkedList<Vector2> getLineOfSightPath(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
-        return getPath(map, start, end, IntelligenceEnum.NOOB_INTELLIGENCE);
-    }
-
     /**
      * Determines a walkable path from a starting position to an ending position if one is available
      * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
@@ -65,15 +51,14 @@ public class Algorithms {
      */
     public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence) throws NoPathAvailable {
         if (start == null || end == null) return new LinkedList<>();
-        if (isCached(map, start, end, intelligence)) return cachedPath;  // just computed?
 
-        LinkedList<Vector2> path;
+        // just computed?
+        if (isCached(map, start, end, intelligence)) return cachedPath;
 
-        path = aStar(map, start, end);  // get detailed path
+        // out of range?
+        if (end.subtract(start).magnitude() > intelligence.range) throw new NoPathAvailable(start, end, intelligence);
 
-        // TODO: uncomment code
-        //int turns = path.size() - 2;  // -2 since 2 points make a straight line, e.g. 3 points would have one corner
-        //if (turns > intelligence.maxTurns) throw new NoPathAvailable(start, end, intelligence);
+        LinkedList<Vector2> path = aStar(map, start, end, (int) Math.pow(intelligence.range, 1.75));  // get detailed path
 
         setCache(map, start, end, intelligence, path);
         return path;
@@ -87,9 +72,11 @@ public class Algorithms {
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
-    private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end) throws NoPathAvailable {
+    private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end, int maxIterations) throws NoPathAvailable {
         start = new Vector2(Math.round(start.x), Math.round(start.y));
         end = new Vector2(Math.round(end.x), Math.round(end.y));
+
+        int iterations = 0;
 
         // cameFrom
         LinkedHashMap<Vector2, Vector2> cameFrom = new LinkedHashMap<>();
@@ -108,6 +95,8 @@ public class Algorithms {
         Vector2 current;
         double tentativeGScore;
         while (!openSet.isEmpty()) {
+            // cap the calculations
+            if (iterations > maxIterations) throw new NoPathAvailable(start, end);
 
             current = openSet.poll();
             if (current.equals(end)) return reconstructAStarPath(cameFrom, current);
@@ -133,6 +122,7 @@ public class Algorithms {
                     if (!openSet.contains(neighbor)) openSet.add(neighbor);
                 }
             }
+            iterations++;
         }
 
         throw new NoPathAvailable(start, end);
