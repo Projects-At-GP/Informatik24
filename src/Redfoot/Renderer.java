@@ -177,11 +177,16 @@ public class Renderer {
                 game.addObject(e, ScreenX, ScreenY);
                 continue; // TODO is this needed?
             }
+            if(!e.healthInWorld && e.hp != 0){
+                game.addObject(e.health, ScreenX, ScreenY - 50);
+                e.healthInWorld = true;
+                System.out.println("added health");
+            }
             e.setLocation(ScreenX, ScreenY);
+            e.health.setLocation(ScreenX, ScreenY - 50);
         }
 
         for (BaseActor p : particles){
-            System.out.println(p.pos);
             if(p.pos == null) continue;
             int ScreenX = (int) ((p.pos.x * cellSize) - ((player.xInChunk) * cellSize) - ((player.chunkX -1) * 16 * cellSize) - (4.5 * cellSize) + (cellSize / 2));
             int ScreenY = (int) ((p.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY -1) * 16 * cellSize) - (9.5 * cellSize));
@@ -189,7 +194,6 @@ public class Renderer {
                 game.addObject(p, ScreenX, ScreenY);
                 continue; // TODO is this needed?
             }
-            System.out.printf("particle x %d, y %d\n", ScreenX, ScreenY);
             p.setLocation(ScreenX, ScreenY);
         }
 

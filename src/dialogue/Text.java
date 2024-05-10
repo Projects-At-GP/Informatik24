@@ -46,12 +46,17 @@ public class Text {
 
     public void popup(String text, Vector2 pos, int time){ // pos works in screenspace
         Popup thread = new Popup();
-        thread.startup(pos, this.game, getTextImage(text, chars[textLookup.indexOf(" ")], 8, 10), time);
+        thread.startup(pos, this.game, getTextImage(text, chars[textLookup.indexOf(" ")], 16, 10), time);
     }
 
     public void showTextBox(String text){
         this.dialogueBox.setImage(getTextImage(text, box, 0, 0));
         this.dialogueBox.getImage().setTransparency(255);
+    }
+
+    public void showText(String text, Actor actor){
+        actor.setImage(getTextImage(text, chars[textLookup.indexOf(" ")], 16, 10));
+        actor.getImage().setTransparency(255);
     }
 
     public GreenfootImage getTextImage(String text, BufferedImage baseImg, int xOffset2, int yOffset2){

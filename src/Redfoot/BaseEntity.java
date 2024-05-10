@@ -10,9 +10,10 @@ public class BaseEntity extends BaseActor{
     double hp;
     public boolean isDead = false;
     public boolean collided;
-    protected Animation anim;
+    public Animation anim;
     public Text text;
     public UI health;
+    public boolean healthInWorld = false;
 
     public BaseEntity(Renderer renderer) {
         super(renderer);
@@ -20,10 +21,12 @@ public class BaseEntity extends BaseActor{
     }
 
     public void takeDamage(double dmg){
-        this.text.popup("\\$FF0000" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
         hp -= dmg;
+        this.text.popup("\\$FF0000" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
+        this.text.showText("\\$FFFFFF" + (int) this.hp, this.health);
         if(hp <= 0) {
             renderer.ceaseEntity(this);
+            this.getWorld().removeObject(this.health);
             this.getWorld().removeObject(this);
             logger.info("I am dead");
             this.isDead = true;

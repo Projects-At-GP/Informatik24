@@ -10,7 +10,7 @@ import vector.Vector2;
 public class TestEnemy extends BaseEnemy {
     public TestEnemy(Renderer renderer, EnemyAI enemyAI) {
         super(renderer, enemyAI);
-        this.hp = 100;
+        this.hp = 50;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;

@@ -1,6 +1,7 @@
 package enemy.ai;
 
 import Redfoot.BaseEnemy;
+import Redfoot.BaseEntity;
 import Redfoot.Game;
 import enemy.ai.Exceptions.NoPathAvailable;
 import vector.Vector2;
@@ -88,6 +89,17 @@ public class EnemyAI {
         Vector2 direction = firstCandidate.subtract(self.pos);
         self.pos.x += direction.normalize().x * state.deltaTime * self.enemyAI.intelligence.speed;
         self.pos.y += direction.normalize().y * state.deltaTime * self.enemyAI.intelligence.speed;
+
+        if((int) direction.x > 0) {
+            self.anim.setAnim(2);
+        } else if ((int) direction.x < 0) {
+            self.anim.setAnim(1);
+        } else if ((int) direction.y > 0) {
+            self.anim.setAnim(0);
+        } else if ((int) direction.y < 0) {
+            self.anim.setAnim(3);
+        }
+
         return true;
     }
 }
