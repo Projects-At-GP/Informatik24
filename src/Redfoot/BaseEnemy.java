@@ -10,6 +10,8 @@ import java.util.LinkedList;
 public class BaseEnemy extends BaseEntity {
     public final EnemyAI enemyAI;
     public LinkedList<Vector2> path;
+    protected boolean damageAlerted = false;
+    protected boolean handledDamageAlert = true;
 
     public BaseEnemy(Renderer renderer, EnemyAI enemyAI) {
         super(renderer);
@@ -18,7 +20,7 @@ public class BaseEnemy extends BaseEntity {
     }
 
     public BaseEnemy(Renderer renderer) {
-        this(renderer, new EnemyAI(IntelligenceEnum.PRO_INTELLIGENCE));
+        this(renderer, new EnemyAI(IntelligenceEnum.ABSENT_IQ));
     }
 
     @Override
@@ -28,12 +30,13 @@ public class BaseEnemy extends BaseEntity {
         Vector2 wanderInstruction;
         
         this.enemyAI.setPlayerPosCache(this.renderer.player.pos);
-        this.enemyAI.aggro(this.renderer.player.pos);  //this.enemyAI.autoAggro();  // TODO: remove demo placeholder
-        this.enemyAI.increaseAggressionWearinessIfApplicable(this);
+        if (!this.enemyAI.autoAggro(this) && !this.gotDamaged()) this.enemyAI.reevaluateAggression(this);
+        if (this.gotDamaged()) this.enemyAI.isAggro = true;  // to override range based evaluation
         this.enemyAI.alertToSwarm(this, this.getWorld().getObjects(BaseEnemy.class));
-        if (this.enemyAI.chaseIfPossible(this, state)) {  // maybe move to priorityTick()
-            this.anim.update();
-            this.anim.resume();
+
+        boolean moved = false;
+        if (this.enemyAI.chaseIfPossible(this, state)) {
+            moved = true;
         } else if (this.pos.subtract(wanderInstruction = Algorithms.getWanderInstruction(this.renderer.exportToMapData(), this.pos)).magnitude() != 0) {
             this.pos.x += wanderInstruction.x * state.deltaTime * this.enemyAI.intelligence.speed/2;
             this.pos.y += wanderInstruction.y * state.deltaTime * this.enemyAI.intelligence.speed/2;
@@ -48,6 +51,10 @@ public class BaseEnemy extends BaseEntity {
             } else if ((int) wanderInstruction.y < 0) {
                 this.anim.setAnim(3);
             }
+            moved = true;
+        }
+
+        if (moved) {
             this.anim.update();
             this.anim.resume();
         }
@@ -55,10 +62,26 @@ public class BaseEnemy extends BaseEntity {
 
     @Override
     protected void pathfindingTick(Game.State state) {
+        if (!this.handledDamageAlert) this.handledDamageAlert = true;
         this.path = this.enemyAI.retrievePath(this, state);
+        if (this.damageAlerted) {
+            this.damageAlerted = false;
+            this.handledDamageAlert = false;
+        }
     }
 
     public void getAlerted(Vector2 targetPos) {
         this.enemyAI.aggro(targetPos);
+    }
+
+    @Override
+    public void takeDamage(double dmg) {
+        super.takeDamage(dmg);
+        this.getAlerted(this.renderer.player.pos);
+        this.damageAlerted = true;
+    }
+
+    public boolean gotDamaged() {
+        return this.damageAlerted || !this.handledDamageAlert;
     }
 }

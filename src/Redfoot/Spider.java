@@ -18,7 +18,7 @@ public class Spider extends BaseEnemy {
     }
 
     public Spider(Renderer renderer, Vector2 pos) {
-        this(renderer, new EnemyAI(IntelligenceEnum.NOOB_INTELLIGENCE), pos);
+        this(renderer, new EnemyAI(IntelligenceEnum.SPIDER), pos);
     }
 
     @Override

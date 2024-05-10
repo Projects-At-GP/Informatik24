@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Algorithms {
     private static Renderer.CachedMapData cachedMap;
     private static Vector2 cachedStart;
-    private static Vector2 cachedpos;
+    private static Vector2 cachedPos;
     private static IntelligenceEnum cachedIntelligence;
     private static LinkedList<Vector2> cachedPath;
 
@@ -22,7 +22,7 @@ public class Algorithms {
     private static boolean isCached(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence) {
         return (cachedMap == map &&
                 cachedStart == start &&
-                cachedpos == pos &&
+                cachedPos == pos &&
                 cachedIntelligence == intelligence);
     }
 
@@ -32,30 +32,37 @@ public class Algorithms {
     private static void setCache(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence, LinkedList<Vector2> path) {
         cachedMap = map;
         cachedStart = start;
-        cachedpos = pos;
+        cachedPos = pos;
         cachedIntelligence = intelligence;
         cachedPath = path;
     }
 
     /**
-     * Determines a walkable path from a starting position to an posing position if one is available
+     * Determines a walkable path from a starting position to an ending position if one is available
      * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
      * @param start the starting position
      * @param pos the posing position
      * @param intelligence information about the available intelligence
+     * @param gotDamaged whether the chasing range should be ignored as a radius
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
-    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence) throws NoPathAvailable {
+    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence, boolean gotDamaged) throws NoPathAvailable {
         if (start == null || pos == null) return new LinkedList<>();
 
         // just computed?
         if (isCached(map, start, pos, intelligence)) return cachedPath;
 
-        // out of range?
-        if (pos.subtract(start).magnitude() > intelligence.range) throw new NoPathAvailable(start, pos, intelligence);
+        double power = 1.75;
 
-        LinkedList<Vector2> path = aStar(map, start, pos, (int) Math.pow(intelligence.range, 1.75));  // get detailed path
+        // out of range?
+        if (pos.subtract(start).magnitude() > intelligence.chasingRange) {
+            // but got damaged? -> something like a line-of-sight can be implied!
+            if (!gotDamaged) throw new NoPathAvailable(start, pos, intelligence);
+            else power = 2.25;
+        }
+
+        LinkedList<Vector2> path = aStar(map, start, pos, (int) Math.pow(intelligence.chasingRange, power));  // get detailed path
 
         setCache(map, start, pos, intelligence, path);
         return path;
