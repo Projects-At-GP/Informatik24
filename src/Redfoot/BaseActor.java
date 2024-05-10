@@ -16,6 +16,7 @@ public class BaseActor extends Actor {
     public collider col;
     public boolean hasCollider = false;
     public boolean started = false;
+    public Vector2 screenPos;
 
     public BaseActor(Renderer renderer){
         this.renderer = renderer;

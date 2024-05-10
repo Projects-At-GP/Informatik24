@@ -14,6 +14,7 @@ public class BaseEntity extends BaseActor{
     public Text text;
     public UI health;
     public boolean healthInWorld = false;
+    public boolean interactable = false;
 
     public BaseEntity(Renderer renderer) {
         super(renderer);
@@ -22,7 +23,7 @@ public class BaseEntity extends BaseActor{
 
     public void takeDamage(double dmg){
         hp -= dmg;
-        this.text.popup("\\$FF0000" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
+        this.text.popup("\\$FF0000-" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
         this.text.showText("\\$FFFFFF" + (int) this.hp, this.health);
         if(hp <= 0) {
             renderer.ceaseEntity(this);
@@ -35,4 +36,6 @@ public class BaseEntity extends BaseActor{
         }
         logger.info(String.format("Took %d Damage! Now at %d HP", (int) dmg, (int) hp));
     }
+
+    protected void interactable(){}
 }

@@ -40,6 +40,10 @@ public class UIManager {
         this.panels.get(key).active = true;
     }
 
+    public void setPosition(String key, Vector2 pos){ // works in screenspace
+        this.panels.get(key).setLocation((int)pos.x, (int)pos.y);
+    }
+
     public void setInventory(ArrayList<Item> inventory){
         this.inventory = inventory;
         if(this.panels.get("hotbar").active){

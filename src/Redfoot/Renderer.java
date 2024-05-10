@@ -130,7 +130,7 @@ public class Renderer {
         //String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
         //this.text.showText(stringValue);
         if (this.currentTextSource != null){
-            if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 7){
+            if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 4){
                 uiManager.disableElement("dialogueBox");
             }
         }
@@ -182,6 +182,7 @@ public class Renderer {
                 e.healthInWorld = true;
                 System.out.println("added health");
             }
+            e.screenPos = new Vector2(ScreenX, ScreenY);
             e.setLocation(ScreenX, ScreenY);
             e.health.setLocation(ScreenX, ScreenY - 50);
         }

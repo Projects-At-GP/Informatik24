@@ -1,5 +1,6 @@
 package Redfoot;
 
+import dialogue.DialogueManager;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.GreenfootSound;
@@ -29,6 +30,7 @@ public class Game extends World {
     private int pathfindingTickIndex = -1;
     private File[] dir;
     private GreenfootSound menuMusic;
+    private DialogueManager dm;
 
     public Renderer render;
     public ArrayList<Actor> deletionList = new ArrayList<>();
@@ -39,6 +41,7 @@ public class Game extends World {
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
+        this.dm = new DialogueManager();
 
         NPC npc = new NPC(this.render);
         addObject(npc, 0, 0);

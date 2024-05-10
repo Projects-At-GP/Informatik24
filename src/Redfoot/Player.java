@@ -1,11 +1,11 @@
 package Redfoot;
-
 import dialogue.Text;
 import greenfoot.*;
 import animator.*;
 import vector.Vector2;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player extends BaseEntity{
 
@@ -30,6 +30,9 @@ public class Player extends BaseEntity{
     private Actor animHolder;
     private int animFramesToDo;
     private GreenfootSound stepSound = new GreenfootSound("./sound/steps.mp3");
+    private BaseEntity currentInteractable;
+    private UIManager uiManager;
+    private boolean ePressed;
 
 
 
@@ -58,12 +61,41 @@ public class Player extends BaseEntity{
         this.game.addObject(this.animHolder, 800, 450);
         this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 7);
         this.combatAnim.resume();
+        this.uiManager = this.renderer.uiManager;
+        this.uiManager.setElement(new UI(this.renderer), "InteractIcon", new Vector2(0, 0));
+        GreenfootImage img = new GreenfootImage("./images/interact.png");
+        img.scale(27, 27);
+        this.uiManager.getElement("InteractIcon").setImage(img);
+        this.renderer.addParticle(this.uiManager.getElement("InteractIcon"));
     }
 
     @Override
     protected void priorityTick(Game.State state) {
         movement(state.deltaTime);
         combat(state);
+        inventory();
+        interact();
+    }
+
+    private void interact(){
+        List<BaseEntity> entityList = new ArrayList<>(renderer.getEntities());
+        entityList.removeIf(entity -> !entity.interactable);
+        entityList.removeIf(entity -> entity.pos.subtract(this.pos).magnitude() >= 2);
+        if(!entityList.isEmpty()) currentInteractable = entityList.get(0);
+        if(currentInteractable == null) return;
+        this.uiManager.enableElement("InteractIcon");
+        this.uiManager.getElement("InteractIcon").pos = currentInteractable.pos.add(new Vector2(0.5, -0.5));
+        if(currentInteractable.pos.subtract(this.pos).magnitude() >= 3) {
+            currentInteractable = null;
+            this.uiManager.disableElement("InteractIcon");
+        }
+        if (!ePressed && intIsKeyPressed("e") == 1){
+            currentInteractable.interactable();
+        }
+        this.ePressed = intIsKeyPressed("e") == 1;
+    }
+
+    private void inventory(){
         oldIndex = selectedInventoryIndex;
         for (int i = 1; i < 10; i++){
             int value = intIsKeyPressed("" + i) * i;
@@ -159,8 +191,8 @@ public class Player extends BaseEntity{
 
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
-        System.out.println("collided with" + other);
         if(other instanceof BaseEntity) return;
+        System.out.println("collided with" + other);
         this.pos = oldPos;
     }
 }

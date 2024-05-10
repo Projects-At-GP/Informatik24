@@ -13,6 +13,7 @@ public class NPC extends BaseEntity {
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
+        this.interactable = true;
     }
 
     @Override
@@ -25,16 +26,24 @@ public class NPC extends BaseEntity {
 
     @Override
     protected void start(){
-
+        this.anim.update();
     }
 
     @Override
     protected void entityTick(Game.State state) {
-
-        this.anim.update();
-        this.anim.resume();
-        if (this.pos.x < 24){
-            this.pos.x += 3 * state.deltaTime;
-        } else this.pos.x = 16;
+        //this.anim.update();
+        //this.anim.resume();
+        //if (this.pos.x < 24){
+        //    this.pos.x += 3 * state.deltaTime;
+        //} else this.pos.x = 16;
     }
+
+    @Override
+    protected void interactable(){
+        System.out.println("test");
+        this.renderer.showText("HELLO", this);
+    }
+
+    @Override
+    public void takeDamage(double dmg){}
 }
