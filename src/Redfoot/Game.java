@@ -139,7 +139,6 @@ public class Game extends World {
 
         List<BaseEntity> pathfindingEntities = this.getObjects(BaseEntity.class);
         int pathfindingTick = (int) Math.ceil((double) this.tps / pathfindingEntities.size());
-        System.out.println(pathfindingTick);
         if (this.tick % pathfindingTick == 0) {
             State stateP = new State(this.tick, pathfindingEntities.size() * pathfindingTick, this.deltaTime, this);
             this.pathfindingTickIndex = (this.pathfindingTickIndex + 1) % pathfindingEntities.size();
