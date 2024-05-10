@@ -44,6 +44,10 @@ public class Game extends World {
         addObject(npc, 0, 0);
         this.render.addEntity(npc);
 
+        NPC2 npc2 = new NPC2(this.render);
+        addObject(npc2, 0, 0);
+        this.render.addEntity(npc2);
+
         Questmaster questmaster = new Questmaster(this.render);
         addObject(questmaster, 0, 0);
         this.render.addEntity(questmaster);

@@ -16,6 +16,6 @@ public class NPC extends BaseNPC {
         super(renderer);
         populateSentences();
         this.pos = new Vector2(23, 25);
-        this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
+        this.anim = new Animation("images/NPCSheet.png", this, 16, 4, 1);
     }
 }

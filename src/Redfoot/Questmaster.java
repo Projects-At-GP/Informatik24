@@ -13,6 +13,7 @@ public class Questmaster extends BaseNPC {
         this.sentences.add("HALLO. ICH BIN DER          \\nSTADTAELTESTE. ICH GEBE DIR \\nQUESTS.");
         this.sentences.add("KOMM EINFACH ZU MIR UND     \\nSPRICH MICH AN. DANN KANN   \\nICH DIR AUFGABEN GEBEN.     ");
         this.sentences.add("FOLGE DEM PFAD IN RICHTUNG  \\nDES SONNENAUFGANGS. WENN DU \\nAUS DER STADT HERAUS KOMMST \\nGEHE GEN SUEDEN. BESIEGE    \\nDORT DREI SPINNEN.");
+        this.sentences.add("TEST\\$00FF00 BLOBS");
     }
 
     private void populateSpawnList(){
@@ -21,6 +22,8 @@ public class Questmaster extends BaseNPC {
         this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(43, 39)),
                 new Spider(this.renderer, new Vector2(40, 40)),
                 new Spider(this.renderer, new Vector2(42, 41))});
+        this.spawnList.add(new Blob[]{new Blob(this.renderer, new Vector2(20, 20)),
+                new Blob(this.renderer, new Vector2(22, 21))});
     }
 
     public Questmaster(Renderer renderer) {
