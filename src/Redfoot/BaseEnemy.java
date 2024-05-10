@@ -24,12 +24,29 @@ public class BaseEnemy extends BaseEntity {
     @Override
     protected void entityTick(Game.State state) {
         super.entityTick(state);
-        if (this.isDead) return;
+        if (this.isDead || this.pos == null) return;
+        Vector2 wanderInstruction;
+        
         this.enemyAI.setPlayerPosCache(this.renderer.player.pos);
         this.enemyAI.aggro(this.renderer.player.pos);  //this.enemyAI.autoAggro();  // TODO: remove demo placeholder
         this.enemyAI.increaseAggressionWearinessIfApplicable(this);
         this.enemyAI.alertToSwarm(this, this.getWorld().getObjects(BaseEnemy.class));
         if (this.enemyAI.chaseIfPossible(this, state)) {  // maybe move to priorityTick()
+            this.anim.update();
+            this.anim.resume();
+        } else if (this.pos.subtract(wanderInstruction = Algorithms.getWanderInstruction(this.renderer.exportToMapData(), this.pos)).magnitude() != 0) {
+            this.pos.x += wanderInstruction.x * state.deltaTime * this.enemyAI.intelligence.speed/2;
+            this.pos.y += wanderInstruction.y * state.deltaTime * this.enemyAI.intelligence.speed/2;
+
+            if ((int) wanderInstruction.x > 0) {
+                this.anim.setAnim(2);
+            } else if ((int) wanderInstruction.x < 0) {
+                this.anim.setAnim(1);
+            } else if ((int) wanderInstruction.y > 0) {
+                this.anim.setAnim(0);
+            } else if ((int) wanderInstruction.y < 0) {
+                this.anim.setAnim(3);
+            }
             this.anim.update();
             this.anim.resume();
         }

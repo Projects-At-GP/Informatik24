@@ -11,7 +11,7 @@ import java.util.List;
 
 
 public class EnemyAI {
-    protected final IntelligenceEnum intelligence;
+    public final IntelligenceEnum intelligence;
     protected int aggressionWeariness;
     protected boolean isAggro = false;
     protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
