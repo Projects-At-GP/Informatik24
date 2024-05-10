@@ -38,6 +38,7 @@ public class BaseEnemy extends BaseEntity {
             this.pos.x += wanderInstruction.x * state.deltaTime * this.enemyAI.intelligence.speed/2;
             this.pos.y += wanderInstruction.y * state.deltaTime * this.enemyAI.intelligence.speed/2;
 
+            if(this.anim == null) return;
             if ((int) wanderInstruction.x > 0) {
                 this.anim.setAnim(2);
             } else if ((int) wanderInstruction.x < 0) {

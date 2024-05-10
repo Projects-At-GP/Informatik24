@@ -7,22 +7,22 @@ import enemy.ai.IntelligenceEnum;
 import greenfoot.Greenfoot;
 import vector.Vector2;
 
-public class TestEnemy extends BaseEnemy {
-    public TestEnemy(Renderer renderer, EnemyAI enemyAI) {
+public class Spider extends BaseEnemy {
+    public Spider(Renderer renderer, EnemyAI enemyAI, Vector2 pos) {
         super(renderer, enemyAI);
         this.hp = 50;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
+        this.pos = pos;
     }
 
-    public TestEnemy(Renderer renderer) {
-        this(renderer, new EnemyAI(IntelligenceEnum.PRO_INTELLIGENCE));
+    public Spider(Renderer renderer, Vector2 pos) {
+        this(renderer, new EnemyAI(IntelligenceEnum.NOOB_INTELLIGENCE), pos);
     }
 
     @Override
     protected void awake() {
-        this.pos = new Vector2(this.renderer.player.pos.x - (Greenfoot.getRandomNumber(6) - 2.5), this.renderer.player.pos.y - (Greenfoot.getRandomNumber(6) - 2.5));
         this.text = new Text(this.renderer.game, null);
         this.anim = new Animation("images/testEnemySheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);

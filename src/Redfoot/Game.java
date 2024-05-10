@@ -44,7 +44,9 @@ public class Game extends World {
         addObject(npc, 0, 0);
         this.render.addEntity(npc);
 
-        spawnEntity();
+        Questmaster questmaster = new Questmaster(this.render);
+        addObject(questmaster, 0, 0);
+        this.render.addEntity(questmaster);
 
         Weapon sword = new Weapon(this.render, "SilverSword.png");
         sword.pos = new Vector2(21, 21);
@@ -71,10 +73,9 @@ public class Game extends World {
         Greenfoot.start();
     }
 
-    public void spawnEntity(){ // TODO implement different entities
-        TestEnemy testEnemy = new TestEnemy(this.render);
-        addObject(testEnemy, 0, 0);
-        this.render.addEntity(testEnemy);
+    public void spawnEntity(BaseEnemy enemy){
+        addObject(enemy, 0, 0);
+        this.render.addEntity(enemy);
     }
 
     public Game() {
