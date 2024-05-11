@@ -52,20 +52,21 @@ public class Game extends World {
         addObject(questmaster, 0, 0);
         this.render.addEntity(questmaster);
 
-        Weapon sword = new Weapon(this.render, "SilverSword.png");
+        Weapon sword = new Weapon(this.render, WeaponEnum.SILVERSWORD);
         sword.pos = new Vector2(21, 21);
-        addObject(sword, 0, 0);
-        this.render.addEntity(sword);
+        spawnEntity(sword);
 
-        Weapon kunai = new Weapon(this.render, "Kunai.png");
-        kunai.pos = new Vector2(23, 21);
-        addObject(kunai, 0, 0);
-        this.render.addEntity(kunai);
+        Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD);
+        broadsword.pos = new Vector2(23, 21);
+        spawnEntity(broadsword);
 
-        spellItem fireBall = new spellItem(this.render, "darkFireball.png");
+        spellItem fireBall = new spellItem(this.render, WeaponEnum.FIREBALL);
         fireBall.pos = new Vector2(25, 21);
-        addObject(fireBall, 0, 0);
-        this.render.addEntity(fireBall);
+        spawnEntity(fireBall);
+
+        Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD);
+        coppersword.pos = new Vector2(27, 21);
+        spawnEntity(coppersword);
 
         this.addObject(player, 800, 450);
         this.setPaintOrder(UI.class, Player.class, BaseActor.class, Item.class, Tile.class);
@@ -77,7 +78,7 @@ public class Game extends World {
         Greenfoot.start();
     }
 
-    public void spawnEntity(BaseEnemy enemy){
+    public void spawnEntity(BaseEntity enemy){
         addObject(enemy, 0, 0);
         this.render.addEntity(enemy);
     }

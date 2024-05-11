@@ -2,7 +2,9 @@ package enemy.ai;
 
 public enum IntelligenceEnum {
     ABSENT_IQ(0, 0, 0, 0, 0, false),
-    SPIDER(5, 8.5, 0.75, 10, 3, false);
+    SPIDER(5, 8.5, 0.75, 10, 3, false),
+    BLOB(7, 12, 1, 20, 3, false);
+
 
     public final double aggressionRange;  // range for initial aggression
     public final double chasingRange;  // range for chasing

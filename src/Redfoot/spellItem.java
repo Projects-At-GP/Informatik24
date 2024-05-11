@@ -3,8 +3,8 @@ package Redfoot;
 import vector.Vector2;
 
 public class spellItem extends Weapon{
-    public spellItem(Renderer renderer, String imgPath) {
-        super(renderer, imgPath);
+    public spellItem(Renderer renderer, WeaponEnum values) {
+        super(renderer, values);
     }
 
     @Override

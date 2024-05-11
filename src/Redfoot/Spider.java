@@ -4,7 +4,6 @@ import animator.Animation;
 import dialogue.Text;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
-import greenfoot.Greenfoot;
 import vector.Vector2;
 
 public class Spider extends BaseEnemy {

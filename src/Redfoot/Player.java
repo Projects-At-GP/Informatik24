@@ -22,9 +22,12 @@ public class Player extends BaseEntity{
     Game game;
     Animation anim;
     Animation combatAnim;
+
     public ArrayList<Item> inventory = new ArrayList<>();
-    private double[] cooldownArray = new double[10];
+    public ArrayList<BaseEnemy> killList = new ArrayList<>();
     public int selectedInventoryIndex;
+
+    private double[] cooldownArray = new double[10];
     private int dir; // 0 for north, clockwise after that
     private int oldIndex;
     private Actor animHolder;
@@ -51,6 +54,10 @@ public class Player extends BaseEntity{
     public void pickupItem(Item item){
         this.inventory.add(item);
         this.renderer.uiManager.setInventory(inventory);
+    }
+
+    public void killedEnemy(BaseEnemy enemy){
+        this.killList.add(enemy);
     }
 
     @Override

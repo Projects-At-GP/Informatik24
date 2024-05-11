@@ -79,6 +79,7 @@ public class BaseEnemy extends BaseEntity {
         super.takeDamage(dmg);
         this.getAlerted(this.renderer.player.pos);
         this.damageAlerted = true;
+        if(this.isDead) this.renderer.player.killedEnemy(this);
     }
 
     public boolean gotDamaged() {  // TODO for tomorrow: rename to `bypassesChaseRadius` with a 5sec cooldown

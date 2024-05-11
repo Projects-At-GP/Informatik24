@@ -4,7 +4,6 @@ import animator.Animation;
 import dialogue.Text;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
-import greenfoot.Greenfoot;
 import vector.Vector2;
 
 public class Blob extends BaseEnemy {
@@ -18,7 +17,7 @@ public class Blob extends BaseEnemy {
     }
 
     public Blob(Renderer renderer, Vector2 pos) {
-        this(renderer, new EnemyAI(IntelligenceEnum.NOOB_INTELLIGENCE), pos);
+        this(renderer, new EnemyAI(IntelligenceEnum.BLOB), pos);
     }
 
     @Override

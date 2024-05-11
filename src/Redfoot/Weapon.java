@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Weapon extends Item{
-    private final int damage = 20;
-    public final double cooldown = 1;
+    protected int damage;
+    public double cooldown;
+    public final WeaponEnum values;
 
-    public Weapon(Renderer renderer, String imgPath) {
-        super(renderer, imgPath);
+    public Weapon(Renderer renderer, WeaponEnum values) {
+        super(renderer, values.imgPath);
+        this.values = values;
+        this.cooldown = values.cooldown;
+        this.damage = values.damage;
     }
 
     public void doDamage(Player player, int direction){
