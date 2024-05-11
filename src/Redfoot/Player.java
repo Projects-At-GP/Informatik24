@@ -43,6 +43,7 @@ public class Player extends BaseEntity{
         super(null);
         this.game = game;
         this.pos = pos;
+        this.hp = 100;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
@@ -63,6 +64,7 @@ public class Player extends BaseEntity{
     @Override
     protected void awake(){
         this.renderer = game.render;
+        super.awake();
         this.anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
         this.animHolder = new BaseActor(renderer);
         this.game.addObject(this.animHolder, 800, 450);

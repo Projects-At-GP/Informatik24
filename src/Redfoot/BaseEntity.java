@@ -36,4 +36,10 @@ public class BaseEntity extends BaseActor{
     }
 
     protected void interactable(){}
+
+    @Override
+    protected void awake() {
+        super.awake();
+        this.text = new Text(this.renderer.game, null);
+    }
 }

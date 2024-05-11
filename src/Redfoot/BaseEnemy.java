@@ -34,14 +34,16 @@ public class BaseEnemy extends BaseEntity {
         if (this.gotDamaged()) this.enemyAI.isAggro = true;  // to override range based evaluation
         this.enemyAI.alertToSwarm(this, this.getWorld().getObjects(BaseEnemy.class));
 
-        boolean moved = false;
-        if (this.enemyAI.chaseIfPossible(this, state)) {
+        boolean moved;
+        if (this.enemyAI.damageIfPossible(this, state)) {
+            moved = false;
+        } else if (this.enemyAI.chaseIfPossible(this, state)) {
             moved = true;
         } else if (this.pos.subtract(wanderInstruction = Algorithms.getWanderInstruction(this.renderer.exportToMapData(), this.pos)).magnitude() != 0) {
             this.pos.x += wanderInstruction.x * state.deltaTime * this.enemyAI.intelligence.speed/2;
             this.pos.y += wanderInstruction.y * state.deltaTime * this.enemyAI.intelligence.speed/2;
 
-            if(this.anim == null) return;
+            if (this.anim == null) return;
             if ((int) wanderInstruction.x > 0) {
                 this.anim.setAnim(2);
             } else if ((int) wanderInstruction.x < 0) {
@@ -52,9 +54,9 @@ public class BaseEnemy extends BaseEntity {
                 this.anim.setAnim(3);
             }
             moved = true;
-        }
+        } else moved = false;
 
-        if (moved) {
+        if (moved && this.anim != null) {
             this.anim.update();
             this.anim.resume();
         }

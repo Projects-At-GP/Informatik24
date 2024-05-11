@@ -8,8 +8,8 @@ import java.io.File;
 import java.util.*;
 
 public class Renderer {
-    Game game;
-    Player player;
+    public Game game;
+    public Player player;
     private boolean instantiated = false;
 
     final int cellSize = 64;

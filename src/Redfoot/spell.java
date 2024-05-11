@@ -36,6 +36,7 @@ public class spell extends BaseEntity {
 
     @Override
     protected void awake(){
+        super.awake();
         this.anim = new Animation("images/fireballSheet.png", this, 8, 4, 1);
         this.anim.setAnim(0);
         this.awoke = true;
