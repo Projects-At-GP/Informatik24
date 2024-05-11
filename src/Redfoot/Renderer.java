@@ -91,6 +91,14 @@ public class Renderer {
         System.out.println("changing world");
         this.world = world;
         this.player.pos = new Vector2(1, 1);
+
+        for(BaseEntity entity : entities){
+            entity.active = false;
+            if (!entity.world.equals(world)){
+                entity.getImage().setTransparency(0);
+            } else entity.getImage().setTransparency(255); // TODO
+        }
+
         for(int i = 0; i < 2; i++){
             for(int c = 0; c < 3; c++){
                 chunkMap[i+1][c] = new Chunk(c, i, game, world);

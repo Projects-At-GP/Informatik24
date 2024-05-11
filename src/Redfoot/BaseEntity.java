@@ -15,13 +15,17 @@ public class BaseEntity extends BaseActor{
     public UI health;
     public boolean healthInWorld = false;
     public boolean interactable = false;
+    public boolean active;
+    public String world;
 
     public BaseEntity(Renderer renderer) {
         super(renderer);
         this.health = new UI(renderer);
+        this.active = true;
     }
 
     public void takeDamage(double dmg){
+        if(!this.active) return;
         hp -= dmg;
         this.text.popup("\\$FF0000-" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
         this.text.showText("\\$FFFFFF" + (int) this.hp, this.health);

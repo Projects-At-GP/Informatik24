@@ -55,9 +55,9 @@ public class Player extends BaseEntity{
         this.stepSound.setVolume(0);
         this.stepSound.playLoop();
         this.stepSound.pause();
-        fullHeart.scale(32, 32);
-        halfHeart.scale(32, 32);
-        emptyHeart.scale(32, 32);
+        fullHeart.scale(48, 48);
+        halfHeart.scale(48, 48);
+        emptyHeart.scale(48, 48);
     }
 
     public void pickupItem(Item item){
@@ -95,7 +95,7 @@ public class Player extends BaseEntity{
             UI heart = new UI(renderer);
             heart.setImage(fullHeart);
             this.hearts[i] = heart;
-            this.uiManager.setElement(heart, "heart" + i, new Vector2(20, 20 + i * 34));
+            this.uiManager.setElement(heart, "heart" + i, new Vector2(20 + i * 52, 20));
             this.uiManager.enableElement("heart" + i);
         }
     }

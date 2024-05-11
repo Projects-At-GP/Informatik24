@@ -25,6 +25,7 @@ public class BaseEnemy extends BaseEntity {
 
     @Override
     protected void entityTick(Game.State state) {
+        if(!this.active) return;
         super.entityTick(state);
         if (this.isDead || this.pos == null) return;
         Vector2 wanderInstruction;
