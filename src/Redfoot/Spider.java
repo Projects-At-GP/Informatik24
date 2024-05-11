@@ -22,7 +22,7 @@ public class Spider extends BaseEnemy {
 
     @Override
     protected void awake() {
-        this.text = new Text(this.renderer.game, null);
+        super.awake();
         this.anim = new Animation("images/testEnemySheet.png", this, 16, 4, 1);
         this.anim.setAnim(2);
         this.anim.update();

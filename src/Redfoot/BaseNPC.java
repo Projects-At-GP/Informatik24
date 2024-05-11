@@ -25,7 +25,7 @@ public class BaseNPC extends BaseEntity {
 
     @Override
     protected void awake(){
-        this.text = new Text(this.renderer.game, null);
+        super.awake();
     }
 
     @Override

@@ -13,6 +13,7 @@ public class EnemyAI {
     public final IntelligenceEnum intelligence;
     public boolean isAggro = false;
     protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
+    private double dealDamageAfterTick = 0;
 
     public EnemyAI(IntelligenceEnum intelligence) {
         this.intelligence = intelligence;
@@ -84,6 +85,14 @@ public class EnemyAI {
             self.anim.setAnim(3);
         }
 
+        return true;
+    }
+
+    public boolean damageIfPossible(BaseEnemy self, Game.State state) {
+        if (state.tick < this.dealDamageAfterTick) return false;
+        if (this.playerPosCache.subtract(self.pos).magnitude() > this.intelligence.attackRange) return false;
+        state.game.render.player.takeDamage(this.intelligence.attackDamage);
+        this.dealDamageAfterTick = state.tick + this.intelligence.attackCooldownTicks;
         return true;
     }
 }

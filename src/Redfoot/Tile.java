@@ -47,7 +47,7 @@ public class Tile extends BaseActor{
     protected void priorityTick(Game.State state){
         if(Greenfoot.mouseClicked(this)){
             // TODO logic for interactables
-            System.out.println(this.pos);
+            this.logger.finest(String.format("A mouse bit me at %1$,.0f/%2$,.0f", pos.x, pos.y));
             //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: \\$0000FF" + this.pos + "\\$000000 \\nCHUNK POS: " + parent.pos, this);
         }
     }

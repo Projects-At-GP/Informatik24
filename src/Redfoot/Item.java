@@ -15,6 +15,7 @@ public class Item extends BaseEntity{
 
     @Override
     protected void awake(){
+        super.awake();
         this.img.scale(64,64);
         this.setImage(img);
     }
