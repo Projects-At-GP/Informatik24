@@ -66,8 +66,14 @@ public class Player extends BaseEntity{
         this.anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
         this.animHolder = new BaseActor(renderer);
         this.game.addObject(this.animHolder, 800, 450);
-        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 7);
+
+        List<String> SwingColours = new ArrayList<>();
+        for(WeaponEnum wEnum : WeaponEnum.values()){
+            if(!SwingColours.contains(wEnum.colour)) SwingColours.add(wEnum.colour);
+        }
+        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 10, SwingColours);
         this.combatAnim.resume();
+
         this.uiManager = this.renderer.uiManager;
         this.uiManager.setElement(new UI(this.renderer), "InteractIcon", new Vector2(0, 0));
         GreenfootImage img = new GreenfootImage("./images/interact.png");
@@ -82,6 +88,10 @@ public class Player extends BaseEntity{
         combat(state);
         inventory();
         interact();
+        if (this.animFramesToDo > 0){
+            this.combatAnim.update();
+            this.animFramesToDo--;
+        } else this.combatAnim.stop();
     }
 
     private void interact(){
@@ -134,6 +144,7 @@ public class Player extends BaseEntity{
                     cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
                     if (selectedItem.getClass() == Weapon.class){
                         this.animFramesToDo = combatAnim.frameCount;
+                        this.combatAnim.setColour(((Weapon) selectedItem).values.colour);
                         this.combatAnim.resetCounter();
                         this.combatAnim.resume();
                     }
@@ -190,10 +201,7 @@ public class Player extends BaseEntity{
     @Override
     protected void entityTick(Game.State state){
         this.anim.update();
-        if (this.animFramesToDo > 0){
-            this.combatAnim.update();
-            this.animFramesToDo--;
-        } else this.combatAnim.stop();
+
     }
 
     @Override

@@ -2,10 +2,15 @@ package animator;
 import greenfoot.Actor;
 import greenfoot.GreenfootImage;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import javax.imageio.ImageIO;
+import dialogue.Text;
 
 public class Animation {
 
@@ -18,17 +23,20 @@ public class Animation {
     private int baseImg;
     private String sheetPath;
     private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
-    final String path = this.filePrefix + "images/tmp";
+    final String path = this.filePrefix + "images/tmp/";
 
     private int counter;
     private int currentAnim;
-
-
     private GreenfootImage[][] frames;
+
+
+    private HashMap<String, GreenfootImage[][]> framesColour = new HashMap<String, GreenfootImage[][]>();
     public int frameCount;
     private boolean isRunning;
+    private List<String> colours;
+    private String currentColour = "Default";
 
-    public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg){
+    public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg, List<String> colours){
         try {
             this.actor = actor;
             this.sheetPath = animSheetPath;
@@ -36,8 +44,14 @@ public class Animation {
             this.frameSize = frameSize;
             this.scale = scale;
             this.animSheet = ImageIO.read(new File(this.filePrefix + animSheetPath));
-            createFrames(this.animSheet);
             this.animFrameCount = this.animSheet.getWidth() / frameSize;
+            createFrames(this.animSheet, "Default");
+
+            if(colours != null){
+                for(String colour : colours){
+                    createFrames(this.animSheet, colour);
+                }
+            }
 
             File tmpDir = new File("./images/tmp");
             if(!tmpDir.exists()){
@@ -48,25 +62,34 @@ public class Animation {
         }
     }
 
-    void createFrames(BufferedImage sheet) throws IOException{
+    public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg){
+        this(animSheetPath, actor, frameSize, scale, baseImg, null);
+    }
+
+    private void createFrames(BufferedImage sheet, String colour) throws IOException{
+        if(framesColour.containsKey(colour)) return;
         this.frameCount = this.animSheet.getWidth() / this.frameSize;
-        this.frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][frameCount];
+        frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][frameCount];
         String[] keys = sheetPath.replace(".png", "").split("/");
         String key = keys[keys.length-1];
         for(int c = 0; c < sheet.getHeight() / this.frameSize; c++){
             for(int i = 0; i < sheet.getWidth() / this.frameSize; i++){
                 BufferedImage subImg = sheet.getSubimage(i * this.frameSize, c * this.frameSize, this.frameSize, this.frameSize);
-                File file = new File(this.path + key + "tmp" + c + "_" + i + "_.png");
+                if(!colour.equals("Default")){
+                    subImg = Text.changeImageColour(subImg, Text.getColorFromHex(colour));
+                }
+                File file = new File(this.path + key + colour + "tmp" + c + "_" + i + "_.png");
                 ImageIO.write(subImg, "png", file);
-                this.frames[c][i] = new GreenfootImage(this.path + key + "tmp" + c + "_" + i + "_.png");
+                frames[c][i] = new GreenfootImage(this.path + key + colour + "tmp" + c + "_" + i + "_.png");
                 file.delete();
             }
         }
+        framesColour.putIfAbsent(colour, frames);
     }
 
     public void update(){
         if(this.counter >= this.animFrameCount) this.counter = 0;
-        GreenfootImage img = frames[currentAnim][this.isRunning ? this.counter : this.baseImg];
+        GreenfootImage img = framesColour.get(currentColour)[currentAnim][this.isRunning ? this.counter : this.baseImg];
         img.scale(this.frameSize * this.scale, this.frameSize * this.scale);
         this.counter++;
         actor.setImage(img);
@@ -87,5 +110,9 @@ public class Animation {
 
     public void resetCounter(){
         this.counter = 0;
+    }
+
+    public void setColour(String colourCode){
+        this.currentColour = colourCode;
     }
 }

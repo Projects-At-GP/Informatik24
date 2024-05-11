@@ -94,7 +94,7 @@ public class Text {
         return returnImg;
     }
 
-    private Color getColorFromHex(String hexColor) {
+    public static Color getColorFromHex(String hexColor) {
         // Parse hex string to RGB components
         int red = Integer.parseInt(hexColor.substring(0, 2), 16);
         int green = Integer.parseInt(hexColor.substring(2, 4), 16);
@@ -104,7 +104,7 @@ public class Text {
         return new Color(red, green, blue);
     }
 
-    private BufferedImage changeImageColour(BufferedImage image, Color colour) {
+    public static BufferedImage changeImageColour(BufferedImage image, Color colour) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -113,8 +113,8 @@ public class Text {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 int pixel = image.getRGB(x, y);
-                if (pixel == Color.BLACK.getRGB()) {
-                    pixel = colour.getRGB();
+                if ((pixel >> 24) != 0x00) { // Check if pixel is not transparent
+                    pixel = colour.getRGB() & 0x00FFFFFF | (pixel & 0xFF000000); // Keep the original alpha value
                 }
                 result.setRGB(x, y, pixel);
             }
