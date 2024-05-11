@@ -201,7 +201,7 @@ public class Player extends BaseEntity{
     @Override
     protected void onCollision(BaseActor other, Vector2 mtv){
         if(other instanceof BaseEntity) return;
-        System.out.println("collided with" + other);
+        this.logger.finest("collided with" + other);
         this.pos = oldPos;
     }
 }

@@ -4,8 +4,13 @@ import vector.Vector2;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Chunk {
+    private static final Logger logger;
+    static {
+        logger = Logger.getLogger("Chunk");
+    }
 
     public Tile[][][] map = new Tile[16][16][2];
     public final Vector2 pos;
@@ -19,7 +24,7 @@ public class Chunk {
         this.pos = new Vector2(x, y);
         this.world = world;
         this.game = game;
-        System.out.printf("Redfoot.Chunk %d-%d is reading data\n", x, y);
+        logger.info(String.format("Reading data: %d-%d", x, y));
         readChunk(x + "-" + y);
     }
 

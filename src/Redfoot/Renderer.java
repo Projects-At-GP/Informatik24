@@ -6,8 +6,14 @@ import vector.Vector2;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Logger;
 
 public class Renderer {
+    private static final Logger logger;
+    static {
+        logger = Logger.getLogger("Chunk");
+    }
+
     public Game game;
     public Player player;
     private boolean instantiated = false;
@@ -138,9 +144,8 @@ public class Renderer {
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
-            System.out.printf("Redfoot.Player moved to another chunk! Direction x %d, y %d\n", dx, dy);
+            logger.finest(String.format("Redfoot.Player moved to another chunk! Direction x %d, y %d", dx, dy));
             Chunk[][] tmpChunkMap = chunkMap;
-            System.out.printf("Richtung x:%d\n", dx);
             for(int i = 0; i < 3; i++){
                 for(int c = 0; c < 3; c++){
                     tmpChunkMap[i][c] = new Chunk((int) tmpChunkMap[i][c].pos.x+dx, (int) tmpChunkMap[i][c].pos.y+dy, game, world);
