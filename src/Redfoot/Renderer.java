@@ -133,14 +133,11 @@ public class Renderer {
      * Method to render the environment. Manipulates location of tiles for every position in a grid of 3x3 chunks
      */
     public void render(){
-        //String stringValue = String.format("X: %.2f \\nY: %.2f", player.pos.x, player.pos.y);
-        //this.text.showText(stringValue);
         if (this.currentTextSource != null){
             if (this.currentTextSource.pos.subtract(this.player.pos).magnitude() >= 4){
                 uiManager.disableElement("dialogueBox");
             }
         }
-        //uiManager.enableElement("dialogueBox");
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
         if((dx != 0 || dy != 0) && instantiated){
@@ -185,7 +182,6 @@ public class Renderer {
             if(!e.healthInWorld && e.hp != 0){
                 game.addObject(e.health, ScreenX, ScreenY - 50);
                 e.healthInWorld = true;
-                System.out.println("added health");
             }
             e.screenPos = new Vector2(ScreenX, ScreenY);
             e.setLocation(ScreenX, ScreenY);

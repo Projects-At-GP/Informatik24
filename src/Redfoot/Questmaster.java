@@ -58,7 +58,6 @@ public class Questmaster extends BaseNPC {
             if(this.spawnList.get(counter) != null){
                 for (BaseEnemy enemy : spawnList.get(counter)){
                     this.renderer.game.spawnEntity(enemy);
-                    System.out.println("Spawned Enemy");
                 }
             }
             counter++;

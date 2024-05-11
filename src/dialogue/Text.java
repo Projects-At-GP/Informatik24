@@ -142,7 +142,6 @@ public class Text {
         this.chars = new BufferedImage[size];
         String[] keys = sheetPath.replace(".png", "").split("/");
         String key = keys[keys.length-1];
-        System.out.println(key);
         for(int c = 0; c < this.sheet.getHeight() / this.frameSize; c++){
             for(int i = 0; i < this.sheet.getWidth() / this.frameSize; i++){
                 BufferedImage subImg = this.sheet.getSubimage(i * this.frameSize, c * this.frameSize, this.frameSize, this.frameSize);

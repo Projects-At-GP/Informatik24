@@ -36,6 +36,11 @@ public class Player extends BaseEntity{
     private BaseEntity currentInteractable;
     private UIManager uiManager;
     private boolean ePressed;
+    private UI[] hearts = new UI[5];
+    private GreenfootImage fullHeart = new GreenfootImage("./images/heartfull.png");
+    private GreenfootImage halfHeart = new GreenfootImage("./images/hearthalf.png");
+    private GreenfootImage emptyHeart = new GreenfootImage("./images/heartempty.png");
+
 
 
 
@@ -50,6 +55,9 @@ public class Player extends BaseEntity{
         this.stepSound.setVolume(0);
         this.stepSound.playLoop();
         this.stepSound.pause();
+        fullHeart.scale(32, 32);
+        halfHeart.scale(32, 32);
+        emptyHeart.scale(32, 32);
     }
 
     public void pickupItem(Item item){
@@ -82,6 +90,14 @@ public class Player extends BaseEntity{
         img.scale(27, 27);
         this.uiManager.getElement("InteractIcon").setImage(img);
         this.renderer.addParticle(this.uiManager.getElement("InteractIcon"));
+
+        for(int i = 0; i < this.hearts.length; i++){
+            UI heart = new UI(renderer);
+            heart.setImage(fullHeart);
+            this.hearts[i] = heart;
+            this.uiManager.setElement(heart, "heart" + i, new Vector2(20, 20 + i * 34));
+            this.uiManager.enableElement("heart" + i);
+        }
     }
 
     @Override
@@ -211,5 +227,25 @@ public class Player extends BaseEntity{
         if(other instanceof BaseEntity) return;
         this.logger.finest("collided with" + other);
         this.pos = oldPos;
+    }
+
+    @Override
+    public void takeDamage(double dmg){
+        super.takeDamage(dmg);
+
+        int fullHearts = (int) (this.hp / 20);
+        double remainder = this.hp % 20;
+
+        for(int i = 0; i < this.hearts.length; i++){
+            if (fullHearts > 0) {
+                this.hearts[i].setImage(fullHeart);
+                fullHearts--;
+            } else if (remainder > 0) {
+                this.hearts[i].setImage(halfHeart);
+                remainder = 0;
+            } else {
+                this.hearts[i].setImage(emptyHeart);
+            }
+        }
     }
 }
