@@ -24,12 +24,12 @@ public class Questmaster extends BaseNPC {
     private void populateSpawnList() {
         this.spawnList.add(null);
         this.spawnList.add(null);
-        this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(43, 39), "overworld"),
-                new Spider(this.renderer, new Vector2(40, 40), "overworld"),
-                new Spider(this.renderer, new Vector2(42, 41), "overworld")});
+        this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(76, 34), "overworld"),
+                new Spider(this.renderer, new Vector2(78, 31), "overworld"),
+                new Spider(this.renderer, new Vector2(76, 35), "overworld")});
         this.spawnList.add(null);
-        this.spawnList.add(new Blob[]{new Blob(this.renderer, new Vector2(20, 20), "overworld"),
-                new Blob(this.renderer, new Vector2(22, 21), "overworld")});
+        this.spawnList.add(new Blob[]{new Blob(this.renderer, new Vector2(50, 33), "overworld"),
+                new Blob(this.renderer, new Vector2(49, 32), "overworld")});
         this.spawnList.add(null);
         this.spawnList.add(null);
         this.spawnList.add(null);

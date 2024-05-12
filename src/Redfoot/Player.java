@@ -74,7 +74,7 @@ public class Player extends BaseEntity {
     protected void awake() {
         this.renderer = game.render;
         super.awake();
-        this.anim = new Animation("images/playerSheet.png", this, 16, 4, 1);
+        this.anim = new Animation("images/Nanjing.png", this, 16, 4, 1);
         this.animHolder = new BaseActor(renderer);
         this.game.addObject(this.animHolder, 800, 450);
 
@@ -103,6 +103,7 @@ public class Player extends BaseEntity {
 
     @Override
     protected void priorityTick(Game.State state) {
+        //System.out.println(this.pos);
         movement(state.deltaTime);
         combat(state);
         inventory();

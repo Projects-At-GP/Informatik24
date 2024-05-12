@@ -8,7 +8,6 @@ import java.util.List;
 
 public class NPC extends BaseNPC {
 
-    private int currentWaypoint;
     private List<Vector2> waypoints = new ArrayList<>();
     private void populateSentences() { // needs linebreak every 28 chars. (\\n)
         this.sentences.add("HEY, ICH BIN NUR EIN        \\nDORFBEWOHNER. MEIN TAG?     \\nZAEHLEN VON SCHAFEN         \\nUND BEWUNDERN DER WOLKEN.   \\nNICHTS BESONDERES HIER.");
@@ -19,17 +18,22 @@ public class NPC extends BaseNPC {
         populateSentences();
         this.pos = new Vector2(39, 15);
         this.anim = new Animation("images/NPCSheet.png", this, 16, 4, 1);
-        this.goTo(new Vector2(20, 10));
 
-        waypoints.add(new Vector2(20, 10));
+        goTo(new Vector2(20, 18));
+
+        waypoints.add(new Vector2(20, 18));
+        waypoints.add(new Vector2(34, 40));
+        waypoints.add(new Vector2(58, 39));
+        waypoints.add(new Vector2(58, 20));
         waypoints.add(new Vector2(39, 15));
     }
 
     @Override
     protected void entityTick(Game.State state){
         super.entityTick(state);
-        if (this.hasArrived()) return;
-        if(counter >= this.waypoints.size()) counter = 0;
+        if(counter == this.waypoints.size()) counter = 0;
+        if (!this.hasArrived()) return;
         this.goTo(waypoints.get(counter));
+        counter++;
     }
 }
