@@ -1,6 +1,7 @@
 # Informatik24
-Softwareprojekt
 
+## Greenfoot
+Just open `./src/project.greenfoot` as you would do with any other Greenfoot project.
 
 ## IntelliJ
 
