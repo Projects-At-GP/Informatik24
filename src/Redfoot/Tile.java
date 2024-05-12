@@ -52,8 +52,8 @@ public class Tile extends BaseActor {
 
     @Override
     protected void blockTick(Game.State state) {
-        if (this.id == 16) {
-            //mineDoor();
+        if (this.id == 104) {
+            mineDoor();
         } else if (this.id == 14 || this.id == 35) {
             chest();
         } else if (this.id == 79) {
