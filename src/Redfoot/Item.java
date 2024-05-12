@@ -10,7 +10,7 @@ public class Item extends BaseEntity{
     private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
     public Item(Renderer renderer, String imgPath) {
         super(renderer);
-        this.img =new GreenfootImage(filePrefix + "images/weapons/" + imgPath);
+        this.img = new GreenfootImage(filePrefix + "images/weapons/" + imgPath);
     }
 
     @Override
@@ -20,17 +20,22 @@ public class Item extends BaseEntity{
         this.setImage(img);
     }
 
+    /**
+     * Let the player pick an item up if it touches it
+     */
     @Override
     protected void entityTick(Game.State state){
-        if(this.isTouching(Player.class)){
-            System.out.println("Redfoot.Player picked up Redfoot.Item!");
+        if (this.isTouching(Player.class)){
+            this.logger.info(String.format("picked up following item: %s", this));
             renderer.player.pickupItem(this);
             renderer.ceaseEntity(this);
             renderer.game.removeObject(this);
         }
     }
 
-    // should not be needed as items do not have colliders but just to be sure
+    /**
+     * Make Items invincible; shouldn't be necessary though as items don't have colliders -> just in case
+     */
     @Override
     public void takeDamage(double dmg) {}
 }

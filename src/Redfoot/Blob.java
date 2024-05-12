@@ -27,9 +27,4 @@ public class Blob extends BaseEnemy {
         this.anim.setAnim(2);
         this.anim.update();
     }
-
-    @Override
-    protected void entityTick(Game.State state) {
-        super.entityTick(state);
-    }
 }

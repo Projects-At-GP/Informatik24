@@ -7,16 +7,16 @@ import vector.Vector2;
 
 public class BaseEntity extends BaseActor{
 
-    double hp;
-    public boolean isDead = false;
-    public boolean collided;
-    public Animation anim;
-    public Text text;
+    double hp;  // the health points
+    public boolean isDead = false;  // indicator to signal whether any actions may be executed
+    public boolean collided;  // whether the entity collided
+    public Animation anim;  // the animation of the entity
+    public Text text;  // the text field/support for the entity
     public UI health;
     public boolean healthInWorld = false;
-    public boolean interactable = false;
-    public boolean active;
-    public String world;
+    public boolean interactable = false;  // indicator to signal whether the entity may be interacted with
+    public boolean active;  // indicator to signal whether the entity is active or not
+    public String world;  // the dimension the entity belongs to
 
     public BaseEntity(Renderer renderer) {
         super(renderer);
@@ -24,6 +24,10 @@ public class BaseEntity extends BaseActor{
         this.active = true;
     }
 
+    /**
+     * Take damage and display the amount it took
+     * @param dmg the amount of damage to take
+     */
     public void takeDamage(double dmg){
         if(!this.active) return;
         hp -= dmg;
@@ -41,6 +45,9 @@ public class BaseEntity extends BaseActor{
 
     protected void interactable(){}
 
+    /**
+     * Finish initialization whilst it being placed in the world
+     */
     @Override
     protected void awake() {
         super.awake();

@@ -8,6 +8,9 @@ import vector.Vector2;
 import java.util.logging.Logger;
 
 
+/**
+ * Baseclass to replace Greenfoot's Actor as the baseclass.
+ */
 public class BaseActor extends Actor {
     protected Logger logger;  // logger for logging
     protected Renderer renderer;
@@ -33,8 +36,8 @@ public class BaseActor extends Actor {
     }
 
     /**
-     * @param other reference to other Redfoot.collider
      * Will be called if a collision occurs
+     * @param other reference to other Redfoot.collider
      */
     protected void onCollision(BaseActor other, Vector2 mtv){}
 

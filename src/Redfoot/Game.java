@@ -22,11 +22,11 @@ public class Game extends World {
         logger = Logger.getLogger("root");
     }
 
-    public final int tps;
-    protected float deltaTime = 0;  // in seconds
-    private long curAct = 0;
-    private long tick = 0;
-    private int pathfindingTickIndex = -1;
+    public final int tps;  // the ticks per second
+    protected float deltaTime = 0;  // time between two successive ticks in seconds
+    private long curAct = 0;  // the timestamp of the current act
+    private long tick = 0;  // the tick counter
+    private int pathfindingTickIndex = -1;  // counter to iterate over every actor to distribute the pathfindingTick ticks even
     private File[] dir;
     private GreenfootSound menuMusic;
 
@@ -78,9 +78,13 @@ public class Game extends World {
         Greenfoot.start();
     }
 
-    public void spawnEntity(BaseEntity enemy){
-        addObject(enemy, 0, 0);
-        this.render.addEntity(enemy);
+    /**
+     * Spawn a new entity to the world
+     * @param entity the new entity
+     */
+    public void spawnEntity(BaseEntity entity){
+        addObject(entity, 0, 0);
+        this.render.addEntity(entity);
     }
 
     public Game() {
@@ -110,6 +114,17 @@ public class Game extends World {
         }
     }
 
+    /**
+     * Does multiple actions successively:
+     * <ol>
+     *     <li>delete ceased actors</li>
+     *     <li>update our lovely delta time</li>
+     *     <li>sleep based on delta time to keep our TPS stable</li>
+     *     <li>finish initialization (awake & start) of actors if they need to</li>
+     *     <li>tick priorityTick, blockTick, entityTick and pathfindingTick in their respective intervals</li>
+     *     <li>re-render the game</li>
+     * </ol>
+     */
     @Override
     public void act() {
         for (Actor actor : deletionList){
@@ -177,11 +192,13 @@ public class Game extends World {
         }
     }
 
+    /**
+     * update our lovely delta time
+     */
     private void updateDeltaTime() {
         long lastAct = this.curAct;
         this.curAct = System.currentTimeMillis();
         this.deltaTime = (float) (this.curAct - lastAct) / 1000;
-        //System.out.printf("lastAct: %d, curAct: %d, dt: %d\n", lastAct, this.curAct, this.deltaTime);
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
         if(this.deltaTime > 1000000) updateDeltaTime();
@@ -191,6 +208,11 @@ public class Game extends World {
      * Datatype to hold information to be passed into tick-methods
      */
     public static final class State {
+        public long tick;  // the tick during which the method is invoked
+        public int sinceLastTick;  // ticks since the method was last invoked (e.g. 1 if was called the previous tick)
+        public float deltaTime;  // delta time since last game-tick (NOTE: only usable if method gets ticked every tick as deltaTime doesn't respect any tick spans)
+        public Game game;  // a reference to the master itself
+
         public State(long tick, int sinceLastTick, float deltaTime, Game game){
             this.tick = tick;
             this.sinceLastTick = sinceLastTick;
@@ -198,17 +220,5 @@ public class Game extends World {
             this.game = game;
         }
 
-
-        // the tick during which the method is invoked
-        public long tick;
-
-        // ticks since the method was last invoked (e.g. 1 if was called the previous tick)
-        public int sinceLastTick;
-
-        // delta time since last game-tick (NOTE: only usable if method gets ticked every tick as deltaTime doesn't respect any tick spans)
-        public float deltaTime;  // not recommended to use, use State.tick or State.sinceLastTick instead for consistency
-
-        // a reference to the master itself
-        public Game game;
     }
 }
