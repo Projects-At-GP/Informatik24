@@ -34,6 +34,7 @@ public class BaseNPC extends BaseEnemy {
     protected void entityTick(Game.State state) {
         if (!this.active) return;
         if (this.isDead || this.pos == null) return;
+        if (this.hasArrived()) return;
         boolean moved = this.enemyAI.chaseOrWanderIfPossible(this, state);
         if (moved && this.anim != null) {
             this.anim.update();
@@ -48,6 +49,13 @@ public class BaseNPC extends BaseEnemy {
      */
     protected void goTo(Vector2 target) {
         this.enemyAI.aggro(target);
+    }
+
+    /**
+     * Signal whether the NPC has arrived where goTo delegated them to go to
+     */
+    protected boolean hasArrived() {
+        return this.enemyAI.playerPosCache.equals(this.pos);
     }
 
     /**

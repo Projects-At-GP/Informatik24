@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class EnemyAI {
     public final IntelligenceEnum intelligence;
     public boolean isAggro = false;
-    protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
+    public Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
     private double dealDamageAfterTick = 0;  // used for cooldown -> don't kill the player in a matter of just a few ticks
 
     public EnemyAI(IntelligenceEnum intelligence) {
