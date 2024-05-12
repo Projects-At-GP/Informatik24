@@ -10,20 +10,32 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
+/**
+ * Class to outsource internal logic for enemy movement.
+ * Call hierarchy is still preserved in the BaseEnemy. BaseEnemy will only tell the order of operations.
+ */
 public class EnemyAI {
     public final IntelligenceEnum intelligence;
     public boolean isAggro = false;
     protected Vector2 playerPosCache = new Vector2(-0x69, -0x69);  // just a placeholder out of range
-    private double dealDamageAfterTick = 0;
+    private double dealDamageAfterTick = 0;  // used for cooldown -> don't kill the player in a matter of just a few ticks
 
     public EnemyAI(IntelligenceEnum intelligence) {
         this.intelligence = intelligence;
     }
 
+    /**
+     * Used to cache the players position as the information is only propagated through tick-methods
+     * @param playerPosCache the current position
+     */
     public void setPlayerPosCache(Vector2 playerPosCache) {
         this.playerPosCache = playerPosCache;
     }
 
+    /**
+     * Check whether the player is still in chasing range
+     * @param self the enemy the AI-instance belongs to
+     */
     public void reevaluateAggression(BaseEnemy self) {
         this.isAggro = self.pos.subtract(playerPosCache).magnitude() <= self.enemyAI.intelligence.chasingRange;
     }
@@ -38,23 +50,36 @@ public class EnemyAI {
         return this.isAggro;
     }
 
+    /**
+     * Makes the enemy aggro on the targeted position
+     * @param targetPos the position to target (to set playerPosCache to)
+     */
     public void aggro(Vector2 targetPos) {
         this.isAggro = true;
         this.setPlayerPosCache(targetPos);
     }
 
+    /**
+     * Alert other enemies via the magic of swarm intelligence (only if the calling enemy is intelligent itself)
+     * @param self the enemy the AI-instance belongs to
+     * @param enemies a list of every enemy to potentially alert
+     */
     public void alertToSwarm(BaseEnemy self, List<BaseEnemy> enemies) {
-        if (!self.enemyAI.isAggro) return;
-        if (this.intelligence.canAlarm && !self.isDead) {
-            for (BaseEnemy enemy : enemies) {
-                if (enemy.enemyAI.isAggro) continue;
-                if (enemy.pos.subtract(self.pos).magnitude() > enemy.enemyAI.intelligence.chasingRange) continue;
-                if (!enemy.enemyAI.intelligence.canAlarm) continue;
-                enemy.getAlerted(this.playerPosCache);
-            }
+        if (!self.enemyAI.isAggro || !this.intelligence.canAlarm || self.isDead) return;
+        for (BaseEnemy enemy : enemies) {
+            if (enemy.enemyAI.isAggro) continue;
+            if (enemy.pos.subtract(self.pos).magnitude() > enemy.enemyAI.intelligence.chasingRange) continue;
+            if (!enemy.enemyAI.intelligence.canAlarm) continue;
+            enemy.getAlerted(this.playerPosCache);
         }
     }
 
+    /**
+     * Retrieve a path which either chases the player or wanders in a radius around the spawn of the enemy
+     * @param self the enemy the AI-instance belongs to
+     * @param state the current Game.State object from a tick
+     * @return a walkable path
+     */
     public LinkedList<Vector2> retrievePath(BaseEnemy self, Game.State state) {
         LinkedList<Vector2> path;
         try {
@@ -77,6 +102,12 @@ public class EnemyAI {
         return path;
     }
 
+    /**
+     * Tries to chase the player or in case of failure it will try to wander around their spawn
+     * @param self the enemy the AI-instance belongs to
+     * @param state the current Game.State object from a tick
+     * @return true if the enemy was able to move (either chased or wandered)
+     */
     public boolean chaseOrWanderIfPossible(BaseEnemy self, Game.State state) {
         if (!(this.isAggro || self.isWandering) || self.isDead) return false;
 
@@ -89,7 +120,7 @@ public class EnemyAI {
 
         Vector2 direction = firstCandidate.subtract(self.pos);
 
-        double speed = self.isWandering ? self.enemyAI.intelligence.wanderSpeedPenalty : self.enemyAI.intelligence.speed;
+        double speed = self.isWandering ? self.enemyAI.intelligence.wanderSpeed : self.enemyAI.intelligence.speed;
 
         self.pos.x += direction.normalize().x * state.deltaTime * speed;
         self.pos.y += direction.normalize().y * state.deltaTime * speed;
@@ -98,6 +129,12 @@ public class EnemyAI {
         return true;
     }
 
+    /**
+     * Tries to damage the player
+     * @param self the enemy the AI-instance belongs to
+     * @param state the current Game.State object from a tick
+     * @return true if the enemy was able to damage the player
+     */
     public boolean damageIfPossible(BaseEnemy self, Game.State state) {
         if (state.tick < this.dealDamageAfterTick) return false;
         if (this.playerPosCache.subtract(self.pos).magnitude() > this.intelligence.attackRange) return false;
@@ -106,6 +143,11 @@ public class EnemyAI {
         return true;
     }
 
+    /**
+     * Sets the animation of the enemy to have consistent visuals
+     * @param self the enemy the AI-instance belongs to
+     * @param direction the direction the enemy moved
+     */
     public static void setAnimation(BaseEnemy self, Vector2 direction) {
         if ((int) direction.x > 0) {
             self.anim.setAnim(2);

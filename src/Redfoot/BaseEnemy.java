@@ -7,12 +7,12 @@ import vector.Vector2;
 import java.util.LinkedList;
 
 public class BaseEnemy extends BaseEntity {
-    public final EnemyAI enemyAI;
-    public LinkedList<Vector2> path;
-    public boolean isWandering = false;
-    public Vector2 spawnedAt;
-    protected long bypassChaseRadiusUntilTick = 0;
-    protected int pendingSecondsForChasingBypass = 0;
+    public final EnemyAI enemyAI;  // a dedicated AI-instance for the enemy
+    public LinkedList<Vector2> path;  // a cached path to trace
+    public boolean isWandering = false;  // true if the enemy is wandering; false if the enemy is chasing the player
+    public Vector2 spawnedAt;  // the original spawn of the enemy
+    protected long bypassChaseRadiusUntilTick = 0;  // bypasses radii checks until the tick is reached
+    protected int pendingSecondsForChasingBypass = 0;  // seconds to set the bypass duration to when next priorityTick is ticked
 
     public BaseEnemy(Renderer renderer, EnemyAI enemyAI) {
         super(renderer);

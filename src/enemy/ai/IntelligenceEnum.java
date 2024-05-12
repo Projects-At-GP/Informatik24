@@ -1,5 +1,8 @@
 package enemy.ai;
 
+/**
+ * Enum to hold information about the individual enemies.
+ */
 public enum IntelligenceEnum {
     ABSENT_IQ(0, 0, 0, 0, 0, 0x1337, 0, 0, false),
     SPIDER(5, 8.5, 3, 0.75, 10, 45, 3, 1.5, false),
@@ -13,10 +16,10 @@ public enum IntelligenceEnum {
     public final int attackDamage;  // damage to deal
     public final int attackCooldownTicks;  // ticks to wait until more damage is dealt
     public final double speed;  // speed multiplier for movement
-    public final double wanderSpeedPenalty;  // speed multiplier for wandering
+    public final double wanderSpeed;  // speed multiplier for wandering
     public final boolean canAlarm;  // can alert other enemies & can be alerted whilst being out of range of alert
 
-    IntelligenceEnum(double aggressionRange, double chasingRange, double wanderRange, double attackRange, int attackDamage, int attackCooldownTicks, double speed, double wanderSpeedPenalty, boolean canAlarm) {
+    IntelligenceEnum(double aggressionRange, double chasingRange, double wanderRange, double attackRange, int attackDamage, int attackCooldownTicks, double speed, double wanderSpeed, boolean canAlarm) {
         this.aggressionRange = aggressionRange;
         this.chasingRange = chasingRange;
         this.wanderRange = wanderRange;
@@ -24,7 +27,7 @@ public enum IntelligenceEnum {
         this.attackDamage = attackDamage;
         this.attackCooldownTicks = attackCooldownTicks;
         this.speed = speed;
-        this.wanderSpeedPenalty = wanderSpeedPenalty;
+        this.wanderSpeed = wanderSpeed;
         this.canAlarm = canAlarm;
     }
 }

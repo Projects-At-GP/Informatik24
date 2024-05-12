@@ -9,6 +9,10 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 
+/**
+ * Class to hold the algorithms for pathfinding.
+ * Basically just A* with some helpers.
+ */
 public class Algorithms {
     private static Renderer.CachedMapData cachedMap;
     private static Vector2 cachedStart;
