@@ -44,7 +44,6 @@ public class BaseNPC extends BaseEnemy {
 
     /**
      * Let the NPC go to a given position, may not be instant as the NPC needs to wait for the next pathfindingTick to be ticked
-     *
      * @param target the desired position
      */
     protected void goTo(Vector2 target) {
@@ -55,7 +54,7 @@ public class BaseNPC extends BaseEnemy {
      * Signal whether the NPC has arrived where goTo delegated them to go to
      */
     protected boolean hasArrived() {
-        return this.enemyAI.playerPosCache.equals(this.pos);
+        return this.enemyAI.playerPosCache.equals(new Vector2(Math.round(this.pos.x), Math.round(this.pos.y)));
     }
 
     /**
