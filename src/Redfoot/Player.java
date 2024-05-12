@@ -76,11 +76,11 @@ public class Player extends BaseEntity{
         this.animHolder = new BaseActor(renderer);
         this.game.addObject(this.animHolder, 800, 450);
 
-        List<String> SwingColours = new ArrayList<>();
+        List<String> SwingColors = new ArrayList<>();
         for(WeaponEnum wEnum : WeaponEnum.values()){
-            if(!SwingColours.contains(wEnum.colour)) SwingColours.add(wEnum.colour);
+            if(!SwingColors.contains(wEnum.color)) SwingColors.add(wEnum.color);
         }
-        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 10, SwingColours);
+        this.combatAnim = new Animation("images/swordSwingSheet.png", this.animHolder, 48, 4, 10, SwingColors);
         this.combatAnim.resume();
 
         this.uiManager = this.renderer.uiManager;
@@ -161,7 +161,7 @@ public class Player extends BaseEntity{
                     cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
                     if (selectedItem.getClass() == Weapon.class){
                         this.animFramesToDo = combatAnim.frameCount;
-                        this.combatAnim.setColour(((Weapon) selectedItem).values.colour);
+                        this.combatAnim.setColor(((Weapon) selectedItem).values.color);
                         this.combatAnim.resetCounter();
                         this.combatAnim.resume();
                     }

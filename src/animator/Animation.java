@@ -29,13 +29,13 @@ public class Animation {
     private int currentAnim;
     private GreenfootImage[][] frames;
 
-    private HashMap<String, GreenfootImage[][]> framesColour = new HashMap<String, GreenfootImage[][]>();
+    private HashMap<String, GreenfootImage[][]> framesColor = new HashMap<String, GreenfootImage[][]>();
     public int frameCount;
     private boolean isRunning;
-    private List<String> colours;
-    private String currentColour = "Default";
+    private List<String> colors;
+    private String currentColor = "Default";
 
-    public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg, List<String> colours){
+    public Animation(String animSheetPath, Actor actor, int frameSize, int scale, int baseImg, List<String> colors){
         try {
             this.actor = actor;
             this.sheetPath = animSheetPath;
@@ -46,9 +46,9 @@ public class Animation {
             this.animFrameCount = this.animSheet.getWidth() / frameSize;
             createFrames(this.animSheet, "Default");
 
-            if(colours != null){
-                for(String colour : colours){
-                    createFrames(this.animSheet, colour);
+            if(colors != null){
+                for(String color : colors){
+                    createFrames(this.animSheet, color);
                 }
             }
 
@@ -65,8 +65,8 @@ public class Animation {
         this(animSheetPath, actor, frameSize, scale, baseImg, null);
     }
 
-    private void createFrames(BufferedImage sheet, String colour) throws IOException{
-        if(framesColour.containsKey(colour)) return;
+    private void createFrames(BufferedImage sheet, String color) throws IOException{
+        if(framesColor.containsKey(color)) return;
         this.frameCount = this.animSheet.getWidth() / this.frameSize;
         frames = new GreenfootImage[this.animSheet.getHeight() / this.frameSize][frameCount];
         String[] keys = sheetPath.replace(".png", "").split("/");
@@ -74,28 +74,28 @@ public class Animation {
         for(int c = 0; c < sheet.getHeight() / this.frameSize; c++){
             for(int i = 0; i < sheet.getWidth() / this.frameSize; i++){
                 BufferedImage subImg = sheet.getSubimage(i * this.frameSize, c * this.frameSize, this.frameSize, this.frameSize);
-                if(!colour.equals("Default")){
-                    subImg = Text.changeImageColour(subImg, Text.getColorFromHex(colour));
+                if(!color.equals("Default")){
+                    subImg = Text.changeImageColor(subImg, Text.getColorFromHex(color));
                 }
-                File file = new File(this.path + key + colour + "tmp" + c + "_" + i + "_.png");
+                File file = new File(this.path + key + color + "tmp" + c + "_" + i + "_.png");
                 ImageIO.write(subImg, "png", file);
-                frames[c][i] = new GreenfootImage(this.path + key + colour + "tmp" + c + "_" + i + "_.png");
+                frames[c][i] = new GreenfootImage(this.path + key + color + "tmp" + c + "_" + i + "_.png");
                 file.delete();
             }
         }
-        framesColour.putIfAbsent(colour, frames);
+        framesColor.putIfAbsent(color, frames);
     }
 
     public void update(){
         if(this.counter >= this.animFrameCount) this.counter = 0;
-        GreenfootImage img = framesColour.get(currentColour)[currentAnim][this.isRunning ? this.counter : this.baseImg];
+        GreenfootImage img = framesColor.get(currentColor)[currentAnim][this.isRunning ? this.counter : this.baseImg];
         img.scale(this.frameSize * this.scale, this.frameSize * this.scale);
         this.counter++;
         actor.setImage(img);
     }
 
     public void setImage(int id){
-        GreenfootImage img = framesColour.get(currentColour)[currentAnim][id];
+        GreenfootImage img = framesColor.get(currentColor)[currentAnim][id];
         img.scale(this.frameSize * this.scale, this.frameSize * this.scale);
         actor.setImage(img);
     }
@@ -117,7 +117,7 @@ public class Animation {
         this.counter = 0;
     }
 
-    public void setColour(String colourCode){
-        this.currentColour = colourCode;
+    public void setColor(String colorCode){
+        this.currentColor = colorCode;
     }
 }

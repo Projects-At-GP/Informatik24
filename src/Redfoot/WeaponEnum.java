@@ -9,12 +9,12 @@ public enum WeaponEnum {
     public final int damage;
     public final double cooldown;
     public final String imgPath;
-    public final String colour;
+    public final String color;
 
-    WeaponEnum(int damage, double cooldown, String imgPath, String colour){
+    WeaponEnum(int damage, double cooldown, String imgPath, String color){
         this.damage = damage;
         this.cooldown = cooldown;
         this.imgPath = imgPath;
-        this.colour = colour;
+        this.color = color;
     }
 }

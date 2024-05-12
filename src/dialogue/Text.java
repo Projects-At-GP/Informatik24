@@ -62,7 +62,7 @@ public class Text {
     public GreenfootImage getTextImage(String text, BufferedImage baseImg, int xOffset2, int yOffset2){
         BufferedImage img = baseImg;
         GreenfootImage returnImg;
-        Color colour = Color.BLACK;
+        Color color = Color.BLACK;
         int line = 0;
         int coloumn = 0;
         for (int i = 0; i < text.length(); i++){
@@ -72,14 +72,14 @@ public class Text {
                     coloumn = 0;
                     i += 2;
                 } else if(text.charAt(i+1) == '$'){
-                    colour = getColorFromHex(text.substring(i + 2, i + 8));
+                    color = getColorFromHex(text.substring(i + 2, i + 8));
                     i += 8;
                 }
             }
             coloumn++;
             int index = textLookup.indexOf(text.charAt(i));
             if(index == -1) index = 0; // display 'A' if char does not exist in lookup
-            img = merge(img, changeImageColour(chars[index], colour), coloumn, line, xOffset2, yOffset2);
+            img = merge(img, changeImageColor(chars[index], color), coloumn, line, xOffset2, yOffset2);
         }
         try {
             File file = new File(this.path + text.hashCode() + "text.png");
@@ -104,7 +104,7 @@ public class Text {
         return new Color(red, green, blue);
     }
 
-    public static BufferedImage changeImageColour(BufferedImage image, Color colour) {
+    public static BufferedImage changeImageColor(BufferedImage image, Color color) {
         int width = image.getWidth();
         int height = image.getHeight();
 
@@ -114,7 +114,7 @@ public class Text {
             for (int x = 0; x < width; x++) {
                 int pixel = image.getRGB(x, y);
                 if ((pixel >> 24) != 0x00) { // Check if pixel is not transparent
-                    pixel = colour.getRGB() & 0x00FFFFFF | (pixel & 0xFF000000); // Keep the original alpha value
+                    pixel = color.getRGB() & 0x00FFFFFF | (pixel & 0xFF000000); // Keep the original alpha value
                 }
                 result.setRGB(x, y, pixel);
             }
