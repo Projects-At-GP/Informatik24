@@ -2,9 +2,15 @@
 
 ---
 ## Table Of Contents
+- [Playing the game](#playing-the-game)
 - [Running the code](#running-the-code)
 - [Map Editor](#map-editor)
 ---
+
+
+## Playing the game
+
+Download the most up to date release from the releases section. You need to install Greenfoot as well and open Cryptcrawl/Informatik24-develop/src/project.greenfoot as a Greenfoot project-file. Then just press 'start' at the bottom of the screen :) Use WASD for walking and E for interacting with NPCs.
 
 ## Running the code
 
