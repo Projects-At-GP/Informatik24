@@ -95,6 +95,12 @@ public class Animation {
         actor.setImage(img);
     }
 
+    public void setImage(int id){
+        GreenfootImage img = framesColour.get(currentColour)[currentAnim][id];
+        img.scale(this.frameSize * this.scale, this.frameSize * this.scale);
+        actor.setImage(img);
+    }
+
     public void setAnim(int animId){
         this.currentAnim = animId;
     }

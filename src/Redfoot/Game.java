@@ -29,6 +29,7 @@ public class Game extends World {
     private int pathfindingTickIndex = -1;
     private File[] dir;
     private GreenfootSound menuMusic;
+    public List<Vector2> openChestList = new ArrayList<Vector2>();
 
     public Renderer render;
     public ArrayList<Actor> deletionList = new ArrayList<>();

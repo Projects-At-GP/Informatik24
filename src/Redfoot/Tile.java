@@ -26,21 +26,19 @@ public class Tile extends BaseActor{
         this.game = game;
         this.parent = parent;
         setGraphics();
+
+        if(this.id == 14 || this.id == 35) {
+            this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
+            if (this.game.openChestList.contains(this.pos)) this.anim.setImage(3);
+            this.anim.resume();
+        } else if(this.id == 79 && false){
+            this.anim = new Animation("./images/TorchSheet.png", this, 16, 4, 1);
+            this.anim.resume();
+        }
     }
 
     private void setGraphics(){
         this.game.setImageByID(id, this, imgscale);
-    }
-
-    @Override
-    protected void awake(){
-        if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
-            this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
-            this.anim.resume();
-        } else if(this.id == 79){
-            this.anim = new Animation("./images/TorchSheet.png", this, 16, 4, 1);
-            this.anim.resume();
-        }
     }
 
     @Override
@@ -55,11 +53,11 @@ public class Tile extends BaseActor{
     @Override
     protected void blockTick(Game.State state){
         if (this.id == 16){
-            mineDoor();
-        } else if(this.id == 1 || this.id == 21 || this.id == 22 || this.id == 83) {
+            //mineDoor();
+        } else if(this.id == 14 || this.id == 35) {
             chest();
         } else if(this.id == 79){
-            torch();
+            //torch();
         }
     }
 
@@ -74,12 +72,10 @@ public class Tile extends BaseActor{
     }
 
     private void chest(){
-        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2){
+        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openChestList.contains(this.pos)){
             logger.info("player in range");
-            if (!open){
-                animFramesToDo = this.anim.frameCount;
-                open = true;
-            }
+            animFramesToDo = this.anim.frameCount;
+            this.game.openChestList.add(this.pos);
         }
         if(this.animFramesToDo > 0){ // TODO make chests an entity so that they do not get reloaded when crossing chunks
             this.anim.update();
