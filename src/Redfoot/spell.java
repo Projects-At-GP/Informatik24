@@ -22,8 +22,8 @@ public class spell extends BaseEntity {
     private boolean hit = false;
     private int deathAnimCounter;
 
-    public spell(Renderer renderer, Vector2 pos) {
-        super(renderer);
+    public spell(Renderer renderer, Vector2 pos, String world) {
+        super(renderer, world);
         this.pos = pos;
 
         GreenfootImage img = new GreenfootImage(16, 16);

@@ -8,8 +8,8 @@ public class NPC2 extends BaseNPC {
         this.sentences.add("GRUESSE! ICH BIN HANS, DER  \\nKUERBISANBAUER. BRAUCHST DU \\nEINEN? ICH GENIESSE DAS     \\nRUHIGE DORFLEBEN FERNAB DER \\nSTADT.");
     }
 
-    public NPC2(Renderer renderer) {
-        super(renderer);
+    public NPC2(Renderer renderer, String world) {
+        super(renderer, world);
         populateSentences();
         this.pos = new Vector2(44, 66);
         this.anim = new Animation("images/NPC2Sheet.png", this, 16, 4, 1);

@@ -6,8 +6,8 @@ import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
 
 public class Spider extends BaseEnemy {
-    public Spider(Renderer renderer, EnemyAI enemyAI, Vector2 pos) {
-        super(renderer, enemyAI);
+    public Spider(Renderer renderer, EnemyAI enemyAI, Vector2 pos, String world) {
+        super(renderer, enemyAI, world);
         this.hp = 50;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
@@ -15,8 +15,8 @@ public class Spider extends BaseEnemy {
         this.pos = pos;
     }
 
-    public Spider(Renderer renderer, Vector2 pos) {
-        this(renderer, new EnemyAI(IntelligenceEnum.SPIDER), pos);
+    public Spider(Renderer renderer, Vector2 pos, String world) {
+        this(renderer, new EnemyAI(IntelligenceEnum.SPIDER), pos, world);
     }
 
     @Override

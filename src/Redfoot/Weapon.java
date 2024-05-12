@@ -7,8 +7,8 @@ public class Weapon extends Item {
     public double cooldown;
     public final WeaponEnum values;
 
-    public Weapon(Renderer renderer, WeaponEnum values) {
-        super(renderer, values.imgPath);
+    public Weapon(Renderer renderer, WeaponEnum values, String world) {
+        super(renderer, values.imgPath, world);
         this.values = values;
         this.cooldown = values.cooldown;
         this.damage = values.damage;

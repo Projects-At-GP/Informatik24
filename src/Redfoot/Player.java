@@ -46,7 +46,7 @@ public class Player extends BaseEntity {
 
 
     public Player(Game game, Vector2 pos) {
-        super(null);
+        super(null, "Overworld");
         this.game = game;
         this.pos = pos;
         this.hp = 100;

@@ -13,8 +13,8 @@ public class BaseNPC extends BaseEnemy {
     final int timeToReset = 10000;
     int counter;
 
-    public BaseNPC(Renderer renderer) {
-        super(renderer, new EnemyAI(IntelligenceEnum.NPC));
+    public BaseNPC(Renderer renderer, String world) {
+        super(renderer, new EnemyAI(IntelligenceEnum.NPC), world);
         this.hp = 100;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);

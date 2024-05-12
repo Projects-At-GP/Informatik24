@@ -24,22 +24,22 @@ public class Questmaster extends BaseNPC {
     private void populateSpawnList() {
         this.spawnList.add(null);
         this.spawnList.add(null);
-        this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(43, 39)),
-                new Spider(this.renderer, new Vector2(40, 40)),
-                new Spider(this.renderer, new Vector2(42, 41))});
+        this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(43, 39), "overworld"),
+                new Spider(this.renderer, new Vector2(40, 40), "overworld"),
+                new Spider(this.renderer, new Vector2(42, 41), "overworld")});
         this.spawnList.add(null);
-        this.spawnList.add(new Blob[]{new Blob(this.renderer, new Vector2(20, 20)),
-                new Blob(this.renderer, new Vector2(22, 21))});
+        this.spawnList.add(new Blob[]{new Blob(this.renderer, new Vector2(20, 20), "overworld"),
+                new Blob(this.renderer, new Vector2(22, 21), "overworld")});
         this.spawnList.add(null);
         this.spawnList.add(null);
         this.spawnList.add(null);
     }
 
-    public Questmaster(Renderer renderer) {
-        super(renderer);
+    public Questmaster(Renderer renderer, String world) {
+        super(renderer, world);
         populateSentences();
         populateSpawnList();
-        this.pos = new Vector2(16, 19);
+        this.pos = new Vector2(46, 31);
         this.anim = new Animation("images/skeletonSheet.png", this, 16, 4, 1);
     }
 

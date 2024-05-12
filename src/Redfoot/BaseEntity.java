@@ -18,10 +18,11 @@ public class BaseEntity extends BaseActor {
     public boolean active;  // indicator to signal whether the entity is active or not
     public String world;  // the dimension the entity belongs to
 
-    public BaseEntity(Renderer renderer) {
+    public BaseEntity(Renderer renderer, String world) {
         super(renderer);
         this.health = new UI(renderer);
         this.active = true;
+        this.world = world;
     }
 
     /**

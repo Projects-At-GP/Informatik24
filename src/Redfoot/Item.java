@@ -8,8 +8,8 @@ public class Item extends BaseEntity {
     public GreenfootImage img;
     private final String filePrefix = (new File("./src/")).exists() ? "./src/" : "./";
 
-    public Item(Renderer renderer, String imgPath) {
-        super(renderer);
+    public Item(Renderer renderer, String imgPath, String world) {
+        super(renderer, world);
         this.img = new GreenfootImage(filePrefix + "images/weapons/" + imgPath);
     }
 

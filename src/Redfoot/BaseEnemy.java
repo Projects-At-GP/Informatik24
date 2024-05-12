@@ -14,14 +14,14 @@ public class BaseEnemy extends BaseEntity {
     protected long bypassChaseRadiusUntilTick = 0;  // bypasses radii checks until the tick is reached
     protected int pendingSecondsForChasingBypass = 0;  // seconds to set the bypass duration to when next priorityTick is ticked
 
-    public BaseEnemy(Renderer renderer, EnemyAI enemyAI) {
-        super(renderer);
+    public BaseEnemy(Renderer renderer, EnemyAI enemyAI, String world) {
+        super(renderer, world);
         this.enemyAI = enemyAI;
         this.path = new LinkedList<>();
     }
 
-    public BaseEnemy(Renderer renderer) {
-        this(renderer, new EnemyAI(IntelligenceEnum.ABSENT_IQ));
+    public BaseEnemy(Renderer renderer, String world) {
+        this(renderer, new EnemyAI(IntelligenceEnum.ABSENT_IQ), world);
     }
 
     @Override

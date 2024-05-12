@@ -37,31 +37,31 @@ public class Game extends World {
         Player player = new Player(this, new Vector2(18.5, 20.5));
         this.render = new Renderer(this, player);
 
-        NPC npc = new NPC(this.render);
+        NPC npc = new NPC(this.render, "overworld");
         addObject(npc, 0, 0);
         this.render.addEntity(npc);
 
-        NPC2 npc2 = new NPC2(this.render);
+        NPC2 npc2 = new NPC2(this.render, "overworld");
         addObject(npc2, 0, 0);
         this.render.addEntity(npc2);
 
-        Questmaster questmaster = new Questmaster(this.render);
+        Questmaster questmaster = new Questmaster(this.render, "overworld");
         addObject(questmaster, 0, 0);
         this.render.addEntity(questmaster);
 
-        Weapon sword = new Weapon(this.render, WeaponEnum.SILVERSWORD);
+        Weapon sword = new Weapon(this.render, WeaponEnum.SILVERSWORD, this.render.world);
         sword.pos = new Vector2(21, 21);
         spawnEntity(sword);
 
-        Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD);
+        Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD, this.render.world);
         broadsword.pos = new Vector2(23, 21);
         spawnEntity(broadsword);
 
-        spellItem fireBall = new spellItem(this.render, WeaponEnum.FIREBALL);
+        spellItem fireBall = new spellItem(this.render, WeaponEnum.FIREBALL, this.render.world);
         fireBall.pos = new Vector2(25, 21);
         spawnEntity(fireBall);
 
-        Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD);
+        Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD, this.render.world);
         coppersword.pos = new Vector2(27, 21);
         spawnEntity(coppersword);
 

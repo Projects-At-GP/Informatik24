@@ -36,8 +36,9 @@ public class Renderer {
     private final Text text;
     public final UIManager uiManager;
     private BaseActor currentTextSource;
-    private String world = "overworld";
+    public String world = "overworld";
     private final String filePrefix = (new File("./src/")).exists() ? "./src/" : "./";
+    private Vector2 currOffset = new Vector2(4, 9);
 
     public Renderer(Game game, Player player) {
         this.game = game;
@@ -94,14 +95,15 @@ public class Renderer {
     public void changeWorld(String world) {
         System.out.println("changing world");
         this.world = world;
-        this.player.pos = new Vector2(1, 1);
+        this.player.pos = new Vector2(1, 2);
+        this.currOffset.x = 20;
 
-        //for (BaseEntity entity : entities) {
-        //    entity.active = false;
-        //    if (!entity.world.equals(world)) {
-        //        entity.getImage().setTransparency(0);
-        //    } else entity.getImage().setTransparency(255); // TODO
-        //}
+        for (BaseEntity entity : entities) {
+            entity.active = false;
+            if (!entity.world.equals(world)) {
+                entity.getImage().setTransparency(0);
+            } else entity.getImage().setTransparency(255); // TODO
+        }
 
         for (int i = 0; i < 2; i++) {
             for (int c = 0; c < 3; c++) {
@@ -170,8 +172,8 @@ public class Renderer {
             for (int c = 0; c < 3; c++) {
                 for (int x = 0; x < mapSize; x++) {
                     for (int y = 0; y < mapSize; y++) {
-                        int ScreenX = (i * cellSize * 16) + (x * cellSize) - (4 * cellSize) - (int) ((player.xInChunk) * cellSize);
-                        int ScreenY = (c * cellSize * 16) + (y * cellSize - cellSize / 2) - (9 * cellSize) - (int) ((player.yInChunk) * cellSize);
+                        int ScreenX = (i * cellSize * 16) + (x * cellSize) - ((int) currOffset.x * cellSize) - (int) ((player.xInChunk) * cellSize);
+                        int ScreenY = (c * cellSize * 16) + (y * cellSize - cellSize / 2) - ((int) currOffset.y * cellSize) - (int) ((player.yInChunk) * cellSize);
                         if (ScreenX <= -64 || ScreenX >= 1664 || ScreenY <= -64 || ScreenY >= 964) {
                             chunkMap[c][i].map[y][x][0].getImage().setTransparency(0);
                             continue;
