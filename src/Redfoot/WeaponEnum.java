@@ -1,10 +1,11 @@
 package Redfoot;
 
 public enum WeaponEnum {
-    BROADSWORD(30, 1.4, "BroadSword.png", "606060"),
-    SILVERSWORD(20, 1, "SilverSword.png", "Default"),
+    BROADSWORD(35, 1.4, "BroadSword.png", "606060"),
+    SILVERSWORD(25, 1, "SilverSword.png", "Default"),
     COPPERSWORD(15, 1, "CopperSword.png", "E19343"),
-    FIREBALL(25, 1, "Fireball.png", "Default");
+    FIREBALL(25, 1, "Fireball.png", "Default"),
+    IRONSWORD(20, 1, "IronSword.png", "818181");
 
     public final int damage;
     public final double cooldown;

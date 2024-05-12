@@ -27,7 +27,7 @@ public class Player extends BaseEntity {
     Animation combatAnim;
 
     public ArrayList<Item> inventory = new ArrayList<>();
-    public ArrayList<BaseEnemy> killList = new ArrayList<>();
+    public ArrayList<BaseEntity> killList = new ArrayList<>();
     public int selectedInventoryIndex;
 
     private double[] cooldownArray = new double[10];
@@ -64,6 +64,7 @@ public class Player extends BaseEntity {
     public void pickupItem(Item item) {
         this.inventory.add(item);
         this.renderer.uiManager.setInventory(inventory);
+        this.killList.add(item); // to satisfy the lovely questmaster
     }
 
     public void killedEnemy(BaseEnemy enemy) {
@@ -96,7 +97,7 @@ public class Player extends BaseEntity {
             UI heart = new UI(renderer);
             heart.setImage(fullHeart);
             this.hearts[i] = heart;
-            this.uiManager.setElement(heart, "heart" + i, new Vector2(20 + i * 52, 20));
+            this.uiManager.setElement(heart, "heart" + i, new Vector2(26 + i * 52, 26));
             this.uiManager.enableElement("heart" + i);
         }
     }
@@ -117,6 +118,7 @@ public class Player extends BaseEntity {
     private void interact() {
         List<BaseEntity> entityList = new ArrayList<>(renderer.getEntities());
         entityList.removeIf(entity -> !entity.isInteractable);
+        entityList.removeIf(entity -> !entity.active);
         entityList.removeIf(entity -> entity.pos.subtract(this.pos).magnitude() >= 2);
         if (!entityList.isEmpty()) currentInteractable = entityList.get(0);
         if (currentInteractable == null) return;
@@ -125,6 +127,7 @@ public class Player extends BaseEntity {
         if (currentInteractable.pos.subtract(this.pos).magnitude() >= 3) {
             currentInteractable = null;
             this.uiManager.disableElement("InteractIcon");
+            return;
         }
         if (!ePressed && intIsKeyPressed("e") == 1) {
             currentInteractable.interactWith();

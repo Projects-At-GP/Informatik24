@@ -21,6 +21,7 @@ public class Renderer {
     public Game game;
     public Player player;
     private boolean instantiated = false;
+    private int instantiateIn = 1;
 
     final int cellSize = 64;
     final int mapSize = 16;
@@ -95,9 +96,9 @@ public class Renderer {
     public void changeWorld(String world) {
         System.out.println("changing world");
         this.instantiated = false;
+        this.instantiateIn = 2;
         this.world = world;
         this.player.pos = new Vector2(1, 2);
-        //this.currOffset.x = 20;
 
         for (BaseEntity entity : entities) {
             entity.active = false;
@@ -106,12 +107,35 @@ public class Renderer {
             } else entity.getImage().setTransparency(255); // TODO
         }
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             for (int c = 0; c < 3; c++) {
-                chunkMap[i + 1][c] = new Chunk(c, i, game, world);
+                chunkMap[i][c] = new Chunk(c-1, i-1, game, world);
             }
         }
         prepare();
+
+        populateEnemies(world);
+    }
+
+    private void populateEnemies(String world){
+        if(world.equals("dungeon")){
+            this.game.spawnEntity(new Spider(this, new Vector2(13, 2), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(23, 6), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(26, 13), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(21, 15), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(10, 25), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(25, 17), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(32, 14), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(44, 7), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(45, 5), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(42, 2), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(32, 20), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(32, 26), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(9, 31), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(20, 32), world));
+            this.game.spawnEntity(new Blob(this, new Vector2(43, 41), world));
+            this.game.spawnEntity(new Spider(this, new Vector2(22, 43), world));
+        }
     }
 
 
@@ -129,8 +153,8 @@ public class Renderer {
                 }
             }
         }
-        chunkX = player.chunkX;
-        chunkY = player.chunkY;
+        chunkX = (int) Math.floor(player.pos.x / 16);
+        chunkY = (int) Math.floor(player.pos.y / 16);
     }
 
     public void showText(String text, BaseActor textSource) {
@@ -154,7 +178,7 @@ public class Renderer {
         }
         int dx = player.chunkX - chunkX;
         int dy = player.chunkY - chunkY;
-        if ((dx != 0 || dy != 0) && this.instantiated) {
+        if ((dx != 0 || dy != 0) && this.instantiated && this.instantiateIn <= 0) {
             logger.info(String.format("Redfoot.Player moved to another chunk! Direction x %d, y %d", dx, dy));
             Chunk[][] tmpChunkMap = chunkMap;
             for (int i = 0; i < 3; i++) {
@@ -166,6 +190,7 @@ public class Renderer {
             chunkMap = tmpChunkMap;
             prepare();
         }
+        if(this.instantiateIn > 0) this.instantiateIn--;
         this.instantiated = true;
         chunkX = player.chunkX;
         chunkY = player.chunkY;

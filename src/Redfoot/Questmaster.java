@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Questmaster extends BaseNPC {
-    List<BaseEnemy[]> spawnList = new ArrayList<>();
+    List<BaseEntity[]> spawnList = new ArrayList<>();
 
     private void populateSentences() { // needs linebreak every 28 chars. (\\n)
         this.sentences.add("HALLO. ICH BIN DER          \\nSTADTAELTESTE. ICH GEBE DIR \\nQUESTS.");
@@ -19,6 +19,10 @@ public class Questmaster extends BaseNPC {
         this.sentences.add("HEHEHEHEH");
         this.sentences.add("SO? WO WAR ICH?...");
         this.sentences.add("ACHJA... DU MUSST MIR HELFEN");
+        this.sentences.add("EINE GEHEIME WAFFE, STAERKER\\nUND GRAUSAMER ALS ALLES, WAS\\nSICH DIE MENSCHHEIT BISHER  \\nERDENKEN KONNTE.");
+        this.sentences.add("FINDE SIE IM SUEDWESTEN     \\nDIESES HEILIGEN LANDES!");
+        this.sentences.add("EIN URALTES VERLIESS, VON   \\nMONSTERN UEBERRANNT. BEFREIE\\nES VOM BOESEN WELCHES TIEF  \\nIN SEINEM INNEREN LAUERT!");
+        this.sentences.add("KOMM, ICH WEISE DIR DEN WEG");
     }
 
     private void populateSpawnList() {
@@ -33,6 +37,12 @@ public class Questmaster extends BaseNPC {
         this.spawnList.add(null);
         this.spawnList.add(null);
         this.spawnList.add(null);
+        this.spawnList.add(null);
+        spellItem fireBall = new spellItem(this.renderer, WeaponEnum.FIREBALL, this.renderer.world);
+        fireBall.pos = new Vector2(6, 124);
+        this.spawnList.add(new spellItem[]{fireBall});
+        this.spawnList.add(null);
+        this.spawnList.add(null);
     }
 
     public Questmaster(Renderer renderer, String world) {
@@ -45,7 +55,7 @@ public class Questmaster extends BaseNPC {
 
     @Override
     protected void interactWith() {
-        boolean finished = false;
+        boolean finished = true; // TODO SET FALSE
         if (counter > 0) {
             if (this.spawnList.get(counter - 1) != null) {
                 if (this.renderer.player.killList.containsAll(Arrays.asList(this.spawnList.get(counter - 1)))) {
@@ -56,9 +66,12 @@ public class Questmaster extends BaseNPC {
         if (this.counter < this.sentences.size() && finished) {
             this.renderer.showText(this.sentences.get(counter), this);
             if (this.spawnList.get(counter) != null) {
-                for (BaseEnemy enemy : spawnList.get(counter)) {
-                    this.renderer.game.spawnEntity(enemy);
+                for (BaseEntity entity : spawnList.get(counter)) {
+                    this.renderer.game.spawnEntity(entity);
                 }
+            }
+            if(this.counter == 11){
+                this.goTo(new Vector2(48, 7));
             }
             counter++;
         } else if (!finished) {

@@ -26,6 +26,7 @@ public class Game extends World {
     private File[] dir;
     private GreenfootSound menuMusic;
     public List<Vector2> openChestList = new ArrayList<Vector2>();
+    public List<Vector2> openDoorList = new ArrayList<Vector2>();
 
     public Renderer render;
     public ArrayList<Actor> deletionList = new ArrayList<>();
@@ -53,20 +54,17 @@ public class Game extends World {
         addObject(questmaster, 0, 0);
         this.render.addEntity(questmaster);
 
-        Weapon sword = new Weapon(this.render, WeaponEnum.SILVERSWORD, this.render.world);
-        sword.pos = new Vector2(21, 21);
-        spawnEntity(sword);
+        //Weapon sword = new Weapon(this.render, WeaponEnum.SILVERSWORD, this.render.world);
+        //sword.pos = new Vector2(21, 21);
+        //spawnEntity(sword);
 
-        Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD, this.render.world);
-        broadsword.pos = new Vector2(23, 21);
-        spawnEntity(broadsword);
+        //Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD, this.render.world);
+        //broadsword.pos = new Vector2(23, 21);
+        //spawnEntity(broadsword);
 
-        spellItem fireBall = new spellItem(this.render, WeaponEnum.FIREBALL, this.render.world);
-        fireBall.pos = new Vector2(25, 21);
-        spawnEntity(fireBall);
 
         Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD, this.render.world);
-        coppersword.pos = new Vector2(27, 21);
+        coppersword.pos = new Vector2(21, 21);
         spawnEntity(coppersword);
 
         this.addObject(player, 800, 450);

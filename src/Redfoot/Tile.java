@@ -5,6 +5,8 @@ import greenfoot.Greenfoot;
 import greenfoot.World;
 import vector.Vector2;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class Tile extends BaseActor {
@@ -14,8 +16,8 @@ public class Tile extends BaseActor {
     Chunk parent;
     private Animation anim;
     private int animFramesToDo;
-    private boolean open = false;
 
+    private HashMap<Integer, Weapon> lootTable = new HashMap<Integer, Weapon>();
 
     public Tile(int id, Vector2 pos, Game game, Chunk parent) {
         super(game.render);
@@ -27,14 +29,44 @@ public class Tile extends BaseActor {
         this.parent = parent;
         setGraphics();
 
-        if (this.id == 14 || this.id == 35) {
+        if (this.id == 35) {
+            populateLootTable();
             this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
             if (this.game.openChestList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
-        } else if (this.id == 79 && false) {
-            this.anim = new Animation("./images/TorchSheet.png", this, 16, 4, 1);
+        } else if (this.id == 80) {
+            this.anim = new Animation("./images/TürAnimationHolz.png", this, 16, 4, 1);
+            if (this.game.openDoorList.contains(this.pos)) this.anim.setImage(3);
+            this.anim.resume();
+        } else if(this.id == 177) {
+            this.anim = new Animation("./images/TürAnimationStein.png", this, 16, 4, 1);
+            if (this.game.openDoorList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
         }
+    }
+
+    @Override
+    protected void awake(){
+        super.awake();
+        this.renderer = game.render;
+    }
+
+    private void populateLootTable(){
+        Weapon loot1 = new Weapon(this.renderer, WeaponEnum.IRONSWORD, "dungeon");
+        loot1.pos = this.pos.add(new Vector2(1, 1));
+        this.lootTable.put(1, loot1);
+
+        Weapon loot2 = new Weapon(this.renderer, WeaponEnum.BROADSWORD, "dungeon");
+        loot2.pos = this.pos.add(new Vector2(1, 1));
+        this.lootTable.put(40, loot2);
+
+        Weapon loot3 = new Weapon(this.renderer, WeaponEnum.SILVERSWORD, "dungeon");
+        loot3.pos = this.pos.add(new Vector2(1, 1));
+        this.lootTable.put(8, loot3);
+
+        Weapon loot4 = new Weapon(this.renderer, WeaponEnum.SILVERSWORD, "dungeon");
+        loot4.pos = this.pos.add(new Vector2(1, 1));
+        this.lootTable.put(16, loot4);
     }
 
     private void setGraphics() {
@@ -54,15 +86,24 @@ public class Tile extends BaseActor {
     protected void blockTick(Game.State state) {
         if (this.id == 104) {
             mineDoor();
-        } else if (this.id == 14 || this.id == 35) {
+        } else if (this.id == 35) {
             chest();
-        } else if (this.id == 79) {
-            //torch();
+        } else if (this.id == 80) {
+            door();
+        } else if (this.id == 177) {
+            door();
         }
     }
 
-    private void torch() {
-        this.anim.update();
+    private void door() {
+        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openDoorList.contains(this.pos)){
+            animFramesToDo = this.anim.frameCount;
+            this.game.openDoorList.add(this.pos);
+        }
+        if (this.animFramesToDo > 0) {
+            this.anim.update();
+            this.animFramesToDo--;
+        }
     }
 
     private void mineDoor() {
@@ -76,8 +117,9 @@ public class Tile extends BaseActor {
             logger.info("player in range");
             animFramesToDo = this.anim.frameCount;
             this.game.openChestList.add(this.pos);
+            this.game.spawnEntity(this.lootTable.get((int) this.pos.x));
         }
-        if (this.animFramesToDo > 0) { // TODO make chests an entity so that they do not get reloaded when crossing chunks
+        if (this.animFramesToDo > 0) {
             this.anim.update();
             this.animFramesToDo--;
         }
