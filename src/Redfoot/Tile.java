@@ -76,7 +76,6 @@ public class Tile extends BaseActor {
     @Override
     protected void priorityTick(Game.State state) {
         if (Greenfoot.mouseClicked(this)) {
-            // TODO logic for interactables
             this.logger.finest(String.format("A mouse bit me at %1$,.0f/%2$,.0f", pos.x, pos.y));
             //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: \\$0000FF" + this.pos + "\\$000000 \\nCHUNK POS: " + parent.pos, this);
         }
@@ -92,6 +91,14 @@ public class Tile extends BaseActor {
             door();
         } else if (this.id == 177) {
             door();
+        } else if (this.id == 181) {
+            pentagram();
+        }
+    }
+
+    private void pentagram(){
+        if (this.renderer.player.unlockedDungeon && this.isTouching(Player.class)) {
+            this.game.render.changeWorld("overworld");
         }
     }
 
@@ -107,7 +114,7 @@ public class Tile extends BaseActor {
     }
 
     private void mineDoor() {
-        if (this.isTouching(Player.class)) {
+        if (this.renderer.player.unlockedDungeon && this.isTouching(Player.class)) {
             this.game.render.changeWorld("dungeon");
         }
     }

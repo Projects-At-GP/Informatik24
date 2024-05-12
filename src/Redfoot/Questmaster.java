@@ -55,7 +55,7 @@ public class Questmaster extends BaseNPC {
 
     @Override
     protected void interactWith() {
-        boolean finished = true; // TODO SET FALSE
+        boolean finished = false;
         if (counter > 0) {
             if (this.spawnList.get(counter - 1) != null) {
                 if (this.renderer.player.killList.containsAll(Arrays.asList(this.spawnList.get(counter - 1)))) {
@@ -72,6 +72,7 @@ public class Questmaster extends BaseNPC {
             }
             if(this.counter == 11){
                 this.goTo(new Vector2(48, 7));
+                this.renderer.player.unlockedDungeon = true;
             }
             counter++;
         } else if (!finished) {

@@ -98,13 +98,17 @@ public class Renderer {
         this.instantiated = false;
         this.instantiateIn = 2;
         this.world = world;
-        this.player.pos = new Vector2(1, 2);
+        if(world.equals("dungeon")) this.player.pos = new Vector2(1, 2);
+        if(world.equals("overworld")) this.player.pos = new Vector2(3, 3);
 
         for (BaseEntity entity : entities) {
-            entity.active = false;
             if (!entity.world.equals(world)) {
+                entity.active = false;
                 entity.getImage().setTransparency(0);
-            } else entity.getImage().setTransparency(255); // TODO
+            } else {
+                entity.getImage().setTransparency(255);
+                entity.active = true;
+            }
         }
 
         for (int i = 0; i < 3; i++) {
@@ -216,7 +220,7 @@ public class Renderer {
             int ScreenY = (int) ((e.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY - 1) * 16 * cellSize) - (9.5 * cellSize));
             if (e.getWorld() == null) {
                 game.addObject(e, ScreenX, ScreenY);
-                continue; // TODO is this needed?
+                continue;
             }
             if (!e.healthInWorld && e.hp != 0) {
                 game.addObject(e.health, ScreenX, ScreenY - 50);
@@ -233,7 +237,7 @@ public class Renderer {
             int ScreenY = (int) ((p.pos.y * cellSize) - ((player.yInChunk) * cellSize) - ((player.chunkY - 1) * 16 * cellSize) - (9.5 * cellSize));
             if (p.getWorld() == null) {
                 game.addObject(p, ScreenX, ScreenY);
-                continue; // TODO is this needed?
+                continue;
             }
             p.setLocation(ScreenX, ScreenY);
         }

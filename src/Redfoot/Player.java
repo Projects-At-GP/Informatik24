@@ -29,6 +29,7 @@ public class Player extends BaseEntity {
     public ArrayList<Item> inventory = new ArrayList<>();
     public ArrayList<BaseEntity> killList = new ArrayList<>();
     public int selectedInventoryIndex;
+    public boolean unlockedDungeon;
 
     private double[] cooldownArray = new double[10];
     private int dir; // 0 for north, clockwise after that
