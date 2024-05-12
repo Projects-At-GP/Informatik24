@@ -7,10 +7,10 @@ public enum WeaponEnum {
     FIREBALL(25, 1, "Fireball.png", "Default"),
     IRONSWORD(20, 1, "IronSword.png", "818181");
 
-    public final int damage;
-    public final double cooldown;
-    public final String imgPath;
-    public final String color;
+    public final int damage;  // the amount of damage to deal
+    public final double cooldown;  // the cooldown to prevent attack-spam (in seconds)
+    public final String imgPath;  // the path to the image-file
+    public final String color;  // the color for the swing
 
     WeaponEnum(int damage, double cooldown, String imgPath, String color) {
         this.damage = damage;

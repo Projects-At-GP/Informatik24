@@ -48,8 +48,7 @@ public class BaseEntity extends BaseActor {
     /**
      * Method to interact with the entity (managed/called from Player)
      */
-    protected void interactWith() {
-    }
+    protected void interactWith() {}
 
     @Override
     protected void awake() {

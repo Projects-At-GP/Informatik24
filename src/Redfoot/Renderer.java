@@ -18,8 +18,8 @@ public class Renderer {
         logger = Logger.getLogger("Chunk");
     }
 
-    public Game game;
-    public Player player;
+    public Game game;  // the game instance
+    public Player player;  // the player instance
     private boolean instantiated = false;
     private int instantiateIn = 1;
 
@@ -33,7 +33,7 @@ public class Renderer {
     private Queue<BaseEntity> ceasedEntities = new LinkedList<>();
     private List<BaseActor> particles = new ArrayList<>();
 
-    private Chunk[][] chunkMap = new Chunk[3][3];
+    private Chunk[][] chunkMap = new Chunk[3][3];  // the loaded chunks
     private final Text text;
     public final UIManager uiManager;
     private BaseActor currentTextSource;

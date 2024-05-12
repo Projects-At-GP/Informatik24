@@ -8,7 +8,7 @@ import java.util.List;
 
 public class NPC extends BaseNPC {
 
-    private List<Vector2> waypoints = new ArrayList<>();
+    private List<Vector2> waypoints = new ArrayList<>();  // waypoints to determine the boundaries of the path to walk
     private void populateSentences() { // needs linebreak every 28 chars. (\\n)
         this.sentences.add("HEY, ICH BIN NUR EIN        \\nDORFBEWOHNER. MEIN TAG?     \\nZAEHLEN VON SCHAFEN         \\nUND BEWUNDERN DER WOLKEN.   \\nNICHTS BESONDERES HIER.");
     }

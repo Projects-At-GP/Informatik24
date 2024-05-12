@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CollisionDetection {
-
     public static Vector2 checkCollision(BaseActor actor1, BaseActor actor2) {
         Vector2 MTV = null;
         double minOverlap = Double.MAX_VALUE;

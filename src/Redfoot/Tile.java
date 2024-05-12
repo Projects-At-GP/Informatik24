@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class Tile extends BaseActor {
-    int id;
-    int imgscale = 64;
-    Game game;
-    Chunk parent;
-    private Animation anim;
-    private int animFramesToDo;
+    int id;  // the id for the tile type
+    int imgscale = 64;  // the scale for the images
+    Game game;  // the game instance
+    Chunk parent;  // the chunk the tile belongs to
+    private Animation anim;  // the animation of the tile
+    private int animFramesToDo;  // how many animation frames/circles are pending
 
-    private HashMap<Integer, Weapon> lootTable = new HashMap<Integer, Weapon>();
+    private HashMap<Integer, Weapon> lootTable = new HashMap<>();  // the loot table for chests
 
     public Tile(int id, Vector2 pos, Game game, Chunk parent) {
         super(game.render);
@@ -51,6 +51,9 @@ public class Tile extends BaseActor {
         this.renderer = game.render;
     }
 
+    /**
+     * Populate the loot table for chests
+     */
     private void populateLootTable(){
         Weapon loot1 = new Weapon(this.renderer, WeaponEnum.IRONSWORD, "dungeon");
         loot1.pos = this.pos.add(new Vector2(1, 1));
@@ -69,6 +72,9 @@ public class Tile extends BaseActor {
         this.lootTable.put(16, loot4);
     }
 
+    /**
+     * Set the graphics of the tile
+     */
     private void setGraphics() {
         this.game.setImageByID(id, this, imgscale);
     }
@@ -102,6 +108,9 @@ public class Tile extends BaseActor {
         }
     }
 
+    /**
+     * Logic for chests if the tile identifies as a door
+     */
     private void door() {
         if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openDoorList.contains(this.pos)){
             animFramesToDo = this.anim.frameCount;
@@ -113,12 +122,18 @@ public class Tile extends BaseActor {
         }
     }
 
+    /**
+     * Logic for chests if the tile identifies as a door to the mines/dungeon
+     */
     private void mineDoor() {
         if (this.renderer.player.unlockedDungeon && this.isTouching(Player.class)) {
             this.game.render.changeWorld("dungeon");
         }
     }
 
+    /**
+     * Logic for chests if the tile identifies as a chest
+     */
     private void chest() {
         if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openChestList.contains(this.pos)) {
             logger.info("player in range");
@@ -132,11 +147,16 @@ public class Tile extends BaseActor {
         }
     }
 
+    /**
+     * Indicator whether the tile is walkable or not
+     */
     public boolean isWalkable() {
         return !this.hasCollider;
     }
 
-    // to override logging when added to world
+    /**
+     * to override logging when added to world
+     */
     @Override
     protected void addedToWorld(World world) {
         this.logger = Logger.getLogger(this.getClass().getSimpleName());

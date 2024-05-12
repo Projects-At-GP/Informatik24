@@ -5,7 +5,7 @@ import greenfoot.GreenfootImage;
 import java.io.File;
 
 public class Item extends BaseEntity {
-    public GreenfootImage img;
+    public GreenfootImage img;  // the image of the item
     private final String filePrefix = (new File("./src/")).exists() ? "./src/" : "./";
 
     public Item(Renderer renderer, String imgPath, String world) {

@@ -11,13 +11,11 @@ import java.util.List;
 public class spell extends BaseEntity {
 
     Animation anim;
-    private int speed = 10;
-    private int damage = 25;
+    private int speed = 10;  // speed to propagate
+    private int damage = 25;  // damage to deal
 
-    private boolean awoke = false;
+    private boolean awoke = false;  // whether .awake() has been called or not
 
-    private float dx;
-    private float dy;
     private Vector2 dv;
     private boolean hit = false;
     private int deathAnimCounter;
@@ -72,6 +70,10 @@ public class spell extends BaseEntity {
         }
     }
 
+    /**
+     * [They] spin [the fire spell] right 'round, baby, right 'round
+     * Like a record, baby, right 'round, 'round, 'round
+     */
     public void rotate() {
         greenfoot.MouseInfo mouse = Greenfoot.getMouseInfo();
         Vector2 dmouse = new Vector2(mouse.getX() - 800, mouse.getY() - (450 - 32));

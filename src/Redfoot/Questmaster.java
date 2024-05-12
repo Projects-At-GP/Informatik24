@@ -10,7 +10,7 @@ import java.util.List;
 public class Questmaster extends BaseNPC {
     List<BaseEntity[]> spawnList = new ArrayList<>();
 
-    private void populateSentences() { // needs linebreak every 28 chars. (\\n)
+    private void populateSentences() { // needs linebreak every 28 chars. ("\\n")
         this.sentences.add("HALLO. ICH BIN DER          \\nSTADTAELTESTE. ICH GEBE DIR \\nQUESTS.");
         this.sentences.add("KOMM EINFACH ZU MIR UND     \\nSPRICH MICH AN. DANN KANN   \\nICH DIR AUFGABEN GEBEN.     ");
         this.sentences.add("FOLGE DEM PFAD IN RICHTUNG  \\nDES SONNENAUFGANGS. WENN DU \\nAUS DER STADT HERAUS KOMMST \\nGEHE GEN SUEDEN. BESIEGE    \\nDORT DREI SPINNEN.");

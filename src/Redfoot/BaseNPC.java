@@ -65,6 +65,9 @@ public class BaseNPC extends BaseEnemy {
         return false;
     }
 
+    /**
+     * Method to interact with NPCs (managed/called from Player)
+     */
     @Override
     protected void interactWith() {
         if (System.currentTimeMillis() >= this.resetTimer) counter = 0;

@@ -5,6 +5,11 @@ public class spellItem extends Weapon {
         super(renderer, values, world);
     }
 
+    /**
+     * Attempt to deal damage via the fire spell itself
+     * @param player the player instance
+     * @param direction <i>unused</i>
+     */
     @Override
     public void doDamage(Player player, int direction) {
         spell fire = new spell(renderer, player.pos, this.world);

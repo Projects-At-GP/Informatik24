@@ -1,7 +1,10 @@
 package Redfoot;
 
+/**
+ * Used to hold elements from the user interface
+ */
 public class UI extends BaseActor {
-    public boolean active;
+    public boolean active;  // whether this element is active or not
 
     public UI(Renderer renderer) {
         super(renderer);

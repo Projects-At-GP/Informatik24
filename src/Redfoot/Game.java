@@ -25,8 +25,8 @@ public class Game extends World {
     private int pathfindingTickIndex = -1;  // counter to iterate over every actor to distribute the pathfindingTick ticks even
     private File[] dir;
     private GreenfootSound menuMusic;
-    public List<Vector2> openChestList = new ArrayList<Vector2>();
-    public List<Vector2> openDoorList = new ArrayList<Vector2>();
+    public List<Vector2> openChestList = new ArrayList<>();
+    public List<Vector2> openDoorList = new ArrayList<>();
 
     public Renderer render;
     public ArrayList<Actor> deletionList = new ArrayList<>();
@@ -62,7 +62,6 @@ public class Game extends World {
         //broadsword.pos = new Vector2(23, 21);
         //spawnEntity(broadsword);
 
-
         Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD, this.render.world);
         coppersword.pos = new Vector2(21, 21);
         spawnEntity(coppersword);
@@ -79,7 +78,6 @@ public class Game extends World {
 
     /**
      * Spawn a new entity to the world
-     *
      * @param entity the new entity
      */
     public void spawnEntity(BaseEntity entity) {

@@ -12,7 +12,7 @@ public class NPC3 extends BaseNPC {
     private int counterPath;
     private boolean hasTalked = false;
 
-    private void populateSentences() { // needs linebreak every 28 chars. (\\n)
+    private void populateSentences() { // needs linebreak every 28 chars. ("\\n")
         this.sentences.add("MOIN! DU BIST NEU HIER ODER?\\nICH EMPFEHLE DIR, ZUM STADT-\\nAELTSTEN ZU GEHEN.\\nFOLGE MIR.");
     }
 
@@ -28,6 +28,9 @@ public class NPC3 extends BaseNPC {
         this.goTo(this.pos);
     }
 
+    /**
+     * Method to interact with the NPC (managed/called from Player)
+     */
     @Override
     protected void interactWith() {
         if (System.currentTimeMillis() >= this.resetTimer) counter = 0;

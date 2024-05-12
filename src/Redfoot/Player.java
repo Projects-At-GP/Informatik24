@@ -168,7 +168,7 @@ public class Player extends BaseEntity {
                     cooldownArray[selectedInventoryIndex] = ((Weapon) selectedItem).cooldown;
                     if (selectedItem.getClass() == Weapon.class) {
                         this.animFramesToDo = combatAnim.frameCount;
-                        this.combatAnim.setColor(((Weapon) selectedItem).values.color);
+                        this.combatAnim.setColor(((Weapon) selectedItem).weaponType.color);
                         this.combatAnim.resetCounter();
                         this.combatAnim.resume();
                     }
