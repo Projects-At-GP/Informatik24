@@ -1,16 +1,24 @@
 # Informatik24
 
-## Greenfoot
+---
+## Table Of Contents
+- [Running the code](#running-the-code)
+- [Map Editor](#map-editor)
+---
+
+## Running the code
+
+### Greenfoot
 
 Just open `./src/project.greenfoot` as you would do with any other Greenfoot project.
 
-## IntelliJ
+### IntelliJ
 
-### Setup
+#### Setup
 
 https://github.com/Rc-Cookie/greenfoot-sources-combined/blob/main/Greenfoot%20in%20IntelliJ.pdf
 
-### Run Configuration For IntelliJ
+#### Run Configuration For IntelliJ
 
 *filename in project root: `.idea/runConfigurations/Run_Scenario.xml`*
 
@@ -34,3 +42,8 @@ https://github.com/Rc-Cookie/greenfoot-sources-combined/blob/main/Greenfoot%20in
 
 > replace `REPLACE_ME` with e.g. `C:\Program Files\Greenfoot371\lib\javafx\lib` *(
 probably `C:\Program Files\Greenfoot\lib\javafx\lib`)*
+
+## Map Editor
+
+We also have nice little [Map Editor](https://github.com/CC35A/MapEditor)! 🙃
+
