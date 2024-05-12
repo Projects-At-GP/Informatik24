@@ -1,8 +1,9 @@
 package Redfoot;
 
 import vector.Vector2;
-import java.util.List;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class CollisionDetection {
 
@@ -73,7 +74,7 @@ public class CollisionDetection {
             this.max = max;
         }
 
-        boolean overlaps(Projection other){
+        boolean overlaps(Projection other) {
             return !(this.max < other.min || other.max < this.min); // AABB in 1d
         }
     }

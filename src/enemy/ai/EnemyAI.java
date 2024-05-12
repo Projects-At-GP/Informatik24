@@ -26,6 +26,7 @@ public class EnemyAI {
 
     /**
      * Used to cache the players position as the information is only propagated through tick-methods
+     *
      * @param playerPosCache the current position
      */
     public void setPlayerPosCache(Vector2 playerPosCache) {
@@ -34,6 +35,7 @@ public class EnemyAI {
 
     /**
      * Check whether the player is still in chasing range
+     *
      * @param self the enemy the AI-instance belongs to
      */
     public void reevaluateAggression(BaseEnemy self) {
@@ -42,6 +44,7 @@ public class EnemyAI {
 
     /**
      * Automatically aggro on the players position if the player is in range
+     *
      * @return true if aggression was activated during the method call
      */
     public boolean autoAggro(BaseEnemy self) {
@@ -52,6 +55,7 @@ public class EnemyAI {
 
     /**
      * Makes the enemy aggro on the targeted position
+     *
      * @param targetPos the position to target (to set playerPosCache to)
      */
     public void aggro(Vector2 targetPos) {
@@ -61,7 +65,8 @@ public class EnemyAI {
 
     /**
      * Alert other enemies via the magic of swarm intelligence (only if the calling enemy is intelligent itself)
-     * @param self the enemy the AI-instance belongs to
+     *
+     * @param self    the enemy the AI-instance belongs to
      * @param enemies a list of every enemy to potentially alert
      */
     public void alertToSwarm(BaseEnemy self, List<BaseEnemy> enemies) {
@@ -76,7 +81,8 @@ public class EnemyAI {
 
     /**
      * Retrieve a path which either chases the player or wanders in a radius around the spawn of the enemy
-     * @param self the enemy the AI-instance belongs to
+     *
+     * @param self  the enemy the AI-instance belongs to
      * @param state the current Game.State object from a tick
      * @return a walkable path
      */
@@ -104,7 +110,8 @@ public class EnemyAI {
 
     /**
      * Tries to chase the player or in case of failure it will try to wander around their spawn
-     * @param self the enemy the AI-instance belongs to
+     *
+     * @param self  the enemy the AI-instance belongs to
      * @param state the current Game.State object from a tick
      * @return true if the enemy was able to move (either chased or wandered)
      */
@@ -131,7 +138,8 @@ public class EnemyAI {
 
     /**
      * Tries to damage the player
-     * @param self the enemy the AI-instance belongs to
+     *
+     * @param self  the enemy the AI-instance belongs to
      * @param state the current Game.State object from a tick
      * @return true if the enemy was able to damage the player
      */
@@ -145,7 +153,8 @@ public class EnemyAI {
 
     /**
      * Sets the animation of the enemy to have consistent visuals
-     * @param self the enemy the AI-instance belongs to
+     *
+     * @param self      the enemy the AI-instance belongs to
      * @param direction the direction the enemy moved
      */
     public static void setAnimation(BaseEnemy self, Vector2 direction) {

@@ -25,4 +25,5 @@ import Redfoot.Game;
  *     <li>Reopen `project.greenfoot` as usual</li>
  * </ol>
  */
-public class Gate extends Game {}
+public class Gate extends Game {
+}

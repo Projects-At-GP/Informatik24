@@ -1,17 +1,13 @@
 package Redfoot;
 
-import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
-import greenfoot.GreenfootSound;
-import greenfoot.World;
-import greenfoot.Actor;
+import greenfoot.*;
+import vector.Vector2;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Logger;
-import vector.Vector2;
 
 public class Game extends World {
     private static final Logger logger;
@@ -81,9 +77,10 @@ public class Game extends World {
 
     /**
      * Spawn a new entity to the world
+     *
      * @param entity the new entity
      */
-    public void spawnEntity(BaseEntity entity){
+    public void spawnEntity(BaseEntity entity) {
         addObject(entity, 0, 0);
         this.render.addEntity(entity);
     }
@@ -92,11 +89,11 @@ public class Game extends World {
         this(30);
     }
 
-    private void setDir(){
+    private void setDir() {
         File file = new File("./images/textures/");
         File[] files = file.listFiles();
         this.dir = new File[files.length];
-        for (File f : files){
+        for (File f : files) {
             int index;
             String[] keys = f.getName().split("-");
             index = Integer.parseInt(keys[0]);
@@ -104,14 +101,14 @@ public class Game extends World {
         }
     }
 
-    public void setImageByID(int id, Tile tile, int imgscale){
-        if(dir == null) return;
-        if (id >= 0 && id < dir.length){
+    public void setImageByID(int id, Tile tile, int imgscale) {
+        if (dir == null) return;
+        if (id >= 0 && id < dir.length) {
             GreenfootImage img = new GreenfootImage(dir[id].getPath());
             img.scale(imgscale, imgscale);
             tile.setImage(img);
             String[] keys = dir[id].getName().replace(".png", "").split("-");
-            if(keys[1].equals("N")) tile.hasCollider = true;
+            if (keys[1].equals("N")) tile.hasCollider = true;
         }
     }
 
@@ -128,7 +125,7 @@ public class Game extends World {
      */
     @Override
     public void act() {
-        for (Actor actor : deletionList){
+        for (Actor actor : deletionList) {
             this.removeObject(actor);
         }
         Greenfoot.setSpeed(100);
@@ -137,13 +134,13 @@ public class Game extends World {
         try {
             Thread.sleep((long) (secondsUntilNextTick * 1000));
         } catch (IllegalArgumentException e) {
-            logger.warning(String.format("Lagging behind! Should already have ticked %s ms ago!", (int) Math.abs(secondsUntilNextTick*1000)));
+            logger.warning(String.format("Lagging behind! Should already have ticked %s ms ago!", (int) Math.abs(secondsUntilNextTick * 1000)));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        for (BaseActor actor : this.getObjects(BaseActor.class)){
-            if(!actor.started){
+        for (BaseActor actor : this.getObjects(BaseActor.class)) {
+            if (!actor.started) {
                 actor.awake();
                 actor.start();
                 actor.started = true;
@@ -154,10 +151,10 @@ public class Game extends World {
         State state2 = new State(this.tick, 2, this.deltaTime, this);
         State state3 = new State(this.tick, 3, this.deltaTime, this);
 
-        this.getObjects(BaseActor.class).forEach((a)->a.priorityTick(state1));
+        this.getObjects(BaseActor.class).forEach((a) -> a.priorityTick(state1));
         handleCollision();
-        if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a)->a.blockTick(state3));
-        if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a)->a.entityTick(state2));
+        if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a) -> a.blockTick(state3));
+        if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a) -> a.entityTick(state2));
 
         List<BaseEntity> pathfindingEntities = this.getObjects(BaseEntity.class);
         int pathfindingTick = (int) Math.ceil((double) this.tps / pathfindingEntities.size());
@@ -172,17 +169,17 @@ public class Game extends World {
         this.tick++;
     }
 
-    private void handleCollision(){
+    private void handleCollision() {
         List<BaseEntity> actorList = new ArrayList<>(this.getObjects(BaseEntity.class));
         actorList.removeIf(actor -> !actor.hasCollider);
         List<BaseActor> otherList = new ArrayList<>(this.getObjects(BaseActor.class));
         otherList.removeIf(actor -> !actor.hasCollider);
 
-        for (BaseEntity actor : actorList){
+        for (BaseEntity actor : actorList) {
             actor.collided = false;
-            for (BaseActor other : otherList){
+            for (BaseActor other : otherList) {
                 if (actor == other || !actor.hasCollider || !other.hasCollider) continue;
-                if(actor.pos == null || other.pos == null) continue;
+                if (actor.pos == null || other.pos == null) continue;
                 Vector2 mtv = CollisionDetection.checkCollision(actor, other);
                 if (mtv != null) {
                     actor.collided = true;
@@ -202,7 +199,7 @@ public class Game extends World {
         this.deltaTime = (float) (this.curAct - lastAct) / 1000;
         // edge case: initial start
         if (this.deltaTime < 0) updateDeltaTime();
-        if(this.deltaTime > 1000000) updateDeltaTime();
+        if (this.deltaTime > 1000000) updateDeltaTime();
     }
 
     /**
@@ -214,7 +211,7 @@ public class Game extends World {
         public float deltaTime;  // delta time since last game-tick (NOTE: only usable if method gets ticked every tick as deltaTime doesn't respect any tick spans)
         public Game game;  // a reference to the master itself
 
-        public State(long tick, int sinceLastTick, float deltaTime, Game game){
+        public State(long tick, int sinceLastTick, float deltaTime, Game game) {
             this.tick = tick;
             this.sinceLastTick = sinceLastTick;
             this.deltaTime = deltaTime;

@@ -6,7 +6,6 @@ import enemy.ai.Exceptions.NoPathAvailable;
 import vector.Vector2;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -43,10 +42,11 @@ public class Algorithms {
 
     /**
      * Determines a walkable path from a starting position to an ending position if one is available
-     * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
-     * @param start the starting position
-     * @param end the ending position
-     * @param intelligence information about the available intelligence
+     *
+     * @param map                the cached map data containing the chunk with corresponding tiles to determine walkable paths
+     * @param start              the starting position
+     * @param end                the ending position
+     * @param intelligence       information about the available intelligence
      * @param bypassChasingRange whether the chasing range should be ignored as a radius
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
@@ -57,7 +57,7 @@ public class Algorithms {
         // just computed?
         if (isCached(map, start, end, intelligence)) return cachedPath;
 
-        double power = bypassChasingRange? 2.25 : 1.75;
+        double power = bypassChasingRange ? 2.25 : 1.75;
 
         // out of range?
         if (end.subtract(start).magnitude() > intelligence.chasingRange) {
@@ -73,29 +73,31 @@ public class Algorithms {
 
     /**
      * Helper method to retrieve all walkable neighbors from a given position
+     *
      * @param map the cached map data
      * @param pos the current position
      * @return an array of all available/walkable neighbors
      */
     public static Vector2[] getWalkableNeighbors(Renderer.CachedMapData map, Vector2 pos) {
         LinkedList<Vector2> possibleNeighbors = new LinkedList<>(List.of(
-                new Vector2(pos.x+1, pos.y),
-                new Vector2(pos.x-1, pos.y),
-                new Vector2(pos.x, pos.y+1),
-                new Vector2(pos.x, pos.y-1))
+                new Vector2(pos.x + 1, pos.y),
+                new Vector2(pos.x - 1, pos.y),
+                new Vector2(pos.x, pos.y + 1),
+                new Vector2(pos.x, pos.y - 1))
         );
         return Arrays.stream(map.mapData).flatMap(Arrays::stream)
-                                         .filter(tile -> possibleNeighbors.contains(tile.pos))
-                                         .filter(Tile::isWalkable)
-                                         .map(tile -> tile.pos)
-                                         .toArray(Vector2[]::new);
+                .filter(tile -> possibleNeighbors.contains(tile.pos))
+                .filter(Tile::isWalkable)
+                .map(tile -> tile.pos)
+                .toArray(Vector2[]::new);
     }
 
     /**
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(A_Star)</i></a>
-     * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
+     *
+     * @param map   the cached map data containing the chunk with corresponding tiles to determine walkable paths
      * @param start the starting position
-     * @param end the ending position
+     * @param end   the ending position
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
@@ -146,8 +148,9 @@ public class Algorithms {
 
     /**
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(reconstruct_path)</i></a>
+     *
      * @param cameFrom the originating position
-     * @param current the current position
+     * @param current  the current position
      * @return the walkable path with the first element being the start
      */
     private static LinkedList<Vector2> reconstructAStarPath(LinkedHashMap<Vector2, Vector2> cameFrom, Vector2 current) {
@@ -160,8 +163,9 @@ public class Algorithms {
 
     /**
      * Calculate the cost to go from current to target
+     *
      * @param current the current position
-     * @param target the target position
+     * @param target  the target position
      * @return the cost calculated based on the distance from current to target
      */
     private static Double calculateCost(Vector2 current, Vector2 target) {

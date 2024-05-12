@@ -47,12 +47,13 @@ public class BaseEnemy extends BaseEntity {
      */
     @Override
     protected void entityTick(Game.State state) {
-        if(!this.active) return;
+        if (!this.active) return;
         super.entityTick(state);
         if (this.isDead || this.pos == null) return;
 
         this.enemyAI.setPlayerPosCache(this.renderer.player.pos);
-        if (!this.enemyAI.autoAggro(this) && !this.bypassesChaseRadius(state.tick)) this.enemyAI.reevaluateAggression(this);
+        if (!this.enemyAI.autoAggro(this) && !this.bypassesChaseRadius(state.tick))
+            this.enemyAI.reevaluateAggression(this);
         if (this.bypassesChaseRadius(state.tick)) this.enemyAI.isAggro = true;  // to override range based evaluation
         this.enemyAI.alertToSwarm(this, this.getWorld().getObjects(BaseEnemy.class));
 
@@ -77,6 +78,7 @@ public class BaseEnemy extends BaseEntity {
 
     /**
      * Alert the enemy to a given position
+     *
      * @param targetPos
      */
     public void getAlerted(Vector2 targetPos) {
@@ -86,6 +88,7 @@ public class BaseEnemy extends BaseEntity {
 
     /**
      * Take damage and chase down the player afterward
+     *
      * @param dmg the amount of damage to take
      */
     @Override
@@ -98,6 +101,7 @@ public class BaseEnemy extends BaseEntity {
 
     /**
      * Helper to figure out whether the enemy may bypass their own restrictions
+     *
      * @param curTick the current tick
      * @return true if the enemy may bypass their chase radius
      */

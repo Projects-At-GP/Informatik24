@@ -5,7 +5,7 @@ import dialogue.Text;
 import greenfoot.Greenfoot;
 import vector.Vector2;
 
-public class BaseEntity extends BaseActor{
+public class BaseEntity extends BaseActor {
 
     double hp;  // the health points
     public boolean isDead = false;  // indicator to signal whether any actions may be executed
@@ -26,14 +26,15 @@ public class BaseEntity extends BaseActor{
 
     /**
      * Take damage and display the amount it took
+     *
      * @param dmg the amount of damage to take
      */
-    public void takeDamage(double dmg){
-        if(!this.active) return;
+    public void takeDamage(double dmg) {
+        if (!this.active) return;
         hp -= dmg;
         this.text.popup("\\$FF0000-" + (int) dmg, new Vector2(this.pos.x - Greenfoot.getRandomNumber(2), this.pos.y - 1), 2000);
         this.text.showText("\\$FFFFFF" + (int) this.hp, this.health);
-        if(hp <= 0) {
+        if (hp <= 0) {
             renderer.ceaseEntity(this);
             this.getWorld().removeObject(this.health);
             this.getWorld().removeObject(this);
@@ -46,7 +47,8 @@ public class BaseEntity extends BaseActor{
     /**
      * Method to interact with the entity (managed/called from Player)
      */
-    protected void interactWith() {}
+    protected void interactWith() {
+    }
 
     @Override
     protected void awake() {

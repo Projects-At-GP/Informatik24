@@ -23,7 +23,7 @@ public class BaseNPC extends BaseEnemy {
     }
 
     @Override
-    protected void start(){
+    protected void start() {
         this.anim.update();
     }
 
@@ -43,6 +43,7 @@ public class BaseNPC extends BaseEnemy {
 
     /**
      * Let the NPC go to a given position, may not be instant as the NPC needs to wait for the next pathfindingTick to be ticked
+     *
      * @param target the desired position
      */
     protected void goTo(Vector2 target) {
@@ -58,9 +59,9 @@ public class BaseNPC extends BaseEnemy {
     }
 
     @Override
-    protected void interactWith(){
-        if(System.currentTimeMillis() >= this.resetTimer) counter = 0;
-        if (this.counter < this.sentences.size()){
+    protected void interactWith() {
+        if (System.currentTimeMillis() >= this.resetTimer) counter = 0;
+        if (this.counter < this.sentences.size()) {
             this.renderer.showText(this.sentences.get(counter), this);
             this.resetTimer = System.currentTimeMillis() + timeToReset;
             counter++;
@@ -71,5 +72,6 @@ public class BaseNPC extends BaseEnemy {
      * Overridden here to prevent NPCs to take damage -> make them invincible
      */
     @Override
-    public void takeDamage(double dmg){}
+    public void takeDamage(double dmg) {
+    }
 }

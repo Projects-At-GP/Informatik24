@@ -2,16 +2,15 @@ package dialogue;
 
 import Redfoot.Game;
 import Redfoot.UI;
-import greenfoot.*;
+import greenfoot.Actor;
+import greenfoot.GreenfootImage;
 import vector.Vector2;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 
 public class Text {
     private BufferedImage[] chars;
@@ -20,7 +19,7 @@ public class Text {
     private final int xOffset = 8;
     private final int yOffset = 10;
     private final int frameSize = 8;
-    private final String filePrefix = (new File("./src/")).exists()? "./src/" : "./";
+    private final String filePrefix = (new File("./src/")).exists() ? "./src/" : "./";
     private final String sheetPath = "images/textSheet.png";
     private final String boxPath = "images/textbox.png";
     private final String path = this.filePrefix + "images/tmp/";
@@ -29,14 +28,14 @@ public class Text {
 
     private String textLookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ,.;:-_#'+*<>|^1234567890!\"$%&/()=? ";
 
-    public Text(Game game, Actor dialogueBox){
+    public Text(Game game, Actor dialogueBox) {
         this.game = game;
         this.dialogueBox = dialogueBox;
         try {
             this.sheet = ImageIO.read(new File(this.filePrefix + sheetPath));
             this.box = new BufferedImage(256, 64, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2d = this.box.createGraphics();
-            g2d.drawImage(ImageIO.read(new File(this.filePrefix + boxPath)), 0, 0,256 , 64, null);
+            g2d.drawImage(ImageIO.read(new File(this.filePrefix + boxPath)), 0, 0, 256, 64, null);
             g2d.dispose();
             createFrames();
         } catch (IOException e) {
@@ -44,41 +43,41 @@ public class Text {
         }
     }
 
-    public void popup(String text, Vector2 pos, int time){ // pos works in screenspace
+    public void popup(String text, Vector2 pos, int time) { // pos works in screenspace
         Popup thread = new Popup();
         thread.startup(pos, this.game, getTextImage(text, chars[textLookup.indexOf(" ")], 16, 10), time);
     }
 
-    public void showTextBox(String text){
+    public void showTextBox(String text) {
         this.dialogueBox.setImage(getTextImage(text, box, 0, 0));
         this.dialogueBox.getImage().setTransparency(255);
     }
 
-    public void showText(String text, Actor actor){
+    public void showText(String text, Actor actor) {
         actor.setImage(getTextImage(text, chars[textLookup.indexOf(" ")], 16, 10));
         actor.getImage().setTransparency(255);
     }
 
-    public GreenfootImage getTextImage(String text, BufferedImage baseImg, int xOffset2, int yOffset2){
+    public GreenfootImage getTextImage(String text, BufferedImage baseImg, int xOffset2, int yOffset2) {
         BufferedImage img = baseImg;
         GreenfootImage returnImg;
         Color color = Color.BLACK;
         int line = 0;
         int coloumn = 0;
-        for (int i = 0; i < text.length(); i++){
+        for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) == '\\') {
-                if (text.charAt(i+1) == 'n'){
+                if (text.charAt(i + 1) == 'n') {
                     line++;
                     coloumn = 0;
                     i += 2;
-                } else if(text.charAt(i+1) == '$'){
+                } else if (text.charAt(i + 1) == '$') {
                     color = getColorFromHex(text.substring(i + 2, i + 8));
                     i += 8;
                 }
             }
             coloumn++;
             int index = textLookup.indexOf(text.charAt(i));
-            if(index == -1) index = 0; // display 'A' if char does not exist in lookup
+            if (index == -1) index = 0; // display 'A' if char does not exist in lookup
             img = merge(img, changeImageColor(chars[index], color), coloumn, line, xOffset2, yOffset2);
         }
         try {
@@ -123,7 +122,7 @@ public class Text {
         return result;
     }
 
-    private BufferedImage merge(BufferedImage source, BufferedImage image2, int coloumn, int line, int xOffset2, int yOffset2){
+    private BufferedImage merge(BufferedImage source, BufferedImage image2, int coloumn, int line, int xOffset2, int yOffset2) {
         int newWidth = Math.max(8 + coloumn * 8, source.getWidth());
         int newHeight = Math.max(8 + line * 8, source.getHeight());
 
@@ -141,9 +140,9 @@ public class Text {
         int size = (this.sheet.getHeight() / this.frameSize) * (this.sheet.getWidth() / this.frameSize);
         this.chars = new BufferedImage[size];
         String[] keys = sheetPath.replace(".png", "").split("/");
-        String key = keys[keys.length-1];
-        for(int c = 0; c < this.sheet.getHeight() / this.frameSize; c++){
-            for(int i = 0; i < this.sheet.getWidth() / this.frameSize; i++){
+        String key = keys[keys.length - 1];
+        for (int c = 0; c < this.sheet.getHeight() / this.frameSize; c++) {
+            for (int i = 0; i < this.sheet.getWidth() / this.frameSize; i++) {
                 BufferedImage subImg = this.sheet.getSubimage(i * this.frameSize, c * this.frameSize, this.frameSize, this.frameSize);
                 this.chars[i + (c * 16)] = subImg;
             }
@@ -151,13 +150,13 @@ public class Text {
     }
 }
 
-class Popup extends Thread{
+class Popup extends Thread {
     private final int timeToRun = 1000;
     private Vector2 pos;
     private Game game;
     private GreenfootImage img;
 
-    public void run(){
+    public void run() {
         long time = System.currentTimeMillis();
         UI actor = new UI(this.game.render);
         actor.pos = this.pos;
@@ -173,7 +172,7 @@ class Popup extends Thread{
         this.game.render.releaseParticle(actor);
     }
 
-    public void startup(Vector2 pos, Game game, GreenfootImage img, int timeToRun){
+    public void startup(Vector2 pos, Game game, GreenfootImage img, int timeToRun) {
         this.pos = pos;
         this.game = game;
         this.img = img;

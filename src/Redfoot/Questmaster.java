@@ -10,7 +10,7 @@ import java.util.List;
 public class Questmaster extends BaseNPC {
     List<BaseEnemy[]> spawnList = new ArrayList<>();
 
-    private void populateSentences(){ // needs linebreak every 28 chars. (\\n)
+    private void populateSentences() { // needs linebreak every 28 chars. (\\n)
         this.sentences.add("HALLO. ICH BIN DER          \\nSTADTAELTESTE. ICH GEBE DIR \\nQUESTS.");
         this.sentences.add("KOMM EINFACH ZU MIR UND     \\nSPRICH MICH AN. DANN KANN   \\nICH DIR AUFGABEN GEBEN.     ");
         this.sentences.add("FOLGE DEM PFAD IN RICHTUNG  \\nDES SONNENAUFGANGS. WENN DU \\nAUS DER STADT HERAUS KOMMST \\nGEHE GEN SUEDEN. BESIEGE    \\nDORT DREI SPINNEN.");
@@ -21,7 +21,7 @@ public class Questmaster extends BaseNPC {
         this.sentences.add("ACHJA... DU MUSST MIR HELFEN");
     }
 
-    private void populateSpawnList(){
+    private void populateSpawnList() {
         this.spawnList.add(null);
         this.spawnList.add(null);
         this.spawnList.add(new Spider[]{new Spider(this.renderer, new Vector2(43, 39)),
@@ -44,24 +44,24 @@ public class Questmaster extends BaseNPC {
     }
 
     @Override
-    protected void interactWith(){
+    protected void interactWith() {
         boolean finished = false;
-        if(counter > 0){
-            if(this.spawnList.get(counter - 1) != null){
-                if(this.renderer.player.killList.containsAll(Arrays.asList(this.spawnList.get(counter -1)))){
+        if (counter > 0) {
+            if (this.spawnList.get(counter - 1) != null) {
+                if (this.renderer.player.killList.containsAll(Arrays.asList(this.spawnList.get(counter - 1)))) {
                     finished = true;
                 }
             } else finished = true;
         } else finished = true;
-        if (this.counter < this.sentences.size() && finished){
+        if (this.counter < this.sentences.size() && finished) {
             this.renderer.showText(this.sentences.get(counter), this);
-            if(this.spawnList.get(counter) != null){
-                for (BaseEnemy enemy : spawnList.get(counter)){
+            if (this.spawnList.get(counter) != null) {
+                for (BaseEnemy enemy : spawnList.get(counter)) {
                     this.renderer.game.spawnEntity(enemy);
                 }
             }
             counter++;
-        } else if(!finished){
+        } else if (!finished) {
             this.renderer.showText(this.sentences.get(counter - 1), this);
         } else this.renderer.showText("ICH HABE NICHTS MIT DIR ZU\\nBESPRECHEN.", this);
     }

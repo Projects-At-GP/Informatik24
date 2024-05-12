@@ -1,7 +1,6 @@
 package Redfoot;
 
 import animator.Animation;
-import dialogue.Text;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
 import vector.Vector2;

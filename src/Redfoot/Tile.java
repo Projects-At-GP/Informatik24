@@ -7,7 +7,7 @@ import vector.Vector2;
 
 import java.util.logging.Logger;
 
-public class Tile extends BaseActor{
+public class Tile extends BaseActor {
     int id;
     int imgscale = 64;
     Game game;
@@ -17,7 +17,7 @@ public class Tile extends BaseActor{
     private boolean open = false;
 
 
-    public Tile(int id, Vector2 pos, Game game, Chunk parent){
+    public Tile(int id, Vector2 pos, Game game, Chunk parent) {
         super(game.render);
         this.id = id;
         this.pos = pos;
@@ -27,23 +27,23 @@ public class Tile extends BaseActor{
         this.parent = parent;
         setGraphics();
 
-        if(this.id == 14 || this.id == 35) {
+        if (this.id == 14 || this.id == 35) {
             this.anim = new Animation("./images/ChestSheet.png", this, 16, 4, 1);
             if (this.game.openChestList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
-        } else if(this.id == 79 && false){
+        } else if (this.id == 79 && false) {
             this.anim = new Animation("./images/TorchSheet.png", this, 16, 4, 1);
             this.anim.resume();
         }
     }
 
-    private void setGraphics(){
+    private void setGraphics() {
         this.game.setImageByID(id, this, imgscale);
     }
 
     @Override
-    protected void priorityTick(Game.State state){
-        if(Greenfoot.mouseClicked(this)){
+    protected void priorityTick(Game.State state) {
+        if (Greenfoot.mouseClicked(this)) {
             // TODO logic for interactables
             this.logger.finest(String.format("A mouse bit me at %1$,.0f/%2$,.0f", pos.x, pos.y));
             //this.game.render.showText("CLICKED TILE ID " + id + "\\nPOS: \\$0000FF" + this.pos + "\\$000000 \\nCHUNK POS: " + parent.pos, this);
@@ -51,33 +51,33 @@ public class Tile extends BaseActor{
     }
 
     @Override
-    protected void blockTick(Game.State state){
-        if (this.id == 16){
+    protected void blockTick(Game.State state) {
+        if (this.id == 16) {
             //mineDoor();
-        } else if(this.id == 14 || this.id == 35) {
+        } else if (this.id == 14 || this.id == 35) {
             chest();
-        } else if(this.id == 79){
+        } else if (this.id == 79) {
             //torch();
         }
     }
 
-    private void torch(){
+    private void torch() {
         this.anim.update();
     }
 
-    private void mineDoor(){
-        if (this.isTouching(Player.class)){
+    private void mineDoor() {
+        if (this.isTouching(Player.class)) {
             this.game.render.changeWorld("dungeon");
         }
     }
 
-    private void chest(){
-        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openChestList.contains(this.pos)){
+    private void chest() {
+        if (this.pos.subtract(this.game.render.player.pos).magnitude() <= 2 && !this.game.openChestList.contains(this.pos)) {
             logger.info("player in range");
             animFramesToDo = this.anim.frameCount;
             this.game.openChestList.add(this.pos);
         }
-        if(this.animFramesToDo > 0){ // TODO make chests an entity so that they do not get reloaded when crossing chunks
+        if (this.animFramesToDo > 0) { // TODO make chests an entity so that they do not get reloaded when crossing chunks
             this.anim.update();
             this.animFramesToDo--;
         }
@@ -95,6 +95,6 @@ public class Tile extends BaseActor{
 
     @Override
     public String toString() {
-        return String.format("Redfoot.Tile ID %d with %s Redfoot.collider at position %s", this.id, hasCollider? "a" : "no", pos.toString());
+        return String.format("Redfoot.Tile ID %d with %s Redfoot.collider at position %s", this.id, hasCollider ? "a" : "no", pos.toString());
     }
 }

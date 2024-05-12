@@ -1,14 +1,10 @@
 package Redfoot;
 
-import animator.*;
-import dialogue.Text;
+import animator.Animation;
 import vector.Vector2;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class NPC extends BaseNPC {
-    private void populateSentences(){ // needs linebreak every 28 chars. (\\n)
+    private void populateSentences() { // needs linebreak every 28 chars. (\\n)
         this.sentences.add("HEY, ICH BIN NUR EIN        \\nDORFBEWOHNER. MEIN TAG?     \\nZAEHLEN VON SCHAFEN         \\nUND BEWUNDERN DER WOLKEN.   \\nNICHTS BESONDERES HIER.");
     }
 
