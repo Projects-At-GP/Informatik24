@@ -11,7 +11,7 @@ public class NPC2 extends BaseNPC {
     public NPC2(Renderer renderer, String world) {
         super(renderer, world);
         populateSentences();
-        this.pos = new Vector2(44, 66);
+        this.pos = new Vector2(61, 69);
         this.anim = new Animation("images/NPC2Sheet.png", this, 16, 4, 1);
     }
 }
