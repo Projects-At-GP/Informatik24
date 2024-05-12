@@ -219,7 +219,6 @@ public class Player extends BaseEntity{
     @Override
     protected void entityTick(Game.State state){
         this.anim.update();
-
     }
 
     @Override
@@ -236,15 +235,15 @@ public class Player extends BaseEntity{
         int fullHearts = (int) (this.hp / 20);
         double remainder = this.hp % 20;
 
-        for(int i = 0; i < this.hearts.length; i++){
+        for (UI heart : this.hearts) {
             if (fullHearts > 0) {
-                this.hearts[i].setImage(fullHeart);
+                heart.setImage(fullHeart);
                 fullHearts--;
             } else if (remainder > 0) {
-                this.hearts[i].setImage(halfHeart);
+                heart.setImage(halfHeart);
                 remainder = 0;
             } else {
-                this.hearts[i].setImage(emptyHeart);
+                heart.setImage(emptyHeart);
             }
         }
     }

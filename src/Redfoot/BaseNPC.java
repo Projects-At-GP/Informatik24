@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BaseNPC extends BaseEnemy {
-    Animation anim;
     List<String> sentences = new ArrayList<>();
     long resetTimer;
     final int timeToReset = 10000;
@@ -26,15 +25,13 @@ public class BaseNPC extends BaseEnemy {
     }
 
     @Override
-    protected void awake(){
-        super.awake();
-    }
-
-    @Override
     protected void start(){
         this.anim.update();
     }
 
+    /**
+     * Try to go to the desired position set by .goTo()
+     */
     @Override
     protected void entityTick(Game.State state) {
         if (!this.active) return;
@@ -46,10 +43,17 @@ public class BaseNPC extends BaseEnemy {
         }
     }
 
+    /**
+     * Let the NPC go to a given position, may not be instant as the NPC needs to wait for the next pathfindingTick to be ticked
+     * @param target the desired position
+     */
     protected void goTo(Vector2 target) {
         this.enemyAI.aggro(target);
     }
 
+    /**
+     * Overridden here to always bypass the chase radius
+     */
     @Override
     public boolean bypassesChaseRadius(long curTick) {
         return true;
@@ -65,6 +69,9 @@ public class BaseNPC extends BaseEnemy {
         } else this.renderer.showText("ICH HABE NICHTS MIT DIR ZU\\nBESPRECHEN.", this);
     }
 
+    /**
+     * Overridden here to prevent NPCs to take damage -> make them invincible
+     */
     @Override
     public void takeDamage(double dmg){}
 }
