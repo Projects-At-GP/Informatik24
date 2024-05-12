@@ -54,7 +54,7 @@ public class BaseNPC extends BaseEnemy {
      * Signal whether the NPC has arrived where goTo delegated them to go to
      */
     protected boolean hasArrived() {
-        return this.enemyAI.playerPosCache.equals(new Vector2(Math.round(this.pos.x), Math.round(this.pos.y)));
+        return this.enemyAI.playerPosCache.subtract(this.pos).magnitude() < 1;
     }
 
     /**
