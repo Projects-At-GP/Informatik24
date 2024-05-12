@@ -1,5 +1,4 @@
 package Redfoot;
-import dialogue.Text;
 import greenfoot.*;
 import animator.*;
 import vector.Vector2;
@@ -114,7 +113,7 @@ public class Player extends BaseEntity{
 
     private void interact(){
         List<BaseEntity> entityList = new ArrayList<>(renderer.getEntities());
-        entityList.removeIf(entity -> !entity.interactable);
+        entityList.removeIf(entity -> !entity.isInteractable);
         entityList.removeIf(entity -> entity.pos.subtract(this.pos).magnitude() >= 2);
         if(!entityList.isEmpty()) currentInteractable = entityList.get(0);
         if(currentInteractable == null) return;
@@ -125,7 +124,7 @@ public class Player extends BaseEntity{
             this.uiManager.disableElement("InteractIcon");
         }
         if (!ePressed && intIsKeyPressed("e") == 1){
-            currentInteractable.interactable();
+            currentInteractable.interactWith();
         }
         this.ePressed = intIsKeyPressed("e") == 1;
     }

@@ -44,7 +44,7 @@ public class Questmaster extends BaseNPC {
     }
 
     @Override
-    protected void interactable(){
+    protected void interactWith(){
         boolean finished = false;
         if(counter > 0){
             if(this.spawnList.get(counter - 1) != null){

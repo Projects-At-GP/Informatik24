@@ -1,7 +1,5 @@
 package Redfoot;
 
-import animator.Animation;
-import dialogue.Text;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
@@ -21,7 +19,7 @@ public class BaseNPC extends BaseEnemy {
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
         this.hasCollider = true;
-        this.interactable = true;
+        this.isInteractable = true;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class BaseNPC extends BaseEnemy {
     }
 
     @Override
-    protected void interactable(){
+    protected void interactWith(){
         if(System.currentTimeMillis() >= this.resetTimer) counter = 0;
         if (this.counter < this.sentences.size()){
             this.renderer.showText(this.sentences.get(counter), this);

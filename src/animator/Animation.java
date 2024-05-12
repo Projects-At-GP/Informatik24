@@ -29,7 +29,6 @@ public class Animation {
     private int currentAnim;
     private GreenfootImage[][] frames;
 
-
     private HashMap<String, GreenfootImage[][]> framesColour = new HashMap<String, GreenfootImage[][]>();
     public int frameCount;
     private boolean isRunning;

@@ -92,9 +92,8 @@ public class spell extends BaseEntity {
                 entitiesToDoDamage.add(actor);
             }
         }
-        Iterator<BaseEntity> iterator = entitiesToDoDamage.iterator();
-        while (iterator.hasNext()){
-            iterator.next().takeDamage(damage);
+        for (BaseEntity entity : entitiesToDoDamage) {
+            entity.takeDamage(damage);
         }
 
         this.hit = true;

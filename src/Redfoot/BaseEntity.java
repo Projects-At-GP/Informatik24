@@ -12,9 +12,9 @@ public class BaseEntity extends BaseActor{
     public boolean collided;  // whether the entity collided
     public Animation anim;  // the animation of the entity
     public Text text;  // the text field/support for the entity
-    public UI health;
-    public boolean healthInWorld = false;
-    public boolean interactable = false;  // indicator to signal whether the entity may be interacted with
+    public UI health;  // health indicator which moves with the entity
+    public boolean healthInWorld = false;  // indicator to signal whether a health is present (the attribute from the line above)
+    public boolean isInteractable = false;  // indicator to signal whether the entity may be interacted with
     public boolean active;  // indicator to signal whether the entity is active or not
     public String world;  // the dimension the entity belongs to
 
@@ -43,11 +43,11 @@ public class BaseEntity extends BaseActor{
         logger.info(String.format("Took %d Damage! Now at %d HP", (int) dmg, (int) hp));
     }
 
-    protected void interactable(){}
-
     /**
-     * Finish initialization whilst it being placed in the world
+     * Method to interact with the entity (managed/called from Player)
      */
+    protected void interactWith() {}
+
     @Override
     protected void awake() {
         super.awake();

@@ -24,9 +24,6 @@ public class BaseEnemy extends BaseEntity {
         this(renderer, new EnemyAI(IntelligenceEnum.ABSENT_IQ));
     }
 
-    /**
-     * Finish initialization whilst it being placed in the world
-     */
     @Override
     protected void awake() {
         super.awake();
