@@ -12,27 +12,27 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Algorithms {
     private static Renderer.CachedMapData cachedMap;
     private static Vector2 cachedStart;
-    private static Vector2 cachedPos;
+    private static Vector2 cachedEnd;
     private static IntelligenceEnum cachedIntelligence;
     private static LinkedList<Vector2> cachedPath;
 
     /**
      * Checks if the path was already calculated to prevent redundant calculations
      */
-    private static boolean isCached(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence) {
+    private static boolean isCached(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence) {
         return (cachedMap == map &&
                 cachedStart == start &&
-                cachedPos == pos &&
+                cachedEnd == end &&
                 cachedIntelligence == intelligence);
     }
 
     /**
      * Sets the cache to reduce redundant calculations
      */
-    private static void setCache(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence, LinkedList<Vector2> path) {
+    private static void setCache(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence, LinkedList<Vector2> path) {
         cachedMap = map;
         cachedStart = start;
-        cachedPos = pos;
+        cachedEnd = end;
         cachedIntelligence = intelligence;
         cachedPath = path;
     }
@@ -41,30 +41,29 @@ public class Algorithms {
      * Determines a walkable path from a starting position to an ending position if one is available
      * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
      * @param start the starting position
-     * @param pos the posing position
+     * @param end the ending position
      * @param intelligence information about the available intelligence
      * @param gotDamaged whether the chasing range should be ignored as a radius
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
-    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 pos, IntelligenceEnum intelligence, boolean gotDamaged) throws NoPathAvailable {
-        if (start == null || pos == null) return new LinkedList<>();
+    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence, boolean gotDamaged) throws NoPathAvailable {
+        if (start == null || end == null) return new LinkedList<>();
 
         // just computed?
-        if (isCached(map, start, pos, intelligence)) return cachedPath;
+        if (isCached(map, start, end, intelligence)) return cachedPath;
 
-        double power = 1.75;
+        double power = gotDamaged? 2.25 : 1.75;
 
         // out of range?
-        if (pos.subtract(start).magnitude() > intelligence.chasingRange) {
+        if (end.subtract(start).magnitude() > intelligence.chasingRange) {
             // but got damaged? -> something like a line-of-sight can be implied!
-            if (!gotDamaged) throw new NoPathAvailable(start, pos, intelligence);
-            else power = 2.25;
+            if (!gotDamaged) throw new NoPathAvailable(start, end, intelligence);
         }
 
-        LinkedList<Vector2> path = aStar(map, start, pos, (int) Math.pow(intelligence.chasingRange, power));  // get detailed path
+        LinkedList<Vector2> path = aStar(map, start, end, (int) Math.pow(intelligence.chasingRange, power));  // get detailed path
 
-        setCache(map, start, pos, intelligence, path);
+        setCache(map, start, end, intelligence, path);
         return path;
     }
 
@@ -92,13 +91,14 @@ public class Algorithms {
      * Implementation based on pseudocode from <a href="https://en.wikipedia.org/wiki/A*_search_algorithm#Pseudocode">Wikipedia <i>(A_Star)</i></a>
      * @param map the cached map data containing the chunk with corresponding tiles to determine walkable paths
      * @param start the starting position
-     * @param pos the posing position
+     * @param end the ending position
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
-    private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 pos, int maxIterations) throws NoPathAvailable {
+    private static LinkedList<Vector2> aStar(Renderer.CachedMapData map, Vector2 start, Vector2 end, int maxIterations) throws NoPathAvailable {
+        // round X and Y as tiles only work with whole numbers
         start = new Vector2(Math.round(start.x), Math.round(start.y));
-        pos = new Vector2(Math.round(pos.x), Math.round(pos.y));
+        end = new Vector2(Math.round(end.x), Math.round(end.y));
 
         int iterations = 0;
 
@@ -111,7 +111,7 @@ public class Algorithms {
 
         // fScore
         LinkedHashMap<Vector2, Double> fScore = new LinkedHashMap<>();
-        fScore.put(start, calculateCost(start, pos));
+        fScore.put(start, calculateCost(start, end));
 
         PriorityQueue<Vector2> openSet = new PriorityQueue<>((o1, o2) -> (int) ((fScore.get(o1) - fScore.get(o2)) * 100));
         openSet.offer(start);
@@ -120,24 +120,24 @@ public class Algorithms {
         double tentativeGScore;
         while (!openSet.isEmpty()) {
             // cap the calculations
-            if (iterations > maxIterations) throw new NoPathAvailable(start, pos);
+            if (iterations > maxIterations) throw new NoPathAvailable(start, end);
 
             current = openSet.poll();
-            if (current.equals(pos)) return reconstructAStarPath(cameFrom, current);
+            if (current.equals(end)) return reconstructAStarPath(cameFrom, current);
 
             for (Vector2 neighbor : getWalkableNeighbors(map, current)) {
                 tentativeGScore = gScore.get(current) + 1;  // 1 is default value for walking up/down/left/right; no diagonals here
                 if (tentativeGScore < gScore.getOrDefault(neighbor, Double.MAX_VALUE)) {
                     cameFrom.put(neighbor, current);
                     gScore.put(neighbor, tentativeGScore);
-                    fScore.put(neighbor, tentativeGScore + calculateCost(neighbor, pos));
+                    fScore.put(neighbor, tentativeGScore + calculateCost(neighbor, end));
                     if (!openSet.contains(neighbor)) openSet.add(neighbor);
                 }
             }
             iterations++;
         }
 
-        throw new NoPathAvailable(start, pos);
+        throw new NoPathAvailable(start, end);
     }
 
     /**
@@ -162,19 +162,5 @@ public class Algorithms {
      */
     private static Double calculateCost(Vector2 current, Vector2 target) {
         return current.subtract(target).magnitude();
-    }
-
-    /**
-     * Retrieves a random direction to wander to
-     * @param map the cached map data
-     * @param pos the current position
-     * @return a random (available) direction
-     */
-    public static Vector2 getWanderInstruction(Renderer.CachedMapData map, Vector2 pos) {
-        if (pos == null) return null;
-        pos = new Vector2(Math.round(pos.x), Math.round(pos.y));
-        Vector2[] neighbors = getWalkableNeighbors(map, pos);
-        if (neighbors.length == 0) return pos;
-        return neighbors[ThreadLocalRandom.current().nextInt(neighbors.length) % neighbors.length].subtract(pos);
     }
 }

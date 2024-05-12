@@ -1,6 +1,5 @@
 package Redfoot;
 
-import enemy.ai.Algorithms;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
@@ -10,6 +9,8 @@ import java.util.LinkedList;
 public class BaseEnemy extends BaseEntity {
     public final EnemyAI enemyAI;
     public LinkedList<Vector2> path;
+    public boolean isWandering = false;
+    public Vector2 spawnedAt;
     protected boolean damageAlerted = false;
     protected boolean handledDamageAlert = true;
 
@@ -24,12 +25,17 @@ public class BaseEnemy extends BaseEntity {
     }
 
     @Override
+    protected void awake() {
+        super.awake();
+        this.spawnedAt = new Vector2(this.pos.x, this.pos.y);
+    }
+
+    @Override
     protected void entityTick(Game.State state) {
         if(!this.active) return;
         super.entityTick(state);
         if (this.isDead || this.pos == null) return;
-        Vector2 wanderInstruction;
-        
+
         this.enemyAI.setPlayerPosCache(this.renderer.player.pos);
         if (!this.enemyAI.autoAggro(this) && !this.gotDamaged()) this.enemyAI.reevaluateAggression(this);
         if (this.gotDamaged()) this.enemyAI.isAggro = true;  // to override range based evaluation
@@ -38,24 +44,7 @@ public class BaseEnemy extends BaseEntity {
         boolean moved;
         if (this.enemyAI.damageIfPossible(this, state)) {
             moved = false;
-        } else if (this.enemyAI.chaseIfPossible(this, state)) {
-            moved = true;
-        } else if (this.pos.subtract(wanderInstruction = Algorithms.getWanderInstruction(this.renderer.exportToMapData(), this.pos)).magnitude() != 0) {
-            this.pos.x += wanderInstruction.x * state.deltaTime * this.enemyAI.intelligence.speed/2;
-            this.pos.y += wanderInstruction.y * state.deltaTime * this.enemyAI.intelligence.speed/2;
-
-            if (this.anim == null) return;
-            if ((int) wanderInstruction.x > 0) {
-                this.anim.setAnim(2);
-            } else if ((int) wanderInstruction.x < 0) {
-                this.anim.setAnim(1);
-            } else if ((int) wanderInstruction.y > 0) {
-                this.anim.setAnim(0);
-            } else if ((int) wanderInstruction.y < 0) {
-                this.anim.setAnim(3);
-            }
-            moved = true;
-        } else moved = false;
+        } else moved = this.enemyAI.chaseOrWanderIfPossible(this, state);
 
         if (moved && this.anim != null) {
             this.anim.update();
