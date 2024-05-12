@@ -22,7 +22,7 @@ public class Game extends World {
         logger = Logger.getLogger("root");
     }
 
-    private final int tps;
+    public final int tps;
     protected float deltaTime = 0;  // in seconds
     private long curAct = 0;
     private long tick = 0;

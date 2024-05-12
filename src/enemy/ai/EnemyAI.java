@@ -44,8 +44,10 @@ public class EnemyAI {
     }
 
     public void alertToSwarm(BaseEnemy self, List<BaseEnemy> enemies) {
+        if (!self.enemyAI.isAggro) return;
         if (this.intelligence.canAlarm && !self.isDead) {
             for (BaseEnemy enemy : enemies) {
+                if (enemy.enemyAI.isAggro) continue;
                 if (enemy.pos.subtract(self.pos).magnitude() > enemy.enemyAI.intelligence.chasingRange) continue;
                 if (!enemy.enemyAI.intelligence.canAlarm) continue;
                 enemy.getAlerted(this.playerPosCache);
@@ -56,7 +58,7 @@ public class EnemyAI {
     public LinkedList<Vector2> retrievePath(BaseEnemy self, Game.State state) {
         LinkedList<Vector2> path;
         try {
-            path = Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence, self.gotDamaged());
+            path = Algorithms.getPath(state.game.render.exportToMapData(), self.pos, this.playerPosCache, this.intelligence, self.bypassesChaseRadius(state.tick));
             self.isWandering = false;
         } catch (NoPathAvailable e) {
             if (self.spawnedAt == null) return new LinkedList<>();

@@ -43,22 +43,22 @@ public class Algorithms {
      * @param start the starting position
      * @param end the ending position
      * @param intelligence information about the available intelligence
-     * @param gotDamaged whether the chasing range should be ignored as a radius
+     * @param bypassChasingRange whether the chasing range should be ignored as a radius
      * @return the walkable path with the first element being the start
      * @throws NoPathAvailable if no path was found throws this exception
      */
-    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence, boolean gotDamaged) throws NoPathAvailable {
+    public static LinkedList<Vector2> getPath(Renderer.CachedMapData map, Vector2 start, Vector2 end, IntelligenceEnum intelligence, boolean bypassChasingRange) throws NoPathAvailable {
         if (start == null || end == null) return new LinkedList<>();
 
         // just computed?
         if (isCached(map, start, end, intelligence)) return cachedPath;
 
-        double power = gotDamaged? 2.25 : 1.75;
+        double power = bypassChasingRange? 2.25 : 1.75;
 
         // out of range?
         if (end.subtract(start).magnitude() > intelligence.chasingRange) {
             // but got damaged? -> something like a line-of-sight can be implied!
-            if (!gotDamaged) throw new NoPathAvailable(start, end, intelligence);
+            if (!bypassChasingRange) throw new NoPathAvailable(start, end, intelligence);
         }
 
         LinkedList<Vector2> path = aStar(map, start, end, (int) Math.pow(intelligence.chasingRange, power));  // get detailed path

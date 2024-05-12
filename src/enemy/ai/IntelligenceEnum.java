@@ -27,6 +27,4 @@ public enum IntelligenceEnum {
         this.wanderSpeedPenalty = wanderSpeedPenalty;
         this.canAlarm = canAlarm;
     }
-
-
 }
