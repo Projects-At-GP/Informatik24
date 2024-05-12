@@ -149,6 +149,7 @@ public class EnemyAI {
      * @param direction the direction the enemy moved
      */
     public static void setAnimation(BaseEnemy self, Vector2 direction) {
+        if (self.anim == null) return;
         if ((int) direction.x > 0) {
             self.anim.setAnim(2);
         } else if ((int) direction.x < 0) {

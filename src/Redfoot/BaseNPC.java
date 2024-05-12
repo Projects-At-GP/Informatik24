@@ -2,12 +2,14 @@ package Redfoot;
 
 import animator.Animation;
 import dialogue.Text;
+import enemy.ai.EnemyAI;
+import enemy.ai.IntelligenceEnum;
 import vector.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseNPC extends BaseEntity {
+public class BaseNPC extends BaseEnemy {
     Animation anim;
     List<String> sentences = new ArrayList<>();
     long resetTimer;
@@ -15,7 +17,7 @@ public class BaseNPC extends BaseEntity {
     int counter;
 
     public BaseNPC(Renderer renderer) {
-        super(renderer);
+        super(renderer, new EnemyAI(IntelligenceEnum.NPC));
         this.hp = 100;
         this.col = new collider();
         this.col.octagon(0.8, 0.3);
@@ -34,7 +36,24 @@ public class BaseNPC extends BaseEntity {
     }
 
     @Override
-    protected void entityTick(Game.State state) {}
+    protected void entityTick(Game.State state) {
+        if (!this.active) return;
+        if (this.isDead || this.pos == null) return;
+        boolean moved = this.enemyAI.chaseOrWanderIfPossible(this, state);
+        if (moved && this.anim != null) {
+            this.anim.update();
+            this.anim.resume();
+        }
+    }
+
+    protected void goTo(Vector2 target) {
+        this.enemyAI.aggro(target);
+    }
+
+    @Override
+    public boolean bypassesChaseRadius(long curTick) {
+        return true;
+    }
 
     @Override
     protected void interactable(){
