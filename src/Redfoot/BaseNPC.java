@@ -56,7 +56,7 @@ public class BaseNPC extends BaseEnemy {
      */
     @Override
     public boolean bypassesChaseRadius(long curTick) {
-        return true;
+        return false;
     }
 
     @Override
