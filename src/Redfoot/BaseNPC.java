@@ -52,7 +52,7 @@ public class BaseNPC extends BaseEnemy {
     }
 
     /**
-     * Overridden here to always bypass the chase radius
+     * Overridden here to never bypass the chase radius
      */
     @Override
     public boolean bypassesChaseRadius(long curTick) {
