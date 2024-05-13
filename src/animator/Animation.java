@@ -41,7 +41,8 @@ public class Animation {
             this.baseImg = baseImg;
             this.frameSize = frameSize;
             this.scale = scale;
-            this.animSheet = ImageIO.read(new File(this.filePrefix + animSheetPath));
+            System.out.println("Reading Sheet" + animSheetPath);
+            this.animSheet = ImageIO.read(new File(animSheetPath));
             this.animFrameCount = this.animSheet.getWidth() / frameSize;
             createFrames(this.animSheet, "Default");
 
