@@ -3,7 +3,10 @@ package Redfoot;
 import greenfoot.*;
 import vector.Vector2;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,8 @@ public class Game extends World {
 
     public Renderer render;
     public ArrayList<Actor> deletionList = new ArrayList<>();
+    public ArrayList<Vector2> playerPath = new ArrayList<>();
+    private int counter;
 
     public Game(int tps) {
         super(1600, 900, 1, false);
@@ -160,6 +165,7 @@ public class Game extends World {
         handleCollision();
         if (this.tick % 3 == 0) this.getObjects(BaseActor.class).forEach((a) -> a.blockTick(state3));
         if (this.tick % 2 == 0) this.getObjects(BaseActor.class).forEach((a) -> a.entityTick(state2));
+        if (this.tick % 600 == 0) writeStatData();
 
         List<BaseEntity> pathfindingEntities = this.getObjects(BaseEntity.class);
         int pathfindingTick = (int) Math.ceil((double) this.tps / pathfindingEntities.size());
@@ -172,6 +178,27 @@ public class Game extends World {
         render.render();
 
         this.tick++;
+    }
+
+    private void writeStatData(){
+        // Write Data to file
+        String filePath = "./statisticData/data" + counter;
+        try {
+            FileWriter writer = new FileWriter(filePath);
+            BufferedWriter bufferedWriter = new BufferedWriter(writer);
+            StringBuilder line = new StringBuilder();
+            for (Vector2 pos : playerPath){
+                line.append(pos.x).append(",").append(pos.y).append(";");
+            }
+            bufferedWriter.write(line.toString());
+            bufferedWriter.close();
+            counter++;
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Reset playerPath
     }
 
     private void handleCollision() {

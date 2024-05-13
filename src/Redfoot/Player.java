@@ -183,6 +183,7 @@ public class Player extends BaseEntity {
         oldPos = this.pos;
 
         if (dv.magnitude() != 0) {
+            this.game.playerPath.add(this.pos);
             this.stepSound.play();
             if (!this.stepSound.isPlaying()) {
                 this.stepSound.playLoop();
