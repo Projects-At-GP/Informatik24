@@ -10,8 +10,7 @@
 
 ## Playing the game
 
-Download the most up to date release from the releases section. You need to install Greenfoot as well and open Cryptcrawl/Informatik24-develop/src/project.greenfoot as a Greenfoot project-file. Then just press 'start' at the bottom of the screen :) Use WASD for walking and E for interacting with NPCs.
-
+Download the most up to date release from the releases section. You need to install Greenfoot as well and open Cryptcrawl/Informatik24-develop/src/project.greenfoot as a Greenfoot project-file. Then just press 'start' at the bottom of the screen :) Use WASD for walking and E for interacting with NPCs. We got some Art (for example the Character Sheets and the fake Mountain Tiles) from Lanea Zimmerman (https://opengameart.org/content/tiny-16-basic) as they are still placeholders. However these will eventually be phased out as we create our own textures.
 ## Running the code
 
 ### Greenfoot
