@@ -7,7 +7,8 @@ public enum IntelligenceEnum {
     ABSENT_IQ(0, 0, 0, 0, 0, 0x1337, 0, 0, false),
     NPC(0, 48, 0, 0, 0, 0, 2.5, 2.5, false),
     SPIDER(5, 8.5, 3, 0.75, 10, 45, 3, 1.5, false),
-    BLOB(6.5, 11, 4, 1, 20, 30, 3, 1, false);
+    BLOB(6.5, 11, 4, 1, 20, 30, 3, 1, false),
+    BAT(8, 16, 6, 1, 15, 20, 5, 2, false);
 
 
     public final double aggressionRange;  // range for initial aggression

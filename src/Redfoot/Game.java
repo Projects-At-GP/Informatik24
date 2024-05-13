@@ -1,5 +1,6 @@
 package Redfoot;
 
+import Redfoot.Enemies.Bat;
 import greenfoot.*;
 import vector.Vector2;
 
@@ -71,6 +72,9 @@ public class Game extends World {
         //Weapon broadsword = new Weapon(this.render, WeaponEnum.BROADSWORD, this.render.world);
         //broadsword.pos = new Vector2(23, 21);
         //spawnEntity(broadsword);
+
+        spawnEntity(new Bat(this.render, new Vector2(4, 123), "overworld"));
+        spawnEntity(new Bat(this.render, new Vector2(3, 125), "overworld"));
 
         Weapon coppersword = new Weapon(this.render, WeaponEnum.COPPERSWORD, this.render.world);
         coppersword.pos = new Vector2(21, 21);

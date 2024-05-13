@@ -7,7 +7,7 @@ import vector.Vector2;
 
 public class BaseEntity extends BaseActor {
 
-    double hp;  // the health points
+    public double hp;  // the health points
     public boolean isDead = false;  // indicator to signal whether any actions may be executed
     public boolean collided;  // whether the entity collided
     public Animation anim;  // the animation of the entity

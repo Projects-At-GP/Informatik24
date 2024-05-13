@@ -1,5 +1,9 @@
-package Redfoot;
+package Redfoot.Enemies;
 
+import Redfoot.BaseEnemy;
+import Redfoot.BaseEntity;
+import Redfoot.Renderer;
+import Redfoot.collider;
 import animator.Animation;
 import enemy.ai.EnemyAI;
 import enemy.ai.IntelligenceEnum;

@@ -1,5 +1,7 @@
 package Redfoot;
 
+import Redfoot.Enemies.Blob;
+import Redfoot.Enemies.Spider;
 import dialogue.Text;
 import greenfoot.GreenfootImage;
 import vector.Vector2;

@@ -20,7 +20,8 @@ public class Player extends BaseEntity {
 
     Vector2 oldPos;
 
-    final float speed = 4;
+    final float speed = 3.5f;
+    private final int dashCooldown = 2000;
 
     Game game;
     Animation anim;
@@ -44,6 +45,9 @@ public class Player extends BaseEntity {
     private GreenfootImage fullHeart = new GreenfootImage("./images/heartfull.png");
     private GreenfootImage halfHeart = new GreenfootImage("./images/hearthalf.png");
     private GreenfootImage emptyHeart = new GreenfootImage("./images/heartempty.png");
+    private double timeSinceDash;
+    private long lastDash;
+    private boolean dashing;
 
 
     public Player(Game game, Vector2 pos) {
@@ -178,6 +182,13 @@ public class Player extends BaseEntity {
     }
 
     private void movement(float dt) {
+        if(intIsKeyPressed("shift") == 1 && System.currentTimeMillis() - lastDash > dashCooldown){
+            lastDash = System.currentTimeMillis();
+            dashing = true;
+        }
+        timeSinceDash = System.currentTimeMillis() - lastDash;
+
+
         Vector2 dv = new Vector2((intIsKeyPressed("d") - intIsKeyPressed("a")), (intIsKeyPressed("s") - intIsKeyPressed("w"))).normalize();
 
         oldPos = this.pos;
@@ -189,7 +200,14 @@ public class Player extends BaseEntity {
                 this.stepSound.playLoop();
                 logger.info("play steps");
             }
-            pos = pos.add(dv.scale(speed * dt));
+            if(timeSinceDash > 300) {
+                timeSinceDash = 0;
+                dashing = false;
+            }
+            double t = Math.min(1.0, timeSinceDash / 300);
+            double dashFactor = 2 + (-1 * Math.pow(t - 1, 2));
+
+            pos = pos.add(dv.scale(speed * dt * dashFactor));
             //System.out.printf("Redfoot.Chunk Coordinates x: %d,y: %d; Coordinates in Redfoot.Chunk x: %d, y: %d; PlayerCoordinates %s\n", chunkX, chunkY, (int) xInChunk, (int) yInChunk, this.pos.toString());
             anim.resume();
             if (dv.x > 0) {
@@ -225,7 +243,7 @@ public class Player extends BaseEntity {
 
     @Override
     protected void entityTick(Game.State state) {
-        this.anim.update();
+        if(!this.dashing) this.anim.update();
     }
 
     @Override
@@ -237,6 +255,7 @@ public class Player extends BaseEntity {
 
     @Override
     public void takeDamage(double dmg) {
+        if(dashing) return;
         super.takeDamage(dmg);
 
         int fullHearts = (int) (this.hp / 20);
