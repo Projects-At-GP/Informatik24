@@ -35,11 +35,11 @@ public class Tile extends BaseActor {
             if (this.game.openChestList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
         } else if (this.id == 80) {
-            this.anim = new Animation("./images/TürAnimationHolz.png", this, 16, 4, 1);
+            this.anim = new Animation("./images/TuerAnimationHolz.png", this, 16, 4, 1);
             if (this.game.openDoorList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
         } else if(this.id == 177) {
-            this.anim = new Animation("./images/TürAnimationStein.png", this, 16, 4, 1);
+            this.anim = new Animation("./images/TuerAnimationStein.png", this, 16, 4, 1);
             if (this.game.openDoorList.contains(this.pos)) this.anim.setImage(3);
             this.anim.resume();
         }
