@@ -4,6 +4,7 @@ import greenfoot.*;
 import vector.Vector2;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -33,6 +34,10 @@ public class Game extends World {
 
     public Game(int tps) {
         super(1600, 900, 1, false);
+
+        File tmpDir = new File("./images/tmp");
+        tmpDir.mkdir();
+
         setDir();
         this.tps = tps;
         Player player = new Player(this, new Vector2(18.5, 20.5));
